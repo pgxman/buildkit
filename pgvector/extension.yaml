@@ -7,6 +7,9 @@ description: Open-source vector similarity search for Postgres
 keywords:
   - nearest-neighbor-search
   - approximate-nearest-neighbor-search
+arch:
+  - amd64
+  - arm64
 maintainers:
   - name: Owen Ou
     email: o@hydra.so
