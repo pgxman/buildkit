@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+VAR=$(find . -name 'extension.yaml' -printf "%h " | sed 's/\.\///g')
+arr=($VAR)
+
+jq -nc '{ "include": [ { "extension": $ARGS.positional[] } ] }' --args ${arr[@]}
