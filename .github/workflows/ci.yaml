@@ -43,7 +43,7 @@ jobs:
       - name: Build
         run: |
           cd ${{ matrix.extension }}
-          pgxman build
+          pgxman build --cache-from "type=gha" --cache-to "type=gha,mode=max"
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
