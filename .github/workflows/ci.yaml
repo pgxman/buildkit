@@ -36,12 +36,9 @@ jobs:
       - name: Install pgxman
         env:
           REPO: pgxman/pgxman
-          GH_TOKEN: ${{ secrets.CI_GITHUB_TOKEN }}
         run: |
-          TAG_NAME=$(gh release view -R $REPO --json tagName | jq -r ".tagName")
-          gh release download ${TAG_NAME} -R $REPO -p "*.deb" -D pgxman
-          sudo apt update
-          sudo apt install ./pgxman/pgxman_${TAG_NAME#v}_linux_amd64.deb -y
+          wget -O /tmp/pgxman_linux_amd64.deb https://github.com/pgxman/release/releases/latest/download/pgxman_linux_amd64.deb
+          sudo apt install /tmp/pgxman_linux_${_arch}.deb -y
       - name: Build
         run: |
           cd ${{ matrix.extension }}
