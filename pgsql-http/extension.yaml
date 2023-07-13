@@ -1,0 +1,23 @@
+apiVersion: v1
+name: pgsql-http
+version: "1.5.0"
+homepage: https://github.com/pramsey/pgsql-http
+source: https://github.com/pramsey/pgsql-http/archive/refs/tags/v1.5.0.tar.gz
+description: HTTP client for PostgreSQL, retrieve a web page from inside the database.
+keywords:
+  - http
+arch:
+  - amd64
+  - arm64
+maintainers:
+  - name: Owen Ou
+    email: o@hydra.so
+build: |
+  make
+  DESTDIR=${DESTDIR} make install
+pgVersions:
+  - "13"
+  - "14"
+  - "15"
+buildDependencies:
+  - libcurl4-openssl-dev
