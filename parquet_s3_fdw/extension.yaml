@@ -51,3 +51,21 @@ buildDependencies:
   - uuid-dev
   - zlib1g-dev
   - libpulse-dev
+deb:
+  buildDependencies:
+    - apache-arrow/libarrow-dev
+    - apache-arrow/libparquet-dev
+  dependencies:
+    - apache-arrow/libarrow-dev
+    - apache-arrow/libparquet-dev
+  aptRepositories:
+    - id: apache-arrow
+      types: deb deb-src
+      uris: https://apache.jfrog.io/artifactory/arrow/debian/
+      suites:
+        - suite: bookworm
+          target: bookworm
+        - suite: bookworm
+          target: jammy
+      components: main
+      signedKey: https://apache.jfrog.io/artifactory/arrow/debian/apache-arrow-keyring.gpg
