@@ -23,13 +23,6 @@ build: |
   nproc | xargs -I % make -j% DESTDIR=/
   nproc | xargs -I % make -j% DESTDIR=/ install
 
-  # Install libarrow & libparquet
-  cd /tmp
-  wget https://apache.jfrog.io/artifactory/arrow/$(lsb_release --id --short | tr 'A-Z' 'a-z')/apache-arrow-apt-source-latest-$(lsb_release --codename --short).deb
-  apt install -y -V ./apache-arrow-apt-source-latest-$(lsb_release --codename --short).deb
-  apt update
-  apt install -y -V libarrow-dev libparquet-dev
-
   # Build parquet_s3_fdw
   cd ${WORKDIR}
   DESTDIR=${DESTDIR} CCFLAGS="-I/usr/include/aws/include -L/usr/include/aws/lib" make USE_PGXS=1
@@ -51,21 +44,24 @@ buildDependencies:
   - uuid-dev
   - zlib1g-dev
   - libpulse-dev
+  # From apache-arrow apt repo
+  - libarrow-dev
+  - libparquet-dev
 deb:
-  buildDependencies:
-    - apache-arrow/libarrow-dev
-    - apache-arrow/libparquet-dev
-  dependencies:
-    - apache-arrow/libarrow-dev
-    - apache-arrow/libparquet-dev
   aptRepositories:
     - id: apache-arrow
-      types: deb deb-src
-      uris: https://apache.jfrog.io/artifactory/arrow/debian/
+      types:
+        - deb
+        - deb-src
+      uris:
+        - https://apache.jfrog.io/artifactory/arrow/debian/
       suites:
         - suite: bookworm
           target: bookworm
         - suite: bookworm
           target: jammy
-      components: main
-      signedKey: https://apache.jfrog.io/artifactory/arrow/debian/apache-arrow-keyring.gpg
+      components:
+        - main
+      signedKey:
+        url: https://downloads.apache.org/arrow/KEYS
+        format: asc
