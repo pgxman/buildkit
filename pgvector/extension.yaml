@@ -13,9 +13,12 @@ arch:
 maintainers:
   - name: Owen Ou
     email: o@hydra.so
-build: |
-  make
-  DESTDIR=${DESTDIR} make install
+build:
+  main:
+    - name: Build pgvector
+      run: |
+        make
+        DESTDIR=${DESTDIR} make install
 pgVersions:
   - "13"
   - "14"

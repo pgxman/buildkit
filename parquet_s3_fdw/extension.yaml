@@ -14,26 +14,29 @@ arch:
 maintainers:
   - name: Owen Ou
     email: o@hydra.so
-build: |
-  # Install aws-sdk-cpp
-  git clone https://github.com/aws/aws-sdk-cpp /aws-sdk-cpp --recurse-submodules --branch 1.10.57 --single-branch
-  mkdir /sdk_build
-  cd /sdk_build
-  cmake /aws-sdk-cpp -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/usr/include/aws -DCMAKE_INSTALL_PREFIX=/usr/include/aws -DBUILD_ONLY="s3"
-  nproc | xargs -I % make -j% DESTDIR=/
-  nproc | xargs -I % make -j% DESTDIR=/ install
-
-  # Build parquet_s3_fdw
-  cd ${WORKDIR}
-  DESTDIR=${DESTDIR} CCFLAGS="-I/usr/include/aws/include -L/usr/include/aws/lib" make USE_PGXS=1
-  DESTDIR=${DESTDIR} CCFLAGS="-I/usr/include/aws/include -L/usr/include/aws/lib" make USE_PGXS=1 install
-
-  # Copy shared libraries
-  DEST_SHARED_DIR=${DESTDIR}/usr/lib/$(uname -m)-linux-gnu
-  mkdir -p ${DEST_SHARED_DIR}
-  cp -r /usr/include/aws/lib/*.so ${DEST_SHARED_DIR}
-  cp /usr/lib/$(uname -m)-linux-gnu/libarrow.so ${DEST_SHARED_DIR}
-  cp /usr/lib/$(uname -m)-linux-gnu/libparquet.so ${DEST_SHARED_DIR}
+build:
+  pre:
+    - name: Install aws-sdk-cpp
+      run: |
+        git clone https://github.com/aws/aws-sdk-cpp /aws-sdk-cpp --recurse-submodules --branch 1.10.57 --single-branch
+        mkdir /sdk_build
+        cd /sdk_build
+        cmake /aws-sdk-cpp -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/usr/include/aws -DCMAKE_INSTALL_PREFIX=/usr/include/aws -DBUILD_ONLY="s3"
+        nproc | xargs -I % make -j% DESTDIR=/
+        nproc | xargs -I % make -j% DESTDIR=/ install
+  main:
+    - name: Build parquet_s3_fdw
+      run: |
+        DESTDIR=${DESTDIR} CCFLAGS="-I/usr/include/aws/include -L/usr/include/aws/lib" make USE_PGXS=1
+        DESTDIR=${DESTDIR} CCFLAGS="-I/usr/include/aws/include -L/usr/include/aws/lib" make USE_PGXS=1 install
+    - name: Copy shared libraries
+      run: |
+        SHARED_DIR=/usr/lib/$(uname -m)-linux-gnu
+        DEST_SHARED_DIR=${DESTDIR}${SHARED_DIR}
+        mkdir -p ${DEST_SHARED_DIR}
+        cp -r /usr/include/aws/lib/*.so ${DEST_SHARED_DIR}
+        cp ${SHARED_DIR}/libarrow.so ${DEST_SHARED_DIR}
+        cp ${SHARED_DIR}/libparquet.so ${DEST_SHARED_DIR}
 pgVersions:
   - "13"
   - "14"
