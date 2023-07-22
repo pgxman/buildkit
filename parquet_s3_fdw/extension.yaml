@@ -1,0 +1,70 @@
+apiVersion: v1
+name: parquet_s3_fdw
+version: "5298b7f0254923f52d15e554ec8a5fdc0474f059"
+homepage: https://github.com/hydradatabase/parquet_s3_fdw
+source: https://github.com/hydradatabase/parquet_s3_fdw/archive/5298b7f0254923f52d15e554ec8a5fdc0474f059.tar.gz
+description: Parquet S3 Foreign Data Wrapper for PostgreSQL
+keywords:
+  - fdw
+  - parquet
+  - s3
+arch:
+  - amd64
+  - arm64
+maintainers:
+  - name: Owen Ou
+    email: o@hydra.so
+build:
+  pre:
+    - name: Install aws-sdk-cpp
+      run: |
+        git clone https://github.com/aws/aws-sdk-cpp /aws-sdk-cpp --recurse-submodules --branch 1.10.57 --single-branch
+        mkdir /sdk_build
+        cd /sdk_build
+        cmake /aws-sdk-cpp -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/usr/include/aws -DCMAKE_INSTALL_PREFIX=/usr/include/aws -DBUILD_ONLY="s3"
+        nproc | xargs -I % make -j% DESTDIR=/
+        nproc | xargs -I % make -j% DESTDIR=/ install
+  main:
+    - name: Build parquet_s3_fdw
+      run: |
+        DESTDIR=${DESTDIR} CCFLAGS="-I/usr/include/aws/include -L/usr/include/aws/lib" make USE_PGXS=1
+        DESTDIR=${DESTDIR} CCFLAGS="-I/usr/include/aws/include -L/usr/include/aws/lib" make USE_PGXS=1 install
+    - name: Copy shared libraries
+      run: |
+        SHARED_DIR=/usr/lib/$(uname -m)-linux-gnu
+        DEST_SHARED_DIR=${DESTDIR}${SHARED_DIR}
+        mkdir -p ${DEST_SHARED_DIR}
+        cp -r /usr/include/aws/lib/*.so ${DEST_SHARED_DIR}
+        cp ${SHARED_DIR}/libarrow.so ${DEST_SHARED_DIR}
+        cp ${SHARED_DIR}/libparquet.so ${DEST_SHARED_DIR}
+pgVersions:
+  - "13"
+  - "14"
+  - "15"
+buildDependencies:
+  - libcurl4-openssl-dev
+  - libssl-dev
+  - uuid-dev
+  - zlib1g-dev
+  - libpulse-dev
+  # From apache-arrow apt repo
+  - libarrow-dev
+  - libparquet-dev
+deb:
+  aptRepositories:
+    - id: apache-arrow
+      types:
+        - deb
+        - deb-src
+      uris:
+        - https://apache.jfrog.io/artifactory/arrow/debian/
+      suites:
+        - suite: bookworm
+          target: bookworm
+        - suite: bookworm
+          target: jammy
+      components:
+        - main
+      signedKey:
+        url: https://downloads.apache.org/arrow/KEYS
+        format: asc
