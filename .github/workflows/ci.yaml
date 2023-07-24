@@ -41,8 +41,8 @@ jobs:
           sudo apt install /tmp/pgxman_linux_amd64.deb -y
       - name: Build
         run: |
-          cd ${{ matrix.extension }}
           pgxman build \
+            --file "$(pwd)/buildkit/${{ matrix.extension }}.yaml" \
             --cache-from "type=gha,scope=${{ matrix.extension }}" \
             --cache-to "type=gha,mode=max,scope=${{ matrix.extension }}"
       - name: Upload Artifacts
@@ -52,7 +52,7 @@ jobs:
           if-no-files-found: error
           retention-days: 7
           path: |
-            ${{ matrix.extension }}/out/*.*
+            out/*.*
   publish:
     name: Publish Extensions
     runs-on: ubuntu-latest

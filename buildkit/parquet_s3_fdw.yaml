@@ -3,7 +3,7 @@ name: parquet_s3_fdw
 version: "5298b7f0254923f52d15e554ec8a5fdc0474f059"
 homepage: https://github.com/hydradatabase/parquet_s3_fdw
 source: https://github.com/hydradatabase/parquet_s3_fdw/archive/5298b7f0254923f52d15e554ec8a5fdc0474f059.tar.gz
-description: Parquet S3 Foreign Data Wrapper for PostgreSQL
+description: Parquet S3 Foreign Data Wrapper for PostgreSQL.
 keywords:
   - fdw
   - parquet
