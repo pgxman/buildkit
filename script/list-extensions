@@ -4,4 +4,4 @@ VAR=$(find . -name 'extension.yaml' -printf "%h " | sed 's/\.\///g')
 VAR=$(ls buildkit/*.yaml | sed -r 's/buildkit\/(.+)\.yaml/\1/g')
 arr=($VAR)
 
-jq -nc '{ "include": [ { "extension": $ARGS.positional[] } ] }' --args ${arr[@]}
+jq -nc '[ $ARGS.positional[] ]' --args ${arr[@]}
