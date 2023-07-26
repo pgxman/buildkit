@@ -1,0 +1,36 @@
+apiVersion: v1
+name: multicorn
+version: "2.5-SNAPSHOT+b68b75c"
+homepage: https://github.com/pgsql-io/multicorn2
+source: https://github.com/pgsql-io/multicorn2/archive/b68b75c253be72bdfd5b24bf76705c47c238d370.tar.gz
+description: Multicorn Python3 Wrapper for Postgresql Foreign Data Wrapper.
+keywords:
+  - python3
+  - multicorn
+  - fdw
+arch:
+  - amd64
+  - arm64
+maintainers:
+  - name: Owen Ou
+    email: o@hydra.so
+build:
+  main:
+    - name: Build pgvector
+      run: |
+        python3.11 -m venv .venv
+        . .venv/bin/activate
+        make
+        DESTDIR=${DESTDIR} make install
+
+        DEST_PYTHON_DIR=${DESTDIR}/usr/local/lib/python3.11/dist-packages
+        mkdir -p ${DEST_PYTHON_DIR}
+        cp -r .venv/lib/python3.11/site-packages/multicorn ${DEST_PYTHON_DIR}
+pgVersions:
+  - "13"
+  - "14"
+  - "15"
+buildDependencies:
+  - python3.11
+  - python3.11-dev
+  - python3.11-venv
