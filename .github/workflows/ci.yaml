@@ -38,6 +38,12 @@ jobs:
       - uses: actions/checkout@v3
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+      - name: Login to ghcr.io
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Install pgxman
         env:
           REPO: pgxman/pgxman
@@ -49,8 +55,8 @@ jobs:
           pgxman build \
             --file "$(pwd)/buildkit/${{ matrix.extension }}.yaml" \
             --set "arch=[${{ matrix.arch }}]" \
-            --cache-from "type=gha,scope=${{ matrix.extension }}" \
-            --cache-to "type=gha,mode=max,scope=${{ matrix.extension }}"
+            --cache-from "type=registry,ref=ghcr.io/pgxman/buildkit-cache" \
+            --cache-to "type=registry,ref=ghcr.io/pgxman/buildkit-cache"
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
