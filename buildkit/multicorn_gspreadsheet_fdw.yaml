@@ -1,14 +1,13 @@
 apiVersion: v1
-name: multicorn_s3csv
-version: "1.0.0+f64e24f"
-homepage: https://github.com/hydradatabase/s3csv_fdw
-source: https://github.com/hydradatabase/s3csv_fdw/archive/f64e24f9fe3f7dbd1be76f9b8b3b5208f869e5e3.tar.gz
-description: Multicorn S3 CSV Foreign Data Wrapper
+name: multicorn_gspreadsheet_fdw
+version: "1.0.0+d5bc5ae"
+homepage: https://github.com/hydradatabase/gspreadsheet_fdw
+source: https://github.com/hydradatabase/gspreadsheet_fdw/archive/d5bc5ae0b2d189abd6d2ee4610bd96ec39602594.tar.gz
+description: Multicorn Google Spreadsheets Foreign Data Wrapper
 keywords:
   - python3
   - multicorn
-  - s3
-  - csv
+  - google spreadsheet
   - fdw
 arch:
   - amd64
@@ -18,11 +17,11 @@ maintainers:
     email: o@hydra.so
 build:
   main:
-    - name: Build pgvector
+    - name: Build multicorn_gspreadsheet_fdw
       run: |
         python3 -m venv .venv
         . .venv/bin/activate
-        python3 -m pip install $(pwd)
+        python3 -m pip install gspread oauth2client $(pwd)
 
         DEST_PYTHON_DIR=${DESTDIR}/usr/local/lib/python3.11/dist-packages
         mkdir -p ${DEST_PYTHON_DIR}
