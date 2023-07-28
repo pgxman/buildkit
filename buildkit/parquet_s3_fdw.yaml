@@ -47,24 +47,36 @@ buildDependencies:
   - uuid-dev
   - zlib1g-dev
   - libpulse-dev
-  # From apache-arrow apt repo
+  # from apache-arrow-* apt repositories
   - libarrow-dev
   - libparquet-dev
 deb:
   aptRepositories:
-    - id: apache-arrow
+    - id: apache-arrow-debian-bookworm
       types:
         - deb
         - deb-src
       uris:
         - https://apache.jfrog.io/artifactory/arrow/debian/
       suites:
-        - suite: bookworm
-          target: bookworm
-        - suite: bookworm
-          target: jammy
+        - bookworm
       components:
         - main
       signedKey:
         url: https://downloads.apache.org/arrow/KEYS
         format: asc
+      target: bookworm
+    - id: apache-arrow-ubuntu-jammy
+      types:
+        - deb
+        - deb-src
+      uris:
+        - https://apache.jfrog.io/artifactory/arrow/ubuntu/
+      suites:
+        - jammy
+      components:
+        - main
+      signedKey:
+        url: https://downloads.apache.org/arrow/KEYS
+        format: asc
+      target: jammy
