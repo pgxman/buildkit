@@ -16,7 +16,7 @@ maintainers:
     email: o@hydra.so
 build:
   main:
-    - name: Build pgvector
+    - name: Build multicorn
       run: |
         python3.11 -m venv .venv
         . .venv/bin/activate
@@ -30,7 +30,3 @@ pgVersions:
   - "13"
   - "14"
   - "15"
-buildDependencies:
-  - python3.11
-  - python3.11-dev
-  - python3.11-venv
