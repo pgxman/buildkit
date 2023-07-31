@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+changed_extensions=()
+for file in "$@"; do
+    if [[ $file == .github/* ]]; then
+        echo ".+"
+        exit
+    fi
+
+    if [[ $file == script/* ]]; then
+        echo ".+"
+        exit
+    fi
+
+    changed_extensions+=("$(basename "$file" .yaml)")
+done
+
+printf -v regexp '|%s' "${changed_extensions[@]}"
+echo "${regexp:1}"

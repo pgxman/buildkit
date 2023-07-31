@@ -20,14 +20,13 @@ jobs:
         with:
           files: |
             buildkit/*.yaml
-            .github/workflow/*
-            script/*
+            .github/workflow/*.*
+            script/*.*
       - id: detect-changed-files
         run: |
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            echo "$file was changed"
-          done
-          echo "changed_extensions=.+" >> "$GITHUB_OUTPUT"
+          changed_extensions=$(script/changed-extensions ${{ steps.changed-files.outputs.all_changed_files }})
+          echo "$changed_extensions"
+          echo "changed_extensions=$changed_extensions" >> "$GITHUB_OUTPUT"
   build:
     name: Build Extensions
     needs: [detect_changed_extensions]
