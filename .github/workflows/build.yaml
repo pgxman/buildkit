@@ -20,7 +20,7 @@ jobs:
       - uses: actions/checkout@v3
       - id: set-matrix
         run: |
-          extensions=$(./script/list-extensions "${{ github.event.inputs.extensions }}")
+          extensions=$(./script/list-extensions "${{ inputs.extensions }}")
           echo "matrix=$extensions" >> "$GITHUB_OUTPUT"
   build:
     name: Build Extensions
