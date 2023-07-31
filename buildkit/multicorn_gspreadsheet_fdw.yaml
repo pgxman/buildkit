@@ -3,7 +3,7 @@ name: multicorn_gspreadsheet_fdw
 version: "1.0.0+d5bc5ae"
 homepage: https://github.com/hydradatabase/gspreadsheet_fdw
 source: https://github.com/hydradatabase/gspreadsheet_fdw/archive/d5bc5ae0b2d189abd6d2ee4610bd96ec39602594.tar.gz
-description: Multicorn Google Spreadsheets Foreign Data Wrapper
+description: Multicorn Google Spreadsheets Foreign Data Wrapper.
 keywords:
   - python3
   - multicorn
