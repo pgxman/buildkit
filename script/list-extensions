@@ -1,7 +1,15 @@
 #!/usr/bin/env bash
 
-VAR=$(find . -name 'extension.yaml' -printf "%h " | sed 's/\.\///g')
-VAR=$(ls buildkit/*.yaml | sed -r 's/buildkit\/(.+)\.yaml/\1/g')
-arr=($VAR)
+set -euo pipefail
 
-jq -nc '[ $ARGS.positional[] ]' --args ${arr[@]}
+buildkit=$(find buildkit -name '*.yaml' | sed -r 's/buildkit\/(.+)\.yaml/\1/g')
+arr=("$buildkit")
+
+# shellcheck disable=SC2068
+result=$(jq -nc '[ $ARGS.positional[] ]' --args ${arr[@]})
+
+if [ $# -eq 0 ]; then
+    echo "$result"
+else
+    echo "$result" | jq -rcM "[.[] | select(.|test(\"^$1\$\"))]"
+fi

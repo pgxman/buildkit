@@ -1,0 +1,76 @@
+name: Build
+on:
+  workflow_call:
+    inputs:
+      extensions:
+        required: true
+        type: string
+  workflow_dispatch:
+    inputs:
+      extensions:
+        required: true
+        type: string
+jobs:
+  set_matrix:
+    name: Set Matrix
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v3
+      - id: set-matrix
+        run: |
+          extensions=$(./script/list-extensions "${{ github.event.inputs.extensions }}")
+          echo "matrix=$extensions" >> "$GITHUB_OUTPUT"
+  build:
+    name: Build Extensions
+    runs-on: ${{ matrix.runs-on }}
+    needs: set_matrix
+    strategy:
+      fail-fast: false
+      matrix:
+        arch:
+          - amd64
+          - arm64
+        extension: ${{ fromJSON(needs.set_matrix.outputs.matrix) }}
+        include:
+          - arch: amd64
+            runs-on: buildjet-4vcpu-ubuntu-2204
+          - arch: arm64
+            runs-on: buildjet-4vcpu-ubuntu-2204-arm
+    steps:
+      - uses: actions/checkout@v3
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v37
+        with:
+          files: buildkit/${{ matrix.extension }}.yaml
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Login to ghcr.io
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install pgxman
+        env:
+          REPO: pgxman/pgxman
+        run: |
+          wget -O /tmp/pgxman_linux_${{ matrix.arch }}.deb https://github.com/pgxman/release/releases/latest/download/pgxman_linux_${{ matrix.arch }}.deb
+          sudo apt install /tmp/pgxman_linux_${{ matrix.arch }}.deb -y
+      - name: Build
+        run: |
+          pgxman build \
+            --file "$(pwd)/buildkit/${{ matrix.extension }}.yaml" \
+            --set "arch=[${{ matrix.arch }}]" \
+            --cache-from "type=registry,ref=ghcr.io/pgxman/buildkit-cache" \
+            --cache-to "type=registry,ref=ghcr.io/pgxman/buildkit-cache,mode=max"
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ matrix.extension }}
+          if-no-files-found: error
+          retention-days: 7
+          path: |
+            out/*.*
