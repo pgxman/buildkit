@@ -1,0 +1,25 @@
+apiVersion: v1
+name: pg_ivm
+version: 1.5.1
+homepage: https://github.com/sraoss/pg_ivm
+source: https://github.com/sraoss/pg_ivm/archive/refs/tags/v1.5.1.tar.gz
+description: IVM (Incremental View Maintenance) implementation as a PostgreSQL extension.
+build:
+  main:
+    - name: Build pg_ivm
+      run: |
+        make
+        DESTDIR=${DESTDIR} make install
+keywords:
+  - incremental view maintenance
+  - ivm
+arch:
+  - amd64
+  - arm64
+maintainers:
+  - name: Owen Ou
+    email: o@hydra.so
+pgVersions:
+  - "13"
+  - "14"
+  - "15"
