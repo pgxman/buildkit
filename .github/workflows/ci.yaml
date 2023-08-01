@@ -7,64 +7,33 @@ on:
   workflow_call:
   workflow_dispatch:
 jobs:
-  set_matrix:
-    name: Set Matrix
+  detect_changed_extensions:
+    name: Detect changed extensions
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      changed_extensions: ${{ steps.detect-changed-files.outputs.changed_extensions }}
     steps:
       - uses: actions/checkout@v3
-      - id: set-matrix
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v37
+        with:
+          files: |
+            buildkit/*.yaml
+            .github/workflows/**
+            script/**
+      - id: detect-changed-files
         run: |
-          extensions=$(./script/list-extensions)
-          echo "matrix=$extensions" >> "$GITHUB_OUTPUT"
+          changed_extensions=$(script/changed-extensions ${{ steps.changed-files.outputs.all_changed_files }})
+          echo "$changed_extensions"
+          echo "changed_extensions=$changed_extensions" >> "$GITHUB_OUTPUT"
   build:
     name: Build Extensions
-    runs-on: ${{ matrix.runs-on }}
-    needs: set_matrix
-    strategy:
-      fail-fast: false
-      matrix:
-        runs-on:
-          - buildjet-4vcpu-ubuntu-2204
-          - buildjet-4vcpu-ubuntu-2204-arm
-        extension: ${{ fromJSON(needs.set_matrix.outputs.matrix) }}
-        include:
-          - runs-on: buildjet-4vcpu-ubuntu-2204
-            arch: amd64
-          - runs-on: buildjet-4vcpu-ubuntu-2204-arm
-            arch: arm64
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      - name: Login to ghcr.io
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Install pgxman
-        env:
-          REPO: pgxman/pgxman
-        run: |
-          wget -O /tmp/pgxman_linux_${{ matrix.arch }}.deb https://github.com/pgxman/release/releases/latest/download/pgxman_linux_${{ matrix.arch }}.deb
-          sudo apt install /tmp/pgxman_linux_${{ matrix.arch }}.deb -y
-      - name: Build
-        run: |
-          pgxman build \
-            --file "$(pwd)/buildkit/${{ matrix.extension }}.yaml" \
-            --set "arch=[${{ matrix.arch }}]" \
-            --cache-from "type=registry,ref=ghcr.io/pgxman/buildkit-cache" \
-            --cache-to "type=registry,ref=ghcr.io/pgxman/buildkit-cache,mode=max"
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{ matrix.extension }}
-          if-no-files-found: error
-          retention-days: 7
-          path: |
-            out/*.*
+    needs: [detect_changed_extensions]
+    uses: ./.github/workflows/build.yaml
+    with:
+      extensions: ${{ needs.detect_changed_extensions.outputs.changed_extensions }}
+    secrets: inherit
   publish:
     name: Publish Extensions
     runs-on: ubuntu-latest

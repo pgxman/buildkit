@@ -3,7 +3,7 @@ name: multicorn_s3csv_fdw
 version: "1.0.0+f64e24f"
 homepage: https://github.com/hydradatabase/s3csv_fdw
 source: https://github.com/hydradatabase/s3csv_fdw/archive/f64e24f9fe3f7dbd1be76f9b8b3b5208f869e5e3.tar.gz
-description: Multicorn S3 CSV Foreign Data Wrapper
+description: Multicorn S3 CSV Foreign Data Wrapper.
 keywords:
   - python3
   - multicorn
