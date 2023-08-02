@@ -26,6 +26,10 @@ build:
         DEST_PYTHON_DIR=${DESTDIR}/usr/local/lib/python3.11/dist-packages
         mkdir -p ${DEST_PYTHON_DIR}
         cp -r .venv/lib/python3.11/site-packages/multicorn ${DEST_PYTHON_DIR}
+buildDependencies:
+  - python3.11
+  - python3.11-dev
+  - python3.11-venv
 pgVersions:
   - "13"
   - "14"
