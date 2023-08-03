@@ -1,0 +1,30 @@
+apiVersion: v1
+name: hydra_columnar
+version: 1.0.0-beta
+homepage: https://github.com/hydradatabase/hydra
+source: https://github.com/hydradatabase/hydra/archive/refs/tags/v1.0.0-beta.tar.gz
+description: Hydra columnar extension for PostgreSQL.
+build:
+  main:
+    - name: Build hydra_columnar
+      run: |
+        cd ./columnar
+        ./configure
+        cd src/backend/columnar
+        DESTDIR=${DESTDIR} make install
+buildDependencies:
+  - liblz4-dev
+  - libzstd-dev
+keywords:
+  - columnar
+  - hydra
+arch:
+  - amd64
+  - arm64
+maintainers:
+  - name: Owen Ou
+    email: o@hydra.so
+pgVersions:
+  - "13"
+  - "14"
+  - "15"
