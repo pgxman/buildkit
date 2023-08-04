@@ -40,7 +40,7 @@ jobs:
     needs: build
     if: github.ref == 'refs/heads/main'
     steps:
-      - uses: buildjet/setup-ruby@v1
+      - uses: actions/setup-ruby@v1
         with:
           ruby-version: 3.2.2
       - uses: actions/checkout@v3
