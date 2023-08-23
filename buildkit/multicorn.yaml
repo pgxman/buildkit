@@ -20,8 +20,8 @@ build:
       run: |
         python3.11 -m venv .venv
         . .venv/bin/activate
-        make
-        DESTDIR=${DESTDIR} make install
+        PYTHON_OVERRIDE=python3.11 make
+        DESTDIR=${DESTDIR} PYTHON_OVERRIDE=python3.11 make install
 
         # install s3csv_fdw & gspreadsheet_fdw
         python3.11 -m pip install \
