@@ -5,12 +5,14 @@ set -euo pipefail
 _dirs=$(find "$*" -maxdepth 3 -mindepth 3 -type d -exec realpath --relative-to="$*" {} \;)
 for _dir in $_dirs; do
     _ext=$(echo "$_dir" | cut -d'/' -f1)
-    _codename=$(echo "$_dir" | cut -d'/' -f2- | sed -r 's/\//:/g')
+    _prefix=$(echo "$_dir" | cut -d'/' -f2)
+    _codename=$(echo "$_dir" | cut -d'/' -f3)
 
-    echo "Uploading deb packages for extension $_ext for $_codename"
+    echo "Uploading deb packages for extension $_ext for $_prefix:$_codename"
     deb-s3 upload \
         --lock \
         --bucket "$AWS_DEBIAN_S3_BUCKET" \
+        --prefix "$_prefix" \
         --codename "$_codename" \
         --visibility public \
         --sign "$GPG_SIGNING_KEY_ID" \
