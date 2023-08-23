@@ -45,10 +45,15 @@ jobs:
           ruby-version: 3.2.2
       - uses: actions/checkout@v3
         with:
+          path: buildkit
+      - uses: actions/checkout@v3
+        with:
           repository: deb-s3/deb-s3
+          path: deb-s3
           ref: ee4fb051073a8387c9d3d5275a41194b62942c83
       - name: Install deb-s3
         run: |
+          cd deb-s3
           gem build
           gem install deb-s3-0.11.7.gem
       - name: Import GPG Key
@@ -72,4 +77,4 @@ jobs:
           GPG_SIGNING_KEY_ID: C9ADBB93237BCD3B
         run: |
           tree "$(pwd)/artifacts"
-          script/deb-s3-upload "$(pwd)/artifacts"
+          buildkit/script/deb-s3-upload "$(pwd)/artifacts"
