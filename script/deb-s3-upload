@@ -5,7 +5,6 @@ set -euo pipefail
 _dirs=$(find "$*" -maxdepth 2 -mindepth 2 -type d -exec realpath --relative-to="$*" {} \;)
 for _dir in $_dirs; do
     echo "Uploading deb packages in $_dir"
-    tree "$*/$_dir"
 
     _codename=$(echo "$_dir" | sed -r 's/\//:/g')
     deb-s3 upload \
