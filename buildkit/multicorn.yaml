@@ -35,6 +35,9 @@ buildDependencies:
   - python3.11
   - python3.11-dev
   - python3.11-venv
+runDependencies:
+  - python3.11
+  - python3.11-dev
 pgVersions:
   - "13"
   - "14"
