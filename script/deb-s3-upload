@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+_dirs=$(find "$*" -maxdepth 2 -mindepth 2 -type d -exec realpath --relative-to="$*" {} \;)
+for _dir in $_dirs; do
+    echo "Uploading deb packages in $_dir"
+    tree "$*/$_dir"
+
+    _codename=$(echo "$_dir" | sed -r 's/\//:/g')
+    deb-s3 upload \
+        --lock \
+        --bucket "$AWS_DEBIAN_S3_BUCKET" \
+        --prefix "$_codename" \
+        --codename "$_codename" \
+        --visibility public \
+        --sign "$GPG_SIGNING_KEY_ID" \
+        "$*/$_dir/*.deb"
+done
