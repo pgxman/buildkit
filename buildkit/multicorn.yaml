@@ -18,13 +18,13 @@ build:
   main:
     - name: Build multicorn
       run: |
-        python3 -m venv .venv
+        python3.11 -m venv .venv
         . .venv/bin/activate
-        make
-        DESTDIR=${DESTDIR} make install
+        PYTHON_OVERRIDE=python3.11 make
+        DESTDIR=${DESTDIR} PYTHON_OVERRIDE=python3.11 make install
 
         # install s3csv_fdw & gspreadsheet_fdw
-        python3 -m pip install \
+        python3.11 -m pip install \
           git+https://github.com/hydradatabase/s3csv_fdw@f64e24f9fe3f7dbd1be76f9b8b3b5208f869e5e3 \
           gspread oauth2client git+https://github.com/hydradatabase/gspreadsheet_fdw@d5bc5ae0b2d189abd6d2ee4610bd96ec39602594
 
