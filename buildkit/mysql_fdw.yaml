@@ -20,7 +20,7 @@ build:
         DESTDIR=${DESTDIR} make USE_PGXS=1 install
 buildDependencies:
   - default-libmysqlclient-dev
-dependencies:
+runDependencies:
   - default-libmysqlclient-dev
 pgVersions:
   - "13"
