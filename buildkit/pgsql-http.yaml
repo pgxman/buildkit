@@ -4,6 +4,7 @@ version: "1.5.0"
 homepage: https://github.com/pramsey/pgsql-http
 source: https://github.com/pramsey/pgsql-http/archive/refs/tags/v1.5.0.tar.gz
 description: HTTP client for PostgreSQL, retrieve a web page from inside the database.
+license: MIT
 keywords:
   - http
 arch:
