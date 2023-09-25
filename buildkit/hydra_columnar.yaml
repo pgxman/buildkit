@@ -4,6 +4,7 @@ version: 1.0.0-beta
 homepage: https://github.com/hydradatabase/hydra
 source: https://github.com/hydradatabase/hydra/archive/refs/tags/v1.0.0-beta.tar.gz
 description: Hydra columnar extension for PostgreSQL.
+license: AGPL-3.0
 build:
   main:
     - name: Build hydra_columnar

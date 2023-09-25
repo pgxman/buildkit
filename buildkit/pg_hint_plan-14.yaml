@@ -1,19 +1,21 @@
 apiVersion: v1
 build:
   main:
-  - name: build step
-    run: |
-      make
-      DESTDIR=${DESTDIR} make install
+    - name: build step
+      run: |
+        make
+        DESTDIR=${DESTDIR} make install
 keywords:
-- hint
-- plan
-- index
+  - hint
+  - plan
+  - index
 maintainers:
-- email: jd@hydra.so
-  name: Jonathan Dance
+  - email: jd@hydra.so
+    name: Jonathan Dance
 name: pg_hint_plan-14
 pgVersions:
-- "14"
+  - "14"
 source: https://github.com/ossc-db/pg_hint_plan/archive/refs/tags/REL14_1_4_1.tar.gz
+license: BSD-3-Clause AND PostgreSQL
+homepage: https://github.com/ossc-db/pg_hint_plan
 version: 1.4.1-1
