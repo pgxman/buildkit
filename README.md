@@ -17,6 +17,39 @@ Eager to contribute? Follow these steps to add a new buildkit:
 
 Your contribution will go through a review process, and once approved, it will be merged into the main repository!
 
+### Example Configuration
+
+Below is an example buildkit configuration for [pgvector](https://github.com/pgvector/pgvector):
+
+```yaml
+apiVersion: v1
+name: pgvector
+version: "0.4.4"
+homepage: https://github.com/pgvector/pgvector
+source: https://github.com/pgvector/pgvector/archive/refs/tags/v0.4.4.tar.gz
+description: Open-source vector similarity search for Postgres.
+license: PostgreSQL
+keywords:
+  - nearest-neighbor-search
+  - approximate-nearest-neighbor-search
+arch:
+  - amd64
+  - arm64
+maintainers:
+  - name: Owen Ou
+    email: o@hydra.so
+build:
+  main:
+    - name: Build pgvector
+      run: |
+        make
+        DESTDIR=${DESTDIR} make install
+pgVersions:
+  - "13"
+  - "14"
+  - "15"
+```
+
 ## :rocket: Build Artifact Publication
 
 Wondering how the build artifacts are shared with the community?

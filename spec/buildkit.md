@@ -2,6 +2,119 @@
 
 PGXMan buildkit is a configuration file in YAML format that `pgxman` uses to specify how a PostgreSQL extension should be built and packaged.
 
+Below is an example buildkit configuration including all the fields:
+
+```yaml
+# API version of the buildkit specification. Only v1 is supported.
+apiVersion: v1
+# Name of the extension.
+name: my-extension
+# Version of the extension. Must be in semantic versioning v2 format.
+version: "0.4.4"
+# URL of the extension's homepage.
+homepage: https://github.com/org/repo
+# URL of the extension's source code. Only `tar.gz` files are supported.
+source: https://github.com/org/repo/archive/refs/tags/v0.4.4.tar.gz
+# Description of the extension.
+description: Extension description
+# License of the extension. Must be a valid SPDX license identifier.
+license: PostgreSQL
+# Keywords relevant to the extension.
+keywords:
+  - keyword1
+  - keyword2
+# Supported architectures.
+arch:
+  - amd64
+  - arm64
+# Maintainers of the extension.
+maintainers:
+  - name: Owen Ou
+    email: o@hydra.so
+# Supported PostgreSQL versions.
+pgVersions:
+  - "13"
+  - "14"
+  - "15"
+# Build scripts for the extension.
+build:
+  # Steps to be executed before the main build process.
+  pre:
+    - name: Install dependencies
+      run: |
+        # Do something
+  # Steps to be executed for the main build process.
+  main:
+    - name: Build pgvector
+      run: |
+        # Do something
+  # Steps to be executed after the main build process.
+  post:
+    - name: Cleanup
+      run: |
+        # Do something
+# Build dependencies of the extension.
+buildDependencies:
+  - dep1
+  - dep2
+# Run dependencies of the extension.
+runDependencies:
+  - dep3
+  - dep4
+# Overrides the default builders to be used.
+builders:
+  # Overrides the debian:bookworm builder.
+  debian:bookworm:
+    # Overrides the global build dependencies for this builder.
+    buildDependencies:
+      - dep1
+      - dpe2
+    # Overrides the global run dependencies for this builder.
+    runDependencies:
+      - dep3
+      - dep4
+    # Extra APT repositories to add.
+    aptRepositories:
+      - id: repo1
+        types:
+          - deb
+          - deb-src
+        uris:
+          - http://repo1.com
+        suites:
+          - suite1
+        components:
+          - comp1
+        signedKey:
+          - uri: http://repo1.com/key
+            format: gpg
+  # Overrides the ubuntu:jammy builder.
+  ubuntu:jammy:
+    # Overrides the global build dependencies for this builder.
+    buildDependencies:
+      - dep1
+      - dpe2
+    # Overrides the global run dependencies for this builder.
+    runDependencies:
+      - dep3
+      - dep4
+    # Extra APT repositories to add.
+    aptRepositories:
+      - id: repo1
+        types:
+          - deb
+          - deb-src
+        uris:
+          - http://repo1.com
+        suites:
+          - suite1
+        components:
+          - comp1
+        signedKey:
+          - uri: http://repo1.com/key
+            format: gpg
+```
+
 ## `apiVersion`
 
 - **Description**: Defines the API version to which the buildkit conforms, ensuring its compatibility.
