@@ -130,7 +130,7 @@ builders:
 
 ## `maintainers`
 
-- **Description**: Lists the individuals or organizations responsible for maintaining the extension.
+- **Description**: Lists the individuals or organizations responsible for maintaining the buildkit.
 - **Type**: List of objects
 - **Required**: Yes
 - **Fields**:
