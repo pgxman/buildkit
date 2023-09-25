@@ -1,7 +1,7 @@
 # PGXMan Buildkit
 
 PGXMan Buildkit is a YAML configuration file that `pgxman` employs to define the build and packaging of a PostgreSQL extension.
-Explore the specification for more details [here](https://github.com/pgxman/pgxman/blob/main/spec/buildkit.md).
+Explore the specification for more details [here](spec/buildkit.md).
 
 This repository is a hub for the buildkits of various well-known PostgreSQL extensions. Your contributions are welcome! Feel free to enhance our collection by submitting a PR.
 
