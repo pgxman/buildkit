@@ -27,7 +27,7 @@ keywords:
 arch:
   - amd64
   - arm64
-# Maintainers of the extension.
+# Maintainers of the buildkit.
 maintainers:
   - name: Owen Ou
     email: o@hydra.so
