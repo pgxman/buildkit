@@ -54,4 +54,4 @@ pgVersions:
 
 Wondering how the build artifacts are shared with the community?
 They are published to an Apt repository via GitHub Actions.
-The workflow is defined in [.github/ci.yaml](.github/ci.yaml).
+The workflow is defined in [.github/ci.yaml](.github/workflows/ci.yaml).
