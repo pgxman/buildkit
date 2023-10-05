@@ -1,0 +1,51 @@
+apiVersion: v1
+name: postgis
+version: "3"
+homepage: https://postgis.net
+description: PostGIS extends the capabilities of the PostgreSQL relational database by adding support storing, indexing and querying geographic data.
+license: GPL-2.0
+keywords:
+  - geospatial
+  - gis
+arch:
+  - amd64
+  - arm64
+maintainers:
+  - name: Owen Ou
+    email: o@hydra.so
+pgVersions:
+  - "13"
+  - "14"
+  - "15"
+builders:
+  debian:bookworm:
+    runDependencies: &debRunDeps
+      - postgresql-PGVERSION-postgis-3
+    aptRepositories:
+      - id: pgdg-bookworm
+        types:
+          - deb
+        uris:
+          - https://apt.postgresql.org/pub/repos/apt
+        suites:
+          - bookworm-pgdg
+        components:
+          - main
+        signedKey:
+          url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+          format: asc
+  ubuntu:jammy:
+    runDependencies:: *debRunDeps
+    aptRepositories:
+      - id: pgdg-jammy
+        types:
+          - deb
+        uris:
+          - https://apt.postgresql.org/pub/repos/apt
+        suites:
+          - jammy-pgdg
+        components:
+          - main
+        signedKey:
+          url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+          format: asc
