@@ -1,0 +1,25 @@
+apiVersion: v1
+name: hll
+version: "2.18"
+homepage: https://github.com/citusdata/postgresql-hll
+source: https://github.com/citusdata/postgresql-hll/archive/refs/tags/v2.18.tar.gz
+description: PostgreSQL extension adding HyperLogLog data structures as a native data type.
+license: Apache-2.0
+keywords:
+  - HyperLogLog
+arch:
+  - amd64
+  - arm64
+maintainers:
+  - name: Owen Ou
+    email: o@hydra.so
+build:
+  main:
+    - name: Build hll
+      run: |
+        make
+        DESTDIR=${DESTDIR} make install
+pgVersions:
+  - "13"
+  - "14"
+  - "15"
