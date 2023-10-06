@@ -16,5 +16,6 @@ for _dir in $_dirs; do
         --codename "$_codename" \
         --visibility public \
         --sign "$GPG_SIGNING_KEY_ID" \
+        --preserve_versions \
         "$*/$_dir/*.deb"
 done
