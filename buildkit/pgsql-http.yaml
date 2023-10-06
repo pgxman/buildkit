@@ -23,5 +23,6 @@ pgVersions:
   - "13"
   - "14"
   - "15"
+  - "16"
 buildDependencies:
   - libcurl4-openssl-dev

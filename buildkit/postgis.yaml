@@ -17,6 +17,7 @@ pgVersions:
   - "13"
   - "14"
   - "15"
+  - "16"
 builders:
   debian:bookworm:
     runDependencies: &debRunDeps
