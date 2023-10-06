@@ -53,9 +53,7 @@ jobs:
           ref: ee4fb051073a8387c9d3d5275a41194b62942c83
       - name: Install deb-s3
         run: |
-          cd deb-s3
-          gem build
-          gem install deb-s3-0.11.7.gem
+          gem install deb-s3
       - name: Import GPG Key
         env:
           GPG_PRIVATE: ${{ secrets.GPG_PRIVATE }}
