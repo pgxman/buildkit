@@ -24,6 +24,7 @@ build:
         cargo pgrx init --pg${PG_VERSION} ${PG_CONFIG}
         cargo pgrx package --pg-config ${PG_CONFIG} --out-dir ${DESTDIR}
 pgVersions:
-  - "13"
+  # See https://github.com/supabase/pg_graphql/issues/435
+  # - "13"
   - "14"
   - "15"
