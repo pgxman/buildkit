@@ -1,0 +1,29 @@
+apiVersion: v1
+name: pg_graphsql
+version: "1.4.0"
+homepage: https://github.com/supabase/pg_graphql
+source: https://github.com/supabase/pg_graphql/archive/refs/tags/v1.4.0.tar.gz
+description: GraphQL support for PostgreSQL.
+license: Apache-2.0
+keywords:
+  - graphql
+arch:
+  - amd64
+  - arm64
+maintainers:
+  - name: Owen Ou
+    email: o@hydra.so
+build:
+  pre:
+    - name: Install pgrx
+      run: |
+        cargo install cargo-pgrx --version 0.10.2 --locked
+  main:
+    - name: Build pg_graphsql
+      run: |
+        cargo pgrx init --pg${PG_VERSION} ${PG_CONFIG}
+        cargo pgrx package --pg-config ${PG_CONFIG} --out-dir ${DESTDIR}
+pgVersions:
+  - "14"
+  - "15"
+  - "16"
