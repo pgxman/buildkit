@@ -1,0 +1,26 @@
+apiVersion: v1
+name: postgresql_anonymizer
+version: "1.1.0+acc2aa3f"
+homepage: https://gitlab.com/dalibo/postgresql_anonymizer
+source: https://gitlab.com/dalibo/postgresql_anonymizer/-/archive/acc2aa3f2c4f0eb74027cdc9b4b25f8beb2a2e93/postgresql_anonymizer-acc2aa3f2c4f0eb74027cdc9b4b25f8beb2a2e93.tar.gz
+description: An extension to mask or replace Personally Identifiable Information (PII) or commercially sensitive data from a PostgreSQL database.
+license: PostgreSQL
+keywords:
+  - pii
+arch:
+  - amd64
+  - arm64
+maintainers:
+  - name: Owen Ou
+    email: o@hydra.so
+build:
+  main:
+    - name: Build postgresql_anonymizer
+      run: |
+        make extension
+        DESTDIR=${DESTDIR} make install
+pgVersions:
+  - "13"
+  - "14"
+  - "15"
+  - "16"
