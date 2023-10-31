@@ -75,5 +75,6 @@ jobs:
           path: |
             out/**/*.*
       - name: Publish Artifacts
+        if: github.ref == 'refs/heads/main'
         run: |
           pgxman publish "$(pwd)/buildkit/${{ matrix.extension }}.yaml" --latest --url "${{ secrets.PGXMAN_REGISTRY_URL }}"
