@@ -33,7 +33,7 @@ jobs:
       - id: detect-changed-files
         run: |
           changed_extensions=$(script/changed-extensions ${{ steps.changed-files.outputs.all_changed_files }})
-          if [ "${{ inputs.force_rebuild }}" == true ]; then
+          if [ "${{ inputs.force_rebuild }}" = true ]; then
             changed_extensions=".+"
           fi
           echo "$changed_extensions"
