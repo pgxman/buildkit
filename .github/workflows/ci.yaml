@@ -5,7 +5,15 @@ on:
       - main
   pull_request:
   workflow_call:
+    inputs:
+      force_rebuild:
+        type: boolean
+        default: false
   workflow_dispatch:
+    inputs:
+      force_rebuild:
+        type: boolean
+        default: false
 jobs:
   detect_changed_extensions:
     name: Detect changed extensions
@@ -25,6 +33,9 @@ jobs:
       - id: detect-changed-files
         run: |
           changed_extensions=$(script/changed-extensions ${{ steps.changed-files.outputs.all_changed_files }})
+          if [ "${{ inputs.force_rebuild }}" == true ]; then
+            changed_extensions=".+"
+          fi
           echo "$changed_extensions"
           echo "changed_extensions=$changed_extensions" >> "$GITHUB_OUTPUT"
   build:
