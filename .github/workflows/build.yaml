@@ -74,3 +74,6 @@ jobs:
           retention-days: 7
           path: |
             out/**/*.*
+      - name: Publish Artifacts
+        run: |
+          pgxman publish "$(pwd)/buildkit/${{ matrix.extension }}.yaml" --latest --url "${{ secrets.PGXMAN_REGISTRY_URL }}"
