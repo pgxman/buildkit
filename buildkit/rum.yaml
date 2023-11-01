@@ -1,0 +1,30 @@
+apiVersion: v1
+name: rum
+version: "1.3.13"
+homepage: https://github.com/postgrespro/rum
+repository: https://github.com/postgrespro/rum
+source: https://github.com/postgrespro/rum/archive/refs/tags/1.3.13.tar.gz
+description: RUM access method - inverted index with additional information in posting lists
+licence: PostgreSQL
+keywords:
+  - rum access method
+  - inverted index
+arch:
+  - amd64
+  - arm64
+maintainers:
+  - name: James Lovern
+    email: james@lovern.io
+build:
+  main:
+    - name: Build RUM
+      run: |
+        make USE_PGXS=1
+        DESTDIR=${DESTDIR} make USE_PGXS=1 install
+buildDependencies:
+  - systemtap-sdt-dev
+pgVersions:
+  - "13"
+  - "14"
+  - "15"
+  - "16"

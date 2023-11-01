@@ -13,6 +13,8 @@ name: my-extension
 version: "0.4.4"
 # URL of the extension's homepage.
 homepage: https://github.com/org/repo
+# URL of the extension's repository.
+repository: https://github.com/org/repo
 # URL of the extension's source code. Only `tar.gz` files are supported.
 source: https://github.com/org/repo/archive/refs/tags/v0.4.4.tar.gz
 # Description of the extension.
@@ -36,6 +38,7 @@ pgVersions:
   - "13"
   - "14"
   - "15"
+  - "16"
 # Build scripts for the extension.
 build:
   # Steps to be executed before the main build process.
@@ -146,7 +149,13 @@ builders:
 ## `source`
 
 - **Description**: Specifies the URI for the extension's source code. The URI can be a HTTP/HTTPS URL or a local file path.
-If the URI is a HTTP/HTTPS URL, it must end with `.tar.gz`.
+  If the URI is a HTTP/HTTPS URL, it must end with `.tar.gz`.
+- **Type**: String
+- **Required**: Yes
+
+## `repository`
+
+- **Description**: Specifies the URL for the extension's repository, where users can view the source code in more detail.
 - **Type**: String
 - **Required**: Yes
 
@@ -161,8 +170,8 @@ If the URI is a HTTP/HTTPS URL, it must end with `.tar.gz`.
 - **Description**: Lists the PostgreSQL versions compatible with the extension. If unspecified, the extension is assumed to be compatible with all versions.
 - **Type**: List of strings
 - **Required**: No
-- **Supported Values**: `"13"`, `"14"`, `"15"`
-- **Default Values**: `"13"`, `"14"`, `"15"`
+- **Supported Values**: `"13"`, `"14"`, `"15"`, `"16"`
+- **Default Values**: `"13"`, `"14"`, `"15"`, `"16"`
 
 ## `license`
 
@@ -232,7 +241,7 @@ build: |
 
 ## `runDependencies`
 
-- **Description**:  Lists the rpackages needed for the extension to function properly at runtime.
+- **Description**: Lists the rpackages needed for the extension to function properly at runtime.
 - **Type**: List of strings
 - **Required**: No
 

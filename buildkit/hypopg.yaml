@@ -1,0 +1,28 @@
+apiVersion: v1
+name: hypopg
+version: "1.4.0"
+homepage: https://github.com/HypoPG/hypopg
+repository: https://github.com/HypoPG/hypopg
+source: https://github.com/HypoPG/hypopg/archive/refs/tags/1.4.0.tar.gz
+description: Hypothetical Indexes for PostgreSQL
+licence: PostgreSQL
+keywords:
+  - hypothetical indexes
+  - virtual indexes
+arch:
+  - amd64
+  - arm64
+maintainers:
+  - name: James Lovern
+    email: james@lovern.io
+build:
+  main:
+    - name: Build hypopg
+      run: |
+        make
+        DESTDIR=${DESTDIR} make install
+pgVersions:
+  - "13"
+  - "14"
+  - "15"
+  - "16"
