@@ -2,6 +2,7 @@ apiVersion: v1
 name: hypopg
 version: "1.4.0"
 homepage: https://github.com/HypoPG/hypopg
+repository: https://github.com/HypoPG/hypopg
 source: https://github.com/HypoPG/hypopg/archive/refs/tags/1.4.0.tar.gz
 description: Hypothetical Indexes for PostgreSQL
 licence: PostgreSQL
