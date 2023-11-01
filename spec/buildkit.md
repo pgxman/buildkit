@@ -36,6 +36,7 @@ pgVersions:
   - "13"
   - "14"
   - "15"
+  - "16"
 # Build scripts for the extension.
 build:
   # Steps to be executed before the main build process.
@@ -146,7 +147,7 @@ builders:
 ## `source`
 
 - **Description**: Specifies the URI for the extension's source code. The URI can be a HTTP/HTTPS URL or a local file path.
-If the URI is a HTTP/HTTPS URL, it must end with `.tar.gz`.
+  If the URI is a HTTP/HTTPS URL, it must end with `.tar.gz`.
 - **Type**: String
 - **Required**: Yes
 
@@ -161,8 +162,8 @@ If the URI is a HTTP/HTTPS URL, it must end with `.tar.gz`.
 - **Description**: Lists the PostgreSQL versions compatible with the extension. If unspecified, the extension is assumed to be compatible with all versions.
 - **Type**: List of strings
 - **Required**: No
-- **Supported Values**: `"13"`, `"14"`, `"15"`
-- **Default Values**: `"13"`, `"14"`, `"15"`
+- **Supported Values**: `"13"`, `"14"`, `"15"`, `"16"`
+- **Default Values**: `"13"`, `"14"`, `"15"`, `"16"`
 
 ## `license`
 
@@ -232,7 +233,7 @@ build: |
 
 ## `runDependencies`
 
-- **Description**:  Lists the rpackages needed for the extension to function properly at runtime.
+- **Description**: Lists the rpackages needed for the extension to function properly at runtime.
 - **Type**: List of strings
 - **Required**: No
 
