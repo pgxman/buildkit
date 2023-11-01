@@ -2,6 +2,7 @@ apiVersion: v1
 name: parquet_s3_fdw
 version: "1.0.0+5298b7f"
 homepage: https://github.com/hydradatabase/parquet_s3_fdw
+repository: https://github.com/hydradatabase/parquet_s3_fdw
 source: https://github.com/hydradatabase/parquet_s3_fdw/archive/5298b7f0254923f52d15e554ec8a5fdc0474f059.tar.gz
 description: Parquet S3 Foreign Data Wrapper for PostgreSQL.
 license: PostgreSQL

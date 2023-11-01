@@ -15,6 +15,7 @@ maintainers:
 name: pg_hint_plan-16
 pgVersions:
   - "16"
+repository: https://github.com/ossc-db/pg_hint_plan
 source: https://github.com/ossc-db/pg_hint_plan/archive/refs/tags/REL16_1_6_0.tar.gz
 license: BSD-3-Clause AND PostgreSQL
 homepage: https://github.com/ossc-db/pg_hint_plan

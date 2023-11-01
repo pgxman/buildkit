@@ -26,6 +26,8 @@ jobs:
     name: Build Extensions
     runs-on: ${{ matrix.runs-on }}
     needs: set_matrix
+    permissions:
+      packages: write
     strategy:
       fail-fast: false
       matrix:
