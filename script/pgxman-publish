@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+_dirs=$(find "$1" -maxdepth 1 -mindepth 1 -type d -exec realpath --relative-to="$1" {} \;)
+for _dir in $_dirs; do
+    echo "Publish to registry for extension $_dir"
+    pgxman publish "$2/buildkit/${_dir}.yaml" --latest --url "${PGXMAN_REGISTRY_URL}"
+done

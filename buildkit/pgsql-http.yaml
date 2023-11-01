@@ -2,6 +2,7 @@ apiVersion: v1
 name: pgsql-http
 version: "1.6.0"
 homepage: https://github.com/pramsey/pgsql-http
+repository: https://github.com/pramsey/pgsql-http
 source: https://github.com/pramsey/pgsql-http/archive/refs/tags/v1.6.0.tar.gz
 description: HTTP client for PostgreSQL, retrieve a web page from inside the database.
 license: MIT

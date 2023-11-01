@@ -2,6 +2,7 @@ apiVersion: v1
 name: pg_graphsql
 version: "1.4.0"
 homepage: https://github.com/supabase/pg_graphql
+repository: https://github.com/supabase/pg_graphql
 source: https://github.com/supabase/pg_graphql/archive/refs/tags/v1.4.0.tar.gz
 description: GraphQL support for PostgreSQL.
 license: Apache-2.0

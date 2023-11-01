@@ -1,8 +1,9 @@
 apiVersion: v1
 name: pg_ivm
-version: "1.7"
+version: "1.7.0"
 homepage: https://github.com/sraoss/pg_ivm
 license: PostgreSQL
+repository: https://github.com/sraoss/pg_ivm
 source: https://github.com/sraoss/pg_ivm/archive/refs/tags/v1.7.tar.gz
 description: IVM (Incremental View Maintenance) implementation as a PostgreSQL extension.
 build:
