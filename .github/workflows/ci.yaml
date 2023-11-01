@@ -21,7 +21,7 @@ jobs:
     outputs:
       changed_extensions: ${{ steps.detect-changed-files.outputs.changed_extensions }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@v40
@@ -54,10 +54,10 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.2.2
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           path: buildkit
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           repository: deb-s3/deb-s3
           path: deb-s3
