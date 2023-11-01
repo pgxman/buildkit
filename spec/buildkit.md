@@ -13,6 +13,8 @@ name: my-extension
 version: "0.4.4"
 # URL of the extension's homepage.
 homepage: https://github.com/org/repo
+# URL of the extension's repository.
+repository: https://github.com/org/repo
 # URL of the extension's source code. Only `tar.gz` files are supported.
 source: https://github.com/org/repo/archive/refs/tags/v0.4.4.tar.gz
 # Description of the extension.
@@ -148,6 +150,12 @@ builders:
 
 - **Description**: Specifies the URI for the extension's source code. The URI can be a HTTP/HTTPS URL or a local file path.
   If the URI is a HTTP/HTTPS URL, it must end with `.tar.gz`.
+- **Type**: String
+- **Required**: Yes
+
+## `repository`
+
+- **Description**: Specifies the URL for the extension's repository, where users can view the source code in more detail.
 - **Type**: String
 - **Required**: Yes
 
