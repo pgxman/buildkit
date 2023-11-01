@@ -20,10 +20,6 @@ build:
         make
         DESTDIR=${DESTDIR} make install
 pgVersions:
-  - "9.2"
-  - "10"
-  - "11"
-  - "12"
   - "13"
   - "14"
   - "15"
