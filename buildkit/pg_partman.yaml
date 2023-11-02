@@ -1,0 +1,27 @@
+apiVersion: v1
+name: pg_partman
+version: "5.0.0"
+homepage: https://github.com/pgpartman/pg_partman
+repository: https://github.com/pgpartman/pg_partman
+source: https://github.com/pgpartman/pg_partman/archive/refs/tags/v5.0.0.tar.gz
+description: Partition management extension for PostgreSQL.
+licence: PostgreSQL
+keywords:
+  - partition manager
+  - partition sets
+arch:
+  - amd64
+  - arm64
+maintainers:
+  - name: James Lovern
+    email: james@lovern.io
+build:
+  main:
+    - name: Build pg_partman
+      run: |
+        make
+        make install
+pgVersions:
+  - "14"
+  - "15"
+  - "16"

@@ -1,0 +1,28 @@
+apiVersion: v1
+name: topn
+version: "2.6.0"
+homepage: https://github.com/citusdata/postgresql-topn
+repository: https://github.com/citusdata/postgresql-topn
+source: https://github.com/citusdata/postgresql-topn/archive/refs/tags/v2.6.0.tar.gz
+description: TopN is an open source PostgreSQL extension that returns the top values in a database according to some criteria.
+licence: AGPL-3.0
+keywords:
+  - top values
+  - ranking events
+arch:
+  - amd64
+  - arm64
+maintainers:
+  - name: James Lovern
+    email: james@lovern.io
+build:
+  main:
+    - name: Build topn
+      run: |
+        make
+        make install
+pgVersions:
+  - "13"
+  - "14"
+  - "15"
+  - "16"
