@@ -16,8 +16,6 @@ build:
   main:
     - name: Build pgmq
       run: |
-        apt update
-        apt upgrade -y
         cargo install --locked cargo-pgrx --version 0.9.8
         cargo pgrx build --release
 buildDependencies:
