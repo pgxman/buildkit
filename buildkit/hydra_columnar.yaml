@@ -20,6 +20,7 @@ buildDependencies:
 keywords:
   - columnar
   - hydra
+  - timeseries
 arch:
   - amd64
   - arm64
