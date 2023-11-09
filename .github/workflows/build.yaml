@@ -66,8 +66,8 @@ jobs:
           pgxman build \
             --file "$(pwd)/buildkit/${{ matrix.extension }}.yaml" \
             --set "arch=[${{ matrix.arch }}]" \
-            --cache-from "type=registry,ref=ghcr.io/pgxman/buildkit-cache" \
-            --cache-to "type=registry,ref=ghcr.io/pgxman/buildkit-cache,mode=max"
+            --cache-from "type=gha" \
+            --cache-to "type=gha,mode=max"
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
