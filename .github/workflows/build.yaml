@@ -29,7 +29,7 @@ jobs:
     permissions:
       packages: write
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         arch:
           - amd64
