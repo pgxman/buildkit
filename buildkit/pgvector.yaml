@@ -7,8 +7,9 @@ source: https://github.com/pgvector/pgvector/archive/refs/tags/v0.5.1.tar.gz
 description: Open-source vector similarity search for Postgres.
 license: PostgreSQL
 keywords:
-  - nearest-neighbor-search
-  - approximate-nearest-neighbor-search
+  - ai
+  - embeddings
+  - vector
 arch:
   - amd64
   - arm64

@@ -7,6 +7,7 @@ source: https://github.com/pgpartman/pg_partman/archive/refs/tags/v5.0.0.tar.gz
 description: Partition management extension for PostgreSQL.
 license: PostgreSQL
 keywords:
+  - partition
   - partition manager
   - partition sets
 arch:

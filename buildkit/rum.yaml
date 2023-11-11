@@ -7,7 +7,8 @@ source: https://github.com/postgrespro/rum/archive/refs/tags/1.3.13.tar.gz
 description: RUM access method - inverted index with additional information in posting lists
 license: PostgreSQL
 keywords:
-  - rum access method
+  - rum
+  - access method
   - inverted index
 arch:
   - amd64

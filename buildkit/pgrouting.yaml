@@ -7,6 +7,7 @@ source: https://github.com/pgRouting/pgrouting/releases/download/v3.5.1/pgroutin
 description: pgRouting extends the PostGIS/PostgreSQL geospatial database to provide geospatial routing and other network analysis functionality.
 license: GPL-2.0-or-later
 keywords:
+  - routing
   - geospatial routing
 arch:
   - amd64
