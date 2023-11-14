@@ -1,0 +1,74 @@
+#!/bin/bash
+#
+# ./generate-contrib PG_RELEASE_VERSION [REVISION_NUMBER]
+#
+# ./generate-contrib 15.5 1
+#
+# Generates minimal buildkits for all extensions in the contrib/ directory of a given
+# Postgres release, specified as $1. Output goes to out/. Extensions unable to be
+# processed are printed to out/unable.txt. Will leave behind the Postgres source code
+# in ./postgresql-$1.
+
+PGVERSION=$1
+REVISION=${2:-0}
+
+function generate_yaml() {
+  dir=$1
+  ext=$2
+  comment=$3
+  slug=$4
+  pg_major_version=$(echo $PGVERSION | cut -d . -f 1)
+  echo "generating $ext..."
+  cat <<EOF >out/$ext.yaml
+apiVersion: v1
+name: $ext
+version: "$PGVERSION.$REVISION"
+homepage: https://www.postgresql.org/docs/15/$slug.html
+repository: https://github.com/postgres/postgres
+source: https://ftp.postgresql.org/pub/source/v$PGVERSION/postgresql-$PGVERSION.tar.gz
+description: $comment
+license: PostgreSQL
+arch:
+  - amd64
+  - arm64
+maintainers:
+  - name: Jonathan Dance
+    email: jd@hydra.so
+build:
+  main:
+    - name: Build $ext
+      run: |
+        cd contrib/$ext
+        make
+        DESTDIR=\${DESTDIR} make install
+pgVersions:
+  - "$pg_major_version"
+EOF
+}
+
+mkdir -p out
+rm -f out/unable.txt
+
+if [ ! -d postgresql-$PGVERSION ]; then
+  wget https://ftp.postgresql.org/pub/source/v$PGVERSION/postgresql-$PGVERSION.tar.gz
+  tar xjf postgresql-$PGVERSION.tar.gz
+fi
+
+for dir in $(find ./postgresql-$PGVERSION/contrib -type d -depth 1)
+do
+  ext=$(basename $dir)
+  if [ -f $dir/$ext.control ]; then
+    comment=$(cat $dir/$ext.control | grep ^comment | cut -f 2 -d = | sed -E 's/^ +//' | tr -d \')
+    slug=$(echo $ext | tr -d _)
+    requires=$(cat $dir/$ext.control | grep ^requires | cut -f 2 -d = | sed -E 's/^ +//' | tr -d \')
+    if [ -z "$requires" ]; then
+      generate_yaml $dir $ext "$comment" $slug
+    else
+      echo unable to process $ext: has dependencies >&2
+      echo $ext >> out/unable.txt
+    fi
+  else
+    echo unable to process $ext: could not find control file >&2
+    echo $ext >> out/unable.txt
+  fi
+done
