@@ -1,0 +1,23 @@
+apiVersion: v1
+name: xml2
+version: "15.5.0"
+homepage: https://www.postgresql.org/docs/15/xml2.html
+repository: https://github.com/postgres/postgres
+source: https://ftp.postgresql.org/pub/source/v15.5/postgresql-15.5.tar.gz
+description: XPath querying and XSLT
+license: PostgreSQL
+arch:
+  - amd64
+  - arm64
+maintainers:
+  - name: Jonathan Dance
+    email: jd@hydra.so
+build:
+  main:
+    - name: Build xml2
+      run: |
+        cd contrib/xml2
+        make
+        DESTDIR=${DESTDIR} make install
+pgVersions:
+  - "15"

@@ -1,0 +1,23 @@
+apiVersion: v1
+name: file_fdw
+version: "15.5.0"
+homepage: https://www.postgresql.org/docs/15/filefdw.html
+repository: https://github.com/postgres/postgres
+source: https://ftp.postgresql.org/pub/source/v15.5/postgresql-15.5.tar.gz
+description: foreign-data wrapper for flat file access
+license: PostgreSQL
+arch:
+  - amd64
+  - arm64
+maintainers:
+  - name: Jonathan Dance
+    email: jd@hydra.so
+build:
+  main:
+    - name: Build file_fdw
+      run: |
+        cd contrib/file_fdw
+        make
+        DESTDIR=${DESTDIR} make install
+pgVersions:
+  - "15"

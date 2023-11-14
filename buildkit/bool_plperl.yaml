@@ -1,0 +1,23 @@
+apiVersion: v1
+name: bool_plperl
+version: "15.5.0"
+homepage: https://www.postgresql.org/docs/15/boolplperl.html
+repository: https://github.com/postgres/postgres
+source: https://ftp.postgresql.org/pub/source/v15.5/postgresql-15.5.tar.gz
+description: transform between bool and plperl
+license: PostgreSQL
+arch:
+  - amd64
+  - arm64
+maintainers:
+  - name: Jonathan Dance
+    email: jd@hydra.so
+build:
+  main:
+    - name: Build bool_plperl
+      run: |
+        cd contrib/bool_plperl
+        make
+        DESTDIR=${DESTDIR} make install
+pgVersions:
+  - "15"
