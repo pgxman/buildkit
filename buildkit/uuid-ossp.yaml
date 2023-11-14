@@ -21,3 +21,5 @@ build:
         DESTDIR=${DESTDIR} make install
 pgVersions:
   - "15"
+buildDependencies:
+  - uuid-dev
