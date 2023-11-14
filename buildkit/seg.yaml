@@ -1,0 +1,23 @@
+apiVersion: v1
+name: seg
+version: "15.5.0"
+homepage: https://www.postgresql.org/docs/15/seg.html
+repository: https://github.com/postgres/postgres
+source: https://ftp.postgresql.org/pub/source/v15.5/postgresql-15.5.tar.gz
+description: data type for representing line segments or floating-point intervals
+license: PostgreSQL
+arch:
+  - amd64
+  - arm64
+maintainers:
+  - name: Jonathan Dance
+    email: jd@hydra.so
+build:
+  main:
+    - name: Build seg
+      run: |
+        cd contrib/seg
+        make
+        DESTDIR=${DESTDIR} make install
+pgVersions:
+  - "15"
