@@ -9,6 +9,8 @@ license: PostgreSQL
 keywords:
   - cron
   - periodic jobs
+  - scheduling
+  - time based jobs
 arch:
   - amd64
   - arm64
