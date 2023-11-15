@@ -9,6 +9,7 @@ license: PostgreSQL
 keywords:
   - hypothetical indexes
   - virtual indexes
+  - index cost analysis
 arch:
   - amd64
   - arm64
