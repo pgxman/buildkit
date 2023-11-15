@@ -21,7 +21,7 @@ build:
       run: |
         cd src
         make
-        make install
+        DESTDIR=${DESTDIR} make install
 pgVersions:
   - "13"
   - "14"
