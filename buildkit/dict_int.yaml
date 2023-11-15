@@ -1,0 +1,23 @@
+apiVersion: v1
+name: dict_int
+version: "15.5.0"
+homepage: https://www.postgresql.org/docs/15/dictint.html
+repository: https://github.com/postgres/postgres
+source: https://ftp.postgresql.org/pub/source/v15.5/postgresql-15.5.tar.gz
+description: text search dictionary template for integers
+license: PostgreSQL
+arch:
+  - amd64
+  - arm64
+maintainers:
+  - name: Jonathan Dance
+    email: jd@hydra.so
+build:
+  main:
+    - name: Build dict_int
+      run: |
+        cd contrib/dict_int
+        make
+        DESTDIR=${DESTDIR} make install
+pgVersions:
+  - "15"

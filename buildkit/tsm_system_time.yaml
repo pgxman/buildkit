@@ -1,0 +1,23 @@
+apiVersion: v1
+name: tsm_system_time
+version: "15.5.0"
+homepage: https://www.postgresql.org/docs/15/tsmsystemtime.html
+repository: https://github.com/postgres/postgres
+source: https://ftp.postgresql.org/pub/source/v15.5/postgresql-15.5.tar.gz
+description: TABLESAMPLE method which accepts time in milliseconds as a limit
+license: PostgreSQL
+arch:
+  - amd64
+  - arm64
+maintainers:
+  - name: Jonathan Dance
+    email: jd@hydra.so
+build:
+  main:
+    - name: Build tsm_system_time
+      run: |
+        cd contrib/tsm_system_time
+        make
+        DESTDIR=${DESTDIR} make install
+pgVersions:
+  - "15"

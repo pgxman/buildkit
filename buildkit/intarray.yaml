@@ -1,0 +1,23 @@
+apiVersion: v1
+name: intarray
+version: "15.5.0"
+homepage: https://www.postgresql.org/docs/15/intarray.html
+repository: https://github.com/postgres/postgres
+source: https://ftp.postgresql.org/pub/source/v15.5/postgresql-15.5.tar.gz
+description: functions, operators, and index support for 1-D arrays of integers
+license: PostgreSQL
+arch:
+  - amd64
+  - arm64
+maintainers:
+  - name: Jonathan Dance
+    email: jd@hydra.so
+build:
+  main:
+    - name: Build intarray
+      run: |
+        cd contrib/intarray
+        make
+        DESTDIR=${DESTDIR} make install
+pgVersions:
+  - "15"

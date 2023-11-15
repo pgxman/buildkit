@@ -1,0 +1,23 @@
+apiVersion: v1
+name: pageinspect
+version: "15.5.0"
+homepage: https://www.postgresql.org/docs/15/pageinspect.html
+repository: https://github.com/postgres/postgres
+source: https://ftp.postgresql.org/pub/source/v15.5/postgresql-15.5.tar.gz
+description: inspect the contents of database pages at a low level
+license: PostgreSQL
+arch:
+  - amd64
+  - arm64
+maintainers:
+  - name: Jonathan Dance
+    email: jd@hydra.so
+build:
+  main:
+    - name: Build pageinspect
+      run: |
+        cd contrib/pageinspect
+        make
+        DESTDIR=${DESTDIR} make install
+pgVersions:
+  - "15"

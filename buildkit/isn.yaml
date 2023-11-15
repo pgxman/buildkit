@@ -1,0 +1,23 @@
+apiVersion: v1
+name: isn
+version: "15.5.0"
+homepage: https://www.postgresql.org/docs/15/isn.html
+repository: https://github.com/postgres/postgres
+source: https://ftp.postgresql.org/pub/source/v15.5/postgresql-15.5.tar.gz
+description: data types for international product numbering standards
+license: PostgreSQL
+arch:
+  - amd64
+  - arm64
+maintainers:
+  - name: Jonathan Dance
+    email: jd@hydra.so
+build:
+  main:
+    - name: Build isn
+      run: |
+        cd contrib/isn
+        make
+        DESTDIR=${DESTDIR} make install
+pgVersions:
+  - "15"
