@@ -19,6 +19,7 @@ build:
   main:
     - name: Build pgsentinel
       run: |
+        cd src
         make
         make install
 pgVersions:
