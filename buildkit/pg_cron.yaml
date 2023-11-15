@@ -7,11 +7,10 @@ source: https://github.com/citusdata/pg_cron/archive/refs/tags/v1.6.2.tar.gz
 description: Run periodic jobs in PostgreSQL.
 license: PostgreSQL
 keywords:
-  - cron
+  - cron jobs
   - periodic
   - scheduling
   - time
-  - jobs
 arch:
   - amd64
   - arm64
