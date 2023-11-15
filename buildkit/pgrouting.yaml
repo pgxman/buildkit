@@ -9,6 +9,8 @@ license: GPL-2.0-or-later
 keywords:
   - routing
   - geospatial routing
+  - shortest path
+  - map data
 arch:
   - amd64
   - arm64
