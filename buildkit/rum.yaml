@@ -8,7 +8,7 @@ description: RUM access method - inverted index with additional information in p
 license: PostgreSQL
 keywords:
   - rum
-  - access method
+  - access
   - inverted index
   - indexing
 arch:

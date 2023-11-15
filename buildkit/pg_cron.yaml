@@ -8,9 +8,10 @@ description: Run periodic jobs in PostgreSQL.
 license: PostgreSQL
 keywords:
   - cron
-  - periodic jobs
+  - periodic
   - scheduling
-  - time based jobs
+  - time
+  - jobs
 arch:
   - amd64
   - arm64

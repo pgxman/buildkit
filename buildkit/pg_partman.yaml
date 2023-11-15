@@ -8,8 +8,8 @@ description: Partition management extension for PostgreSQL.
 license: PostgreSQL
 keywords:
   - partition
-  - partition manager
-  - partition sets
+  - manager
+  - sets
 arch:
   - amd64
   - arm64

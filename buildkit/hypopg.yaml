@@ -7,9 +7,9 @@ source: https://github.com/HypoPG/hypopg/archive/refs/tags/1.4.0.tar.gz
 description: Hypothetical Indexes for PostgreSQL
 license: PostgreSQL
 keywords:
-  - hypothetical indexes
+  - hypothetical
   - virtual indexes
-  - index cost analysis
+  - index cost
 arch:
   - amd64
   - arm64
