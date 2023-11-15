@@ -21,7 +21,7 @@ build:
     - name: Build pgsodium
       run: |
         make
-        make install
+        DESTDIR=${DESTDIR} make install
 pgVersions:
   - "13"
   - "14"
