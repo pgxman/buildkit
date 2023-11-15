@@ -8,6 +8,7 @@ description: PostgreSQL extension adding HyperLogLog data structures as a native
 license: Apache-2.0
 keywords:
   - HyperLogLog
+  - analytics
 arch:
   - amd64
   - arm64
