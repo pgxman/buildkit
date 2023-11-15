@@ -10,6 +10,7 @@ keywords:
   - rum
   - access method
   - inverted index
+  - indexing
 arch:
   - amd64
   - arm64
