@@ -1,0 +1,32 @@
+apiVersion: v1
+name: orafce
+version: "4.7.0"
+homepage: https://github.com/orafce/orafce
+repository: https://github.com/orafce/orafce
+source: https://github.com/orafce/orafce/archive/refs/tags/VERSION_4_7_0.tar.gz
+description: The "orafce" project implements in Postgres some of the functions from the Oracle database that are missing (or behaving differently).Those functions were verified on Oracle 10g, and the module is useful for production work.
+licence: BSD
+keywords:
+  - oracle
+  - functions
+  - 10g
+arch:
+  - amd64
+  - arm64
+maintainers:
+  - name: James Lovern
+    email: james@lovern.io
+buildDependencies:
+  - libicu-dev
+  - libpq-dev
+  - bison
+build:
+  main:
+    - name: Build orafce
+      run: |
+        make USE_PGXS=1
+        DESTDIR=${DESTDIR} make install
+pgVersions:
+  - "13"
+  - "14"
+  - "15"
