@@ -3,8 +3,7 @@ name: pgsentinel
 version: "1.0.0"
 homepage: https://github.com/pgsentinel/pgsentinel
 repository: https://github.com/pgsentinel/pgsentinel
-# TODO: update this to the master branch as v1.0.0 is outdated
-source: https://github.com/pgsentinel/pgsentinel/archive/refs/tags/v1.0.0.tar.gz
+source: https://github.com/pgsentinel/pgsentinel/archive/2188aef8f5d13846aaa32bdbdba79f3429176d58.tar.gz
 description: postgresql extension providing Active session history
 licence: PostgreSQL
 keywords:
