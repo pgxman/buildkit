@@ -3,6 +3,7 @@ name: pgsentinel
 version: "1.0.0"
 homepage: https://github.com/pgsentinel/pgsentinel
 repository: https://github.com/pgsentinel/pgsentinel
+# TODO: update this to the master branch as v1.0.0 is outdated
 source: https://github.com/pgsentinel/pgsentinel/archive/refs/tags/v1.0.0.tar.gz
 description: postgresql extension providing Active session history
 licence: PostgreSQL
@@ -19,10 +20,9 @@ build:
   main:
     - name: Build pgsentinel
       run: |
-        make USE_PGXS=1
+        make
         make install
 pgVersions:
   - "13"
   - "14"
   - "15"
-  - "16"
