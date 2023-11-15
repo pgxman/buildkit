@@ -5,7 +5,7 @@ homepage: https://github.com/michelp/pgsodium
 repository: https://github.com/michelp/pgsodium
 source: https://github.com/michelp/pgsodium/archive/refs/tags/v3.1.9.tar.gz
 description: Modern cryptography for PostgreSQL using libsodium.
-licence: #TODO
+licence: BSD-3-Clause
 keywords:
   - cryptography
 arch:
