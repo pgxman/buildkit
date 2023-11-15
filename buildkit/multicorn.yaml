@@ -10,6 +10,7 @@ keywords:
   - python3
   - multicorn
   - fdw
+  - multi source
 arch:
   - amd64
   - arm64
