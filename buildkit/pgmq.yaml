@@ -6,21 +6,29 @@ repository: https://github.com/tembo-io/pgmq
 source: https://github.com/tembo-io/pgmq/archive/refs/tags/v0.33.0.tar.gz
 description: A lightweight message queue. Like AWS SQS and RSMQ but on Postgres.
 licence: PostgreSQL
+keywords:
+  - SQS
+  - RSMQ
 arch:
   - amd64
   - arm64
 maintainers:
   - name: James Lovern
     email: james@lovern.io
+buildDependencies:
+  - pgxman/pg_partman
+runDependencies:
+  - pgxman/pg_partman
 build:
+  pre:
+    - name: Install pgrx
+      run: |
+        cargo install --locked cargo-pgrx --version 0.10.2
   main:
     - name: Build pgmq
       run: |
-        cargo install --locked cargo-pgrx --version 0.9.8
-        cargo pgrx build --release
-buildDependencies:
-  - pgxman/pg_partman
+        cargo pgrx init --pg${PG_VERSION} ${PG_CONFIG}
+        cargo pgrx package --pg-config ${PG_CONFIG} --out-dir ${DESTDIR}
 pgVersions:
   - "14"
   - "15"
-  - "16"
