@@ -1,0 +1,29 @@
+apiVersion: v1
+name: pgsodium
+version: "3.1.9"
+homepage: https://github.com/michelp/pgsodium
+repository: https://github.com/michelp/pgsodium
+source: https://github.com/michelp/pgsodium/archive/refs/tags/v3.1.9.tar.gz
+description: Modern cryptography for PostgreSQL using libsodium.
+licence: BSD-3-Clause
+keywords:
+  - cryptography
+arch:
+  - amd64
+  - arm64
+maintainers:
+  - name: James Lovern
+    email: james@lovern.io
+buildDependencies:
+  - libsodium-dev
+build:
+  main:
+    - name: Build pgsodium
+      run: |
+        make
+        DESTDIR=${DESTDIR} make install
+pgVersions:
+  - "13"
+  - "14"
+  - "15"
+  - "16"
