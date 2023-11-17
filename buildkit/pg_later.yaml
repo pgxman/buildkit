@@ -7,7 +7,9 @@ source: https://github.com/tembo-io/pg_later/archive/refs/tags/v0.0.12.tar.gz
 description: Execute SQL now and get the results later.
 licence: PostgreSQL
 keywords:
-  - postgresql
+  - scheduling
+  - automation
+  - time-based
 arch:
   - amd64
   - arm64
@@ -16,8 +18,10 @@ maintainers:
     email: james@lovern.io
 buildDependencies:
   - pgxman/pg_partman
+  - pgxman/pgmq
 runDependencies:
   - pgxman/pg_partman
+  - pgxman/pgmq
 build:
   pre:
     - name: Install pgrx
