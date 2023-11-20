@@ -5,7 +5,7 @@ homepage: https://github.com/pgsentinel/pgsentinel
 repository: https://github.com/pgsentinel/pgsentinel
 source: https://github.com/pgsentinel/pgsentinel/archive/2188aef8f5d13846aaa32bdbdba79f3429176d58.tar.gz
 description: postgresql extension providing Active session history
-licence: PostgreSQL
+license: PostgreSQL
 keywords:
   - session activity
   - history

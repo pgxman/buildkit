@@ -5,7 +5,7 @@ homepage: https://github.com/citusdata/pg_cron
 repository: https://github.com/citusdata/pg_cron
 source: https://github.com/citusdata/pg_cron/archive/refs/tags/v1.6.2.tar.gz
 description: Run periodic jobs in PostgreSQL.
-licence: PostgreSQL
+license: PostgreSQL
 keywords:
   - cron jobs
   - periodic jobs

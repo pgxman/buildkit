@@ -5,7 +5,7 @@ homepage: https://github.com/HypoPG/hypopg
 repository: https://github.com/HypoPG/hypopg
 source: https://github.com/HypoPG/hypopg/archive/refs/tags/1.4.0.tar.gz
 description: Hypothetical Indexes for PostgreSQL
-licence: PostgreSQL
+license: PostgreSQL
 keywords:
   - hypothetical indexes
   - virtual indexes

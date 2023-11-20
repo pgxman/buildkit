@@ -5,7 +5,7 @@ homepage: https://github.com/tembo-io/pg_later
 repository: https://github.com/tembo-io/pg_later
 source: https://github.com/tembo-io/pg_later/archive/refs/tags/v0.0.12.tar.gz
 description: Execute SQL now and get the results later.
-licence: PostgreSQL
+license: PostgreSQL
 keywords:
   - scheduling
   - automation

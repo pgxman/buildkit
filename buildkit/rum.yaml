@@ -5,7 +5,7 @@ homepage: https://github.com/postgrespro/rum
 repository: https://github.com/postgrespro/rum
 source: https://github.com/postgrespro/rum/archive/refs/tags/1.3.13.tar.gz
 description: RUM access method - inverted index with additional information in posting lists
-licence: PostgreSQL
+license: PostgreSQL
 keywords:
   - rum access method
   - inverted index
