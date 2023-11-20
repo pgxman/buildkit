@@ -17,6 +17,6 @@ pgVersions:
   - "13"
 repository: https://github.com/ossc-db/pg_hint_plan
 source: https://github.com/ossc-db/pg_hint_plan/archive/refs/tags/REL13_1_3_8.tar.gz
-license: BSD-3-Clause AND PostgreSQL
+license: PostgreSQL
 homepage: https://github.com/ossc-db/pg_hint_plan
 version: 1.3.8-1
