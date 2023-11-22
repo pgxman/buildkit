@@ -55,3 +55,8 @@ pgVersions:
 Wondering how the build artifacts are shared with the community?
 They are published to an Apt repository via GitHub Actions.
 The workflow is defined in [.github/ci.yaml](.github/workflows/ci.yaml).
+
+## License
+
+This repository is part of the [pgxman project](https://github.com/pgxman/pgxman)
+and uses the same [FSL](LICENSE.md) license.
