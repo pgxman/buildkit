@@ -25,5 +25,7 @@ build:
         DESTDIR=${DESTDIR} make install
 buildDependencies:
   - libboost-all-dev
+runDependencies:
+  - pgxman/postgis
 pgVersions:
   - "16"
