@@ -1,0 +1,53 @@
+apiVersion: v1
+name: old_snapshot
+version: "15.5.0"
+homepage: https://www.postgresql.org/docs/15/oldsnapshot.html
+repository: https://github.com/postgres/postgres
+source: https://ftp.postgresql.org/pub/source/v15.5/postgresql-15.5.tar.gz
+description: utilities in support of old_snapshot_threshold
+license: PostgreSQL
+arch:
+  - amd64
+  - arm64
+maintainers:
+  - name: Jonathan Dance
+    email: jd@hydra.so
+build:
+  main:
+    - name: Build old_snapshot
+      run: |
+        cd contrib/old_snapshot
+        make
+        DESTDIR=${DESTDIR} make install
+pgVersions:
+  - "15"
+readme: |
+  For formatted documentation, please see https://www.postgresql.org/docs/15/oldsnapshot.html.
+  
+  ```
+     #F.23. ltree F.25. pageinspect
+  
+                               F.24. old_snapshot
+     Prev  Up Appendix F. Additional Supplied Modules Home  Next
+       __________________________________________________________________
+  
+  F.24. old_snapshot
+  
+     F.24.1. Functions
+  
+     The old_snapshot module allows inspection of the server state that is
+     used to implement old_snapshot_threshold.
+  
+  F.24.1. Functions
+  
+     pg_old_snapshot_time_mapping(array_offset OUT int4, end_timestamp OUT
+            timestamptz, newest_xmin OUT xid) returns setof record
+            Returns all of the entries in the server's timestamp to XID
+            mapping. Each entry represents the newest xmin of any snapshot
+            taken in the corresponding minute.
+       __________________________________________________________________
+  
+     Prev       Up            Next
+     F.23. ltree  Home  F.25. pageinspect
+  
+  ```

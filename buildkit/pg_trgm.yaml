@@ -1,0 +1,41 @@
+apiVersion: v1
+name: pg_trgm
+version: "15.5.0"
+homepage: https://www.postgresql.org/docs/15/pgtrgm.html
+repository: https://github.com/postgres/postgres
+source: https://ftp.postgresql.org/pub/source/v15.5/postgresql-15.5.tar.gz
+description: text similarity measurement and index searching based on trigrams
+license: PostgreSQL
+arch:
+  - amd64
+  - arm64
+maintainers:
+  - name: Jonathan Dance
+    email: jd@hydra.so
+build:
+  main:
+    - name: Build pg_trgm
+      run: |
+        cd contrib/pg_trgm
+        make
+        DESTDIR=${DESTDIR} make install
+pgVersions:
+  - "15"
+readme: |
+  For formatted documentation, please see https://www.postgresql.org/docs/15/pgtrgm.html.
+  
+  ```
+     #F.34. pg_surgery F.36. pg_visibility
+  
+                                 F.35. pg_trgm
+     Prev  Up Appendix F. Additional Supplied Modules Home  Next
+       __________________________________________________________________
+  
+  F.35. pg_trgm
+  
+     F.35.1. Trigram (or Trigraph) Concepts
+     F.35.2. Functions and Operators
+     F.35.3. GUC Parameters
+     F.35.4. Index Support
+     F.35.5. Text Search Integration
+  ```
