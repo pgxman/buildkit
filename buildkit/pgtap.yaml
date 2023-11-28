@@ -6,9 +6,10 @@ repository: https://github.com/theory/pgtap
 source: https://github.com/theory/pgtap/archive/refs/tags/v1.3.1.tar.gz
 description: PostgreSQL Unit Testing Suite.
 keywords:
-  - unit tests
-  - tdd
   - testing
+  - unit testing
+  - testing framework
+  - testing library
 arch:
   - amd64
   - arm64

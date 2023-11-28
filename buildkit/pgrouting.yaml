@@ -8,9 +8,9 @@ description: pgRouting extends the PostGIS/PostgreSQL geospatial database to pro
 license: GPL-2.0-or-later
 keywords:
   - routing
-  - geospatial
-  - shortest path
-  - map data
+  - spatial analysis
+  - network anlysis
+  - osgeo
 arch:
   - amd64
   - arm64

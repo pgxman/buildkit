@@ -9,7 +9,6 @@ license: GPL-2.0
 keywords:
   - geospatial
   - gis
-  - spatial data
 arch:
   - amd64
   - arm64

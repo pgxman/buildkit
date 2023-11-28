@@ -8,8 +8,7 @@ description: TopN is an open source PostgreSQL extension that returns the top va
 license: AGPL-3.0
 keywords:
   - top values
-  - ranking
-  - events
+  - ranking events
 arch:
   - amd64
   - arm64
