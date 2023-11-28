@@ -23,7 +23,7 @@ pgVersions:
   - "15"
 readme: |
   For formatted documentation, please see https://www.postgresql.org/docs/15/fuzzystrmatch.html.
-
+  
   ```
      #F.16. file_fdw F.18. hstore
   

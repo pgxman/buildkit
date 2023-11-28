@@ -23,7 +23,7 @@ pgVersions:
   - "15"
 readme: |
   For formatted documentation, please see https://www.postgresql.org/docs/15/unaccent.html.
-
+  
   ```
      #F.47. tsm_system_time F.49. uuid-ossp
   

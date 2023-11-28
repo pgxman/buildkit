@@ -23,7 +23,7 @@ pgVersions:
   - "15"
 readme: |
   For formatted documentation, please see https://www.postgresql.org/docs/15/btree-gist.html.
-
+  
   ```
      #F.8. btree_gin F.10. citext
   

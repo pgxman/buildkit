@@ -23,7 +23,7 @@ pgVersions:
   - "15"
 readme: |
   For formatted documentation, please see https://www.postgresql.org/docs/15/dict-int.html.
-
+  
   ```
      #dblink_build_sql_update F.14. dict_xsyn
   

@@ -23,7 +23,7 @@ pgVersions:
   - "15"
 readme: |
   For formatted documentation, please see https://www.postgresql.org/docs/15/bloom.html.
-
+  
   ```
      #F.6. basic_archive F.8. btree_gin
   

@@ -25,7 +25,7 @@ buildDependencies:
   - uuid-dev
 readme: |
   For formatted documentation, please see https://www.postgresql.org/docs/15/uuid-ossp.html.
-
+  
   ```
      #F.48. unaccent F.50. xml2
   

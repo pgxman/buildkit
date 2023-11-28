@@ -23,7 +23,7 @@ pgVersions:
   - "15"
 readme: |
   For formatted documentation, please see https://www.postgresql.org/docs/15/dblink.html.
-
+  
   ```
      #F.11. cube dblink_connect
   

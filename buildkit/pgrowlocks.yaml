@@ -23,7 +23,7 @@ pgVersions:
   - "15"
 readme: |
   For formatted documentation, please see https://www.postgresql.org/docs/15/pgrowlocks.html.
-
+  
   ```
      #F.30. pg_prewarm F.32. pg_stat_statements
   

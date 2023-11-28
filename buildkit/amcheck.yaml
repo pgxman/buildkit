@@ -23,7 +23,7 @@ pgVersions:
   - "15"
 readme: |
   For formatted documentation, please see https://www.postgresql.org/docs/15/amcheck.html.
-
+  
   ```
      #F.1. adminpack F.3. auth_delay
   

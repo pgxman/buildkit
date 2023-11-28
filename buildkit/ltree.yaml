@@ -23,7 +23,7 @@ pgVersions:
   - "15"
 readme: |
   For formatted documentation, please see https://www.postgresql.org/docs/15/ltree.html.
-
+  
   ```
      #F.22. lo F.24. old_snapshot
   

@@ -61,9 +61,9 @@ function append_readme() {
   cat <<EOF >>$output_file
 readme: |
   For formatted documentation, please see https://www.postgresql.org/docs/15/$slug.html.
-
-  \`\`\`
 EOF
+  echo '  ' >>$output_file
+  echo '  ```' >>$output_file
 
   lynx -dump ./postgresql-$PGVERSION/doc/src/sgml/html/$slug.html \
     | $SED -E -e '/References/,$d' -e 's/\[[0-9]+\]//g' -e 's/^/  /' \

@@ -23,7 +23,7 @@ pgVersions:
   - "15"
 readme: |
   For formatted documentation, please see https://www.postgresql.org/docs/15/pgwalinspect.html.
-
+  
   ```
      #F.36. pg_visibility F.38. postgres_fdw
   
