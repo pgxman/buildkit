@@ -12,6 +12,8 @@
 PGVERSION=$1
 REVISION=${2:-0}
 
+SED=$(which -s gsed && echo gsed || echo sed)
+
 function generate_yaml() {
   ext=$1
   comment=$2
@@ -64,7 +66,7 @@ readme: |
 EOF
 
   lynx -dump ./postgresql-$PGVERSION/doc/src/sgml/html/$slug.html \
-    | gsed -E -e '/References/,$d' -e 's/\[[0-9]+\]//g' -e 's/^/  /' \
+    | $SED -E -e '/References/,$d' -e 's/\[[0-9]+\]//g' -e 's/^/  /' \
     >>$output_file
 
   echo '  ```' >>$output_file
@@ -94,8 +96,6 @@ require_util tr
 if [ -z "$1" ]; then
   echo 'first argument (PGVERSION) is required' && exit 1
 fi
-
-SED=$(which -s gsed && echo gsed || echo sed)
 
 mkdir -p out
 rm -f out/unable.txt
