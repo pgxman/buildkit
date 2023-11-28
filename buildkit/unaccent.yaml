@@ -62,13 +62,13 @@ readme: |
        * Each line represents one translation rule, consisting of a
          character with accent followed by a character without accent. The
          first is translated into the second. For example,
-  À        A
-  Á        A
-  Â        A
-  Ã        A
-  Ä        A
-  Å        A
-  Æ        AE
+  ï¿½        A
+  ï¿½        A
+  ï¿½        A
+  ï¿½        A
+  ï¿½        A
+  ï¿½        A
+  ï¿½        AE
   
          The two characters must be separated by whitespace, and any leading
          or trailing whitespace on a line is ignored.
@@ -90,7 +90,7 @@ readme: |
      $SHAREDIR/tsearch_data/ when the unaccent module is installed. This
      rules file translates characters with accents to the same characters
      without accents, and it also expands ligatures into the equivalent
-     series of simple characters (for example, Æ to AE).
+     series of simple characters (for example, ï¿½ to AE).
   
   F.48.2. Usage
   
@@ -104,7 +104,7 @@ readme: |
      or create new dictionaries based on the template.
   
      To test the dictionary, you can try:
-  mydb=# select ts_lexize('unaccent','Hôtel');
+  mydb=# select ts_lexize('unaccent','Hï¿½tel');
    ts_lexize
   -----------
    {Hotel}
@@ -116,22 +116,22 @@ readme: |
   mydb=# ALTER TEXT SEARCH CONFIGURATION fr
           ALTER MAPPING FOR hword, hword_part, word
           WITH unaccent, french_stem;
-  mydb=# select to_tsvector('fr','Hôtels de la Mer');
+  mydb=# select to_tsvector('fr','Hï¿½tels de la Mer');
       to_tsvector
   -------------------
    'hotel':1 'mer':4
   (1 row)
   
-  mydb=# select to_tsvector('fr','Hôtel de la Mer') @@ to_tsquery('fr','Hotels');
+  mydb=# select to_tsvector('fr','Hï¿½tel de la Mer') @@ to_tsquery('fr','Hotels');
    ?column?
   ----------
    t
   (1 row)
   
-  mydb=# select ts_headline('fr','Hôtel de la Mer',to_tsquery('fr','Hotels'));
+  mydb=# select ts_headline('fr','Hï¿½tel de la Mer',to_tsquery('fr','Hotels'));
         ts_headline
   ------------------------
-   <b>Hôtel</b> de la Mer
+   <b>Hï¿½tel</b> de la Mer
   (1 row)
   
   F.48.3. Functions
@@ -146,8 +146,8 @@ readme: |
      itself is used.
   
      For example:
-  SELECT unaccent('unaccent', 'Hôtel');
-  SELECT unaccent('Hôtel');
+  SELECT unaccent('unaccent', 'Hï¿½tel');
+  SELECT unaccent('Hï¿½tel');
        __________________________________________________________________
   
      Prev                Up          Next

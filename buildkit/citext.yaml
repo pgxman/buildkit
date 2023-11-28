@@ -90,7 +90,7 @@ readme: |
   INSERT INTO users VALUES ( 'Tom',    sha256(random()::text::bytea) );
   INSERT INTO users VALUES ( 'Damian', sha256(random()::text::bytea) );
   INSERT INTO users VALUES ( 'NEAL',   sha256(random()::text::bytea) );
-  INSERT INTO users VALUES ( 'Bjørn',  sha256(random()::text::bytea) );
+  INSERT INTO users VALUES ( 'Bjï¿½rn',  sha256(random()::text::bytea) );
   
   SELECT * FROM users WHERE nick = 'Larry';
   
