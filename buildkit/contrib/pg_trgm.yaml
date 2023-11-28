@@ -21,3 +21,21 @@ build:
         DESTDIR=${DESTDIR} make install
 pgVersions:
   - "15"
+readme: |
+  For formatted documentation, please see https://www.postgresql.org/docs/15/pgtrgm.html.
+
+  ```
+     #F.34. pg_surgery F.36. pg_visibility
+  
+                                 F.35. pg_trgm
+     Prev  Up Appendix F. Additional Supplied Modules Home  Next
+       __________________________________________________________________
+  
+  F.35. pg_trgm
+  
+     F.35.1. Trigram (or Trigraph) Concepts
+     F.35.2. Functions and Operators
+     F.35.3. GUC Parameters
+     F.35.4. Index Support
+     F.35.5. Text Search Integration
+  ```
