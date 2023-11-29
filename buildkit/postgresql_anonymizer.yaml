@@ -8,6 +8,7 @@ description: An extension to mask or replace Personally Identifiable Information
 license: PostgreSQL
 keywords:
   - pii
+  - anonymization
 arch:
   - amd64
   - arm64
