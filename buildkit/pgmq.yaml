@@ -32,3 +32,4 @@ build:
 pgVersions:
   - "14"
   - "15"
+  - "16"
