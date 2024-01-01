@@ -1,0 +1,36 @@
+apiVersion: v1
+name: pglogical
+version: "2.4.4"
+homepage: https://github.com/2ndQuadrant/pglogical
+repository: https://github.com/2ndQuadrant/pglogical
+source: https://github.com/2ndQuadrant/pglogical/archive/refs/tags/REL2_4_4.tar.gz
+description: Logical Replication extension for PostgreSQL 15, 14, 13, 12, 11, 10, 9.6, 9.5, 9.4 (Postgres), providing much faster replication than Slony, Bucardo or Londiste, as well as cross-version upgrades.
+license: PostgreSQL
+keywords:
+  - replication
+  - decoding
+arch:
+  - amd64
+  - arm64
+maintainers:
+  - name: James Lovern
+    email: james@lovern.io
+buildDependencies:
+  - libkrb5-dev
+  - liblz4-dev
+  - libpam0g-dev
+  - libselinux1-dev
+  - libxslt1-dev
+  - libzstd-dev
+  - zlib1g-dev
+build:
+  main:
+    - name: Build pglogical
+      run: |
+        make
+        DESTDIR=${DESTDIR} make install
+pgVersions:
+  - "13"
+  - "14"
+  - "15"
+  - "16"
