@@ -1,0 +1,29 @@
+apiVersion: v1
+name: pglogical_ticker
+version: "1.4.1"
+homepage: https://github.com/enova/pglogical_ticker
+repository: https://github.com/enova/pglogical_ticker
+source: https://github.com/enova/pglogical_ticker/archive/refs/tags/v1.4.1.tar.gz
+description: Time-based replication delay for pglogical.
+license: MIT
+keywords:
+  - delay
+arch:
+  - amd64
+  - arm64
+maintainers:
+  - name: James Lovern
+    email: james@lovern.io
+buildDependencies:
+  - pgxman/pglogical
+build:
+  main:
+    - name: Build pglogical_ticker
+      run: |
+        make
+        DESTDIR=${DESTDIR} make install
+pgVersions:
+  - "13"
+  - "14"
+  - "15"
+  - "16"
