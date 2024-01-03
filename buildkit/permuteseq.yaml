@@ -7,7 +7,8 @@ source: https://github.com/dverite/permuteseq/archive/refs/tags/v1.2.2.tar.gz
 description: PostgreSQL extension for scalable pseudo-random permutations of sequences.
 license: PostgreSQL
 keywords:
-  -
+  - random
+  - permutation
 arch:
   - amd64
   - arm64
