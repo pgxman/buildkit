@@ -1,0 +1,26 @@
+apiVersion: v1
+name: pg_rational
+version: "0.0.1"
+homepage: https://github.com/begriffs/pg_rational
+repository: https://github.com/begriffs/pg_rational
+source: https://github.com/begriffs/pg_rational/archive/eafcf743ba8c6a180bba9cbb1627db5dc0b88f4b.tar.gz
+description: Precise fractional arithmetic for PostgreSQL.
+license: MIT
+keywords:
+  - arithmetic
+arch:
+  - amd64
+  - arm64
+maintainers:
+  - name: James Lovern
+    email: james@lovern.io
+build:
+  main:
+    - name: Build pg_rational
+      run: |
+        make
+        DESTDIR=${DESTDIR} make install
+pgVersions:
+  - "13"
+  - "14"
+  - "15"
