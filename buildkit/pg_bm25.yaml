@@ -7,7 +7,8 @@ source: https://github.com/paradedb/paradedb/archive/refs/tags/v0.4.3.tar.gz
 description: Full text search for PostgreSQL using BM25
 license: AGPL-3.0
 keywords:
-  - search
+  - full-text-search
+  - bm25
 arch:
   - amd64
   - arm64
