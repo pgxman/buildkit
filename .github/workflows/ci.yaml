@@ -84,6 +84,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: artifacts
+          merge-multiple: true
       - name: Publish Artifacts
         env:
           AWS_DEBIAN_S3_BUCKET: ${{ secrets.AWS_DEBIAN_S3_BUCKET }}
