@@ -15,9 +15,6 @@ arch:
 maintainers:
   - name: James Lovern
     email: james@lovern.io
-buildDependencies:
-  - build-essential
-aptRepositories:
 build:
   pre:
     - name: Install Rust 1.73.0
