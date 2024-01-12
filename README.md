@@ -11,7 +11,7 @@ Eager to contribute? Follow these steps to add a new buildkit:
 
 1. Fork this repository
 1. Add a buildkit configuration file in the `buildkit` directory
-1. Build the extension using the command `pgxman build -f buildkit/<extension>.yaml` and ensure the build is successful.
+1. Use the command `pgxman build -f buildkit/<name>.yaml` to build the extension and ensure the build is successful. The buildkit file name must use `_` to separate words, irrespective of the extension's name (for example, `pg_cron.yaml`). This consistent naming convention ensure the publication script to correctly locate the buildkit file.
 1. Test the built extension with a PostgreSQL instance to verify its functionality.
 1. Submit a pull request to this repository for review.
 
