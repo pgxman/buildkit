@@ -19,7 +19,7 @@ function generate_yaml() {
   comment=$2
   slug=$(detect_slug $ext)
   pg_major_version=$(echo $PGVERSION | cut -d . -f 1)
-  output_file="out/${ext}.yaml"
+  output_file="out/${ext | tr - _}.yaml"
   echo "generating $ext..."
   cat <<EOF >$output_file
 apiVersion: v1
