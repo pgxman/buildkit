@@ -1,9 +1,12 @@
-#!/usr/bin/env bash
+#!/usr/bin/env ruby
 
-set -euo pipefail
-
-_dirs=$(find "$1" -maxdepth 1 -mindepth 1 -type d -exec realpath --relative-to="$1" {} \;)
-for _dir in $_dirs; do
-    echo "Publish to registry for extension $_dir"
-    pgxman publish "$2/buildkit/${_dir}.yaml" --latest --url "${PGXMAN_REGISTRY_URL}"
-done
+Dir["#{ARGV[0]}/**/*.deb"].map do |f|
+  # filename in the format of postgresql-13-pgxman-pg-bm25_0.3.12_arm64.deb
+  match = f.match(/pgxman-(.*?)_/)
+  match[1] if match
+end.uniq.compact.map do |f|
+  f.gsub(/-/, "_")
+end.each do |f|
+  puts "Publishing #{f} to registry..."
+  puts %x[pgxman publish #{ARGV[1]}/buildkit/#{f}.yaml --latest --url #{ENV["PGXMAN_REGISTRY_URL"]}]
+end
