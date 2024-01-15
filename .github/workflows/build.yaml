@@ -26,6 +26,7 @@ jobs:
     name: Build Extensions
     runs-on: ${{ matrix.runs-on }}
     needs: set_matrix
+    if: ${{ needs.set_matrix.outputs.matrix != '[]' && needs.set_matrix.outputs.matrix != '' }}
     permissions:
       packages: write
     strategy:
