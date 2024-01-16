@@ -8,5 +8,8 @@ end.uniq.compact.map do |f|
   f.gsub(/-/, "_")
 end.each do |f|
   puts "Publishing #{f} to registry..."
-  puts %x[pgxman publish #{ARGV[1]}/buildkit/#{f}.yaml --latest --url #{ENV["PGXMAN_REGISTRY_URL"]}]
+
+  buildkit = "#{ARGV[1]}/buildkit/#{f}.yaml"
+  puts %x[pgxman publish #{buildkit} --latest --url #{ENV["PGXMAN_REGISTRY_URL"]}]
+  raise "Failed to publish #{buildkit}" unless $?.success?
 end
