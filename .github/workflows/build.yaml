@@ -60,8 +60,7 @@ jobs:
         env:
           REPO: pgxman/pgxman
         run: |
-          wget -O /tmp/pgxman_linux_${{ matrix.arch }}.deb https://github.com/pgxman/release/releases/latest/download/pgxman_linux_${{ matrix.arch }}.deb
-          sudo apt install /tmp/pgxman_linux_${{ matrix.arch }}.deb -y
+          curl -sfL https://install.pgx.sh | sh -
       - name: Build
         run: |
           pgxman build \

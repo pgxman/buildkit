@@ -10,6 +10,6 @@ end.each do |f|
   puts "Publishing #{f} to registry..."
 
   buildkit = "#{ARGV[1]}/buildkit/#{f}.yaml"
-  puts %x[pgxman publish #{buildkit} --latest --url #{ENV["PGXMAN_REGISTRY_URL"]}]
+  puts %x[pgxman publish #{buildkit} --latest --registry #{ENV["PGXMAN_REGISTRY_URL"]}]
   raise "Failed to publish #{buildkit}" unless $?.success?
 end

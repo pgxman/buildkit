@@ -69,8 +69,7 @@ jobs:
         env:
           REPO: pgxman/pgxman
         run: |
-          wget -O /tmp/pgxman_linux_amd64.deb https://github.com/pgxman/release/releases/latest/download/pgxman_linux_amd64.deb
-          sudo apt install /tmp/pgxman_linux_amd64.deb -y
+          curl -sfL https://install.pgx.sh | sh -
       - name: Import GPG Key
         env:
           GPG_PRIVATE: ${{ secrets.GPG_PRIVATE }}
