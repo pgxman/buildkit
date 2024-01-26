@@ -1,0 +1,32 @@
+apiVersion: v1
+name: supabase_vault
+version: 0.2.9
+homepage: https://github.com/supabase/vault
+repository: https://github.com/supabase/vault
+source: https://github.com/supabase/vault/archive/refs/tags/v0.2.9.tar.gz
+description: Extension for storing encrypted secrets 
+license: Apache-2.0
+build:
+  main:
+    - name: Build supabase_vault
+      run: |
+        make
+        DESTDIR=${DESTDIR} make install
+buildDependencies:
+  - pgxman/pgsodium
+runDependencies:
+  - pgxman/pgsodium
+keywords:
+  - secrets
+  - encryption
+arch:
+  - amd64
+  - arm64
+maintainers:
+  - name: Jonathan Dance
+    email: jd@hydra.so
+pgVersions:
+  - "13"
+  - "14"
+  - "15"
+  - "16"
