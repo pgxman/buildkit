@@ -39,7 +39,6 @@ build:
         cargo pgrx init --pg${PG_VERSION} ${PG_CONFIG}
         cargo pgrx package --pg-config ${PG_CONFIG} --out-dir ${DESTDIR} --features all_fdws
 pgVersions:
-  - "13"
   - "14"
   - "15"
   - "16"
