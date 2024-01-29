@@ -1,0 +1,44 @@
+apiVersion: v1
+name: wrappers
+version: "0.2.0"
+homepage: https://supabase.github.io/wrappers
+repository: https://github.com/supabase/wrappers
+source: https://github.com/supabase/wrappers/archive/refs/tags/v0.2.0.tar.gz
+description: Postgres Foreign Data Wrappers
+license: Apache-2.0
+keywords:
+  - fdw
+  - airtable
+  - bigquery
+  - clickhouse
+  - stripe
+  - firebase
+  - s3
+  - logflare
+  - auth0
+  - mssql
+  - redis
+  - cognito
+arch:
+  - amd64
+  - arm64
+maintainers:
+  - name: Jonathan Dance
+    email: jd@hydra.so
+  - name: Owen Ou
+    email: o@hydra.so
+build:
+  pre:
+    - name: Install pgrx
+      run: |
+        cargo install --locked cargo-pgrx --version 0.11.0
+  main:
+    - name: Build s3_fdw
+      run: |
+        cd wrappers
+        cargo pgrx init --pg${PG_VERSION} ${PG_CONFIG}
+        cargo pgrx package --pg-config ${PG_CONFIG} --out-dir ${DESTDIR} --features all_fdws
+pgVersions:
+  - "14"
+  - "15"
+  - "16"

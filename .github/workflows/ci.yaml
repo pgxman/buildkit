@@ -28,8 +28,6 @@ jobs:
         with:
           files: |
             buildkit/*.yaml
-            .github/workflows/**
-            script/**
       - id: detect-changed-files
         run: |
           changed_extensions=$(script/changed-extensions ${{ steps.changed-files.outputs.all_changed_files }})
