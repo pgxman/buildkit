@@ -1,0 +1,30 @@
+apiVersion: v1
+name: pg_stringtheory
+version: "1.0.0+1f52833"
+homepage: https://github.com/hydradatabase/pg_stringtheory
+repository: https://github.com/hydradatabase/pg_stringtheory
+source: https://github.com/hydradatabase/pg_stringtheory/archive/1f52833.tar.gz
+description: CPU-specific optimizations for substring and string equality
+license: PostgreSQL
+keywords:
+  - like
+  - performance
+arch:
+  - amd64
+  - arm64
+maintainers:
+  - name: Jerry Sievert
+    email: jerry@hydra.so
+  - name: Jonathan Dance
+    email: jd@hydra.so
+build:
+  main:
+    - name: Build pg_stringtheory
+      run: |
+        make
+        DESTDIR=${DESTDIR} make install
+pgVersions:
+  - "13"
+  - "14"
+  - "15"
+  - "16"
