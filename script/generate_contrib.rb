@@ -36,7 +36,7 @@ def build_deps(ext)
     %w[uuid-dev]
   when 'xml2'
     %w[libxslt1-dev]
-  when 'sslinfo', 'postgres_fdw'
+  when 'dblink', 'sslinfo', 'postgres_fdw'
     %w[libkrb5-dev]
   end
 end

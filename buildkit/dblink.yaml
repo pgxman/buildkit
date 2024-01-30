@@ -308,3 +308,5 @@ pgVersions:
 - '15'
 - '14'
 - '13'
+buildDependencies:
+- libkrb5-dev
