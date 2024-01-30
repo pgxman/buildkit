@@ -17,8 +17,8 @@ build:
   - name: Build dblink
     run: |
       cd contrib/dblink
-      make
-      DESTDIR=${DESTDIR} make install
+      make USE_PGXS=1
+      DESTDIR=${DESTDIR} make USE_PGXS=1 install
 overrides:
   pgVersions:
     '16':

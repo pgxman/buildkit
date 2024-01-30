@@ -84,8 +84,8 @@ def generate_buildkits(dirs)
               name: "Build #{ext}",
               run: <<~SHELL
                 cd contrib/#{ext_dir}
-                make
-                DESTDIR=\${DESTDIR} make install
+                make USE_PGXS=1
+                DESTDIR=${DESTDIR} make USE_PGXS=1 install
               SHELL
             }]
           },

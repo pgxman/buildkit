@@ -17,8 +17,8 @@ build:
   - name: Build file_fdw
     run: |
       cd contrib/file_fdw
-      make
-      DESTDIR=${DESTDIR} make install
+      make USE_PGXS=1
+      DESTDIR=${DESTDIR} make USE_PGXS=1 install
 overrides:
   pgVersions:
     '16':

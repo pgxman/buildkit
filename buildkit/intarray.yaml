@@ -17,8 +17,8 @@ build:
   - name: Build intarray
     run: |
       cd contrib/intarray
-      make
-      DESTDIR=${DESTDIR} make install
+      make USE_PGXS=1
+      DESTDIR=${DESTDIR} make USE_PGXS=1 install
 overrides:
   pgVersions:
     '16':
