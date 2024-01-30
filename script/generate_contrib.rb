@@ -28,6 +28,19 @@ def parse_readme(html_dir, slug)
   html.encode!('UTF-8', 'binary', invalid: :replace, undef: :replace, replace: '').gsub(/References.*/m, '')
 end
 
+def build_deps(ext)
+  case ext
+  when 'cube', 'seg'
+    %w[bison flex]
+  when 'uuid-ossp'
+    %w[uuid-dev]
+  when 'xml2'
+    %w[libxslt1-dev]
+  when 'sslinfo', 'postgres_fdw'
+    %w[libkrb5-dev]
+  end
+end
+
 def generate_buildkits(dirs)
   buildkits = {}
 
@@ -59,6 +72,7 @@ def generate_buildkits(dirs)
         #{parse_readme(html_dir, slug)}
         ```
       README
+      build_deps = build_deps(ext)
 
       buildkit = buildkits[ext]
       if buildkit.nil?
@@ -84,8 +98,8 @@ def generate_buildkits(dirs)
               name: "Build #{ext}",
               run: <<~SHELL
                 cd contrib/#{ext_dir}
-                make USE_PGXS=1
-                DESTDIR=${DESTDIR} make USE_PGXS=1 install
+                make
+                DESTDIR=${DESTDIR} make install
               SHELL
             }]
           },
@@ -95,6 +109,7 @@ def generate_buildkits(dirs)
           pgVersions: []
         }
 
+        buildkit[:buildDependencies] = build_deps unless build_deps.nil?
         buildkits[ext] = buildkit
       end
 

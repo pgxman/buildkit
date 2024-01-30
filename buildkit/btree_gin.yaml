@@ -17,8 +17,8 @@ build:
   - name: Build btree_gin
     run: |
       cd contrib/btree_gin
-      make USE_PGXS=1
-      DESTDIR=${DESTDIR} make USE_PGXS=1 install
+      make
+      DESTDIR=${DESTDIR} make install
 overrides:
   pgVersions:
     '16':

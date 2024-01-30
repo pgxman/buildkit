@@ -17,8 +17,8 @@ build:
   - name: Build cube
     run: |
       cd contrib/cube
-      make USE_PGXS=1
-      DESTDIR=${DESTDIR} make USE_PGXS=1 install
+      make
+      DESTDIR=${DESTDIR} make install
 overrides:
   pgVersions:
     '16':
@@ -1355,3 +1355,6 @@ pgVersions:
 - '15'
 - '14'
 - '13'
+buildDependencies:
+- bison
+- flex

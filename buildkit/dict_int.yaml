@@ -17,8 +17,8 @@ build:
   - name: Build dict_int
     run: |
       cd contrib/dict_int
-      make USE_PGXS=1
-      DESTDIR=${DESTDIR} make USE_PGXS=1 install
+      make
+      DESTDIR=${DESTDIR} make install
 overrides:
   pgVersions:
     '16':
