@@ -41,6 +41,13 @@ def build_deps(ext)
   end
 end
 
+def skip_ext_ver(ext, pg_major)
+  case ext
+  when 'uuid-ossp'
+    pg_major == '13'
+  end
+end
+
 def generate_buildkits(dirs)
   buildkits = {}
 
@@ -73,6 +80,8 @@ def generate_buildkits(dirs)
         ```
       README
       build_deps = build_deps(ext)
+
+      next if skip_ext_ver(ext, pg_major)
 
       buildkit = buildkits[ext]
       if buildkit.nil?
