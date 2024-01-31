@@ -32,16 +32,11 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        # NOTE: hard-coded supported arch & pgVersions for now
-        # We may have `pgxman --supported-arches` & `pgxman --supported-pg-versions` in the future
+        # NOTE: hard-coded supported arch for now
+        # We may have `pgxman --supported-arches` in the future
         arch:
           - amd64
           - arm64
-        pgVersion:
-          - 13
-          - 14
-          - 15
-          - 16
         extension: ${{ fromJSON(needs.set_matrix.outputs.matrix) }}
         include:
           - arch: amd64
@@ -50,39 +45,24 @@ jobs:
             runs-on: buildjet-16vcpu-ubuntu-2204-arm
     steps:
       - uses: actions/checkout@v4
-      - name: Calculate RUN_BUILD
-        run: |
-          RUN_BUILD=$(script/extension-support-pg-version "${{ matrix.extension }}" "${{ matrix.pgversion }}")
-          echo "RUN_BUILD=$RUN_BUILD" >> "$GITHUB_ENV"
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-        if: ${{ env.RUN_BUILD == 'true' }}
-      - name: Login to ghcr.io
-        uses: docker/login-action@v3
-        if: ${{ env.RUN_BUILD == 'true' }}
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Install pgxman
-        if: ${{ env.RUN_BUILD == 'true' }}
         run: |
           curl -sfL https://install.pgx.sh | sh -
       - name: Build
-        if: ${{ env.RUN_BUILD == 'true' }}
         run: |
           pgxman build \
             --file "$(pwd)/buildkit/${{ matrix.extension }}.yaml" \
             --set "arch=[${{ matrix.arch }}]" \
-            --set "pgVersions=[${{ matrix.pgVersion }}]" \
             --cache-from "type=gha" \
             --cache-to "type=gha,mode=max" \
+            --parallel 1 \
             --debug
       - name: Upload Artifacts
-        if: ${{ env.RUN_BUILD == 'true' }}
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.extension }}-${{matrix.pgVersion}}-${{ matrix.arch }}
+          name: ${{ matrix.extension }}-${{ matrix.arch }}
           if-no-files-found: error
           retention-days: 7
           path: |

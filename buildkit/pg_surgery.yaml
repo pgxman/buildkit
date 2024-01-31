@@ -1,109 +1,303 @@
+---
 apiVersion: v1
 name: pg_surgery
-version: "15.5.0"
-homepage: https://www.postgresql.org/docs/15/pgsurgery.html
 repository: https://github.com/postgres/postgres
-source: https://ftp.postgresql.org/pub/source/v15.5/postgresql-15.5.tar.gz
 description: extension to perform surgery on a damaged relation
 license: PostgreSQL
 arch:
-  - amd64
-  - arm64
+- amd64
+- arm64
 maintainers:
-  - name: Jonathan Dance
-    email: jd@hydra.so
+- name: Jonathan Dance
+  email: jd@hydra.so
+- name: Owen Ou
+  email: o@hydra.so
 build:
   main:
-    - name: Build pg_surgery
-      run: |
-        cd contrib/pg_surgery
-        make
-        DESTDIR=${DESTDIR} make install
+  - name: Build pg_surgery
+    run: |
+      cd contrib/pg_surgery
+      make
+      DESTDIR=${DESTDIR} make install
+overrides:
+  pgVersions:
+    '16':
+      source: https://ftp.postgresql.org/pub/source/v16.1/postgresql-16.1.tar.gz
+      version: 16.1.0
+      homepage: https://www.postgresql.org/docs/16/pgsurgery.html
+      readme: |
+        For formatted documentation, please see https://www.postgresql.org/docs/16/pgsurgery.html.
+
+        ```
+           #[1]F.33. pgstattuple -- obtain tuple-level statistics [2]F.35. pg_trgm
+           -- support for similarity of text using trigram matching
+
+           F.34. pg_surgery -- perform low-level surgery on relation data
+           [3]Prev  [4]Up Appendix F. Additional Supplied Modules and Extensions
+           [5]Home  [6]Next
+             __________________________________________________________________
+
+        F.34. pg_surgery -- perform low-level surgery on relation data [7]#
+
+           [8]F.34.1. Functions
+           [9]F.34.2. Authors
+
+           The pg_surgery module provides various functions to perform surgery on
+           a damaged relation. These functions are unsafe by design and using them
+           may corrupt (or further corrupt) your database. For example, these
+           functions can easily be used to make a table inconsistent with its own
+           indexes, to cause UNIQUE or FOREIGN KEY constraint violations, or even
+           to make tuples visible which, when read, will cause a database server
+           crash. They should be used with great caution and only as a last
+           resort.
+
+        F.34.1. Functions [10]#
+
+           heap_force_kill(regclass, tid[]) returns void
+                  heap_force_kill marks "used" line pointers as "dead" without
+                  examining the tuples. The intended use of this function is to
+                  forcibly remove tuples that are not otherwise accessible. For
+                  example:
+
+        test=> select * from t1 where ctid = '(0, 1)';
+        ERROR:  could not access status of transaction 4007513275
+        DETAIL:  Could not open file "pg_xact/0EED": No such file or directory.
+
+        test=# select heap_force_kill('t1'::regclass, ARRAY['(0, 1)']::tid[]);
+         heap_force_kill
+        -----------------
+
+        (1 row)
+
+        test=# select * from t1 where ctid = '(0, 1)';
+        (0 rows)
+
+
+           heap_force_freeze(regclass, tid[]) returns void
+                  heap_force_freeze marks tuples as frozen without examining the
+                  tuple data. The intended use of this function is to make
+                  accessible tuples which are inaccessible due to corrupted
+                  visibility information, or which prevent the table from being
+                  successfully vacuumed due to corrupted visibility information.
+                  For example:
+
+        test=> vacuum t1;
+        ERROR:  found xmin 507 from before relfrozenxid 515
+        CONTEXT:  while scanning block 0 of relation "public.t1"
+
+        test=# select ctid from t1 where xmin = 507;
+         ctid
+        -------
+         (0,3)
+        (1 row)
+
+        test=# select heap_force_freeze('t1'::regclass, ARRAY['(0, 3)']::tid[]);
+         heap_force_freeze
+        -------------------
+
+        (1 row)
+
+        test=# select ctid from t1 where xmin = 2;
+         ctid
+        -------
+         (0,3)
+        (1 row)
+
+
+        F.34.2. Authors [11]#
+
+           Ashutosh Sharma <[12]ashu.coek88@gmail.com>
+             __________________________________________________________________
+
+           [13]Prev                                             [14]Up   [15]Next
+           F.33. pgstattuple -- obtain tuple-level statistics  [16]Home
+           F.35. pg_trgm -- support for similarity of text using trigram matching
+
+
+        ```
+    '15':
+      source: https://ftp.postgresql.org/pub/source/v15.5/postgresql-15.5.tar.gz
+      version: 15.5.0
+      homepage: https://www.postgresql.org/docs/15/pgsurgery.html
+      readme: |
+        For formatted documentation, please see https://www.postgresql.org/docs/15/pgsurgery.html.
+
+        ```
+           #[1]F.33. pgstattuple [2]F.35. pg_trgm
+
+                                      F.34. pg_surgery
+           [3]Prev  [4]Up Appendix F. Additional Supplied Modules [5]Home  [6]Next
+             __________________________________________________________________
+
+        F.34. pg_surgery
+
+           [7]F.34.1. Functions
+           [8]F.34.2. Authors
+
+           The pg_surgery module provides various functions to perform surgery on
+           a damaged relation. These functions are unsafe by design and using them
+           may corrupt (or further corrupt) your database. For example, these
+           functions can easily be used to make a table inconsistent with its own
+           indexes, to cause UNIQUE or FOREIGN KEY constraint violations, or even
+           to make tuples visible which, when read, will cause a database server
+           crash. They should be used with great caution and only as a last
+           resort.
+
+        F.34.1. Functions
+
+           heap_force_kill(regclass, tid[]) returns void
+                  heap_force_kill marks "used" line pointers as "dead" without
+                  examining the tuples. The intended use of this function is to
+                  forcibly remove tuples that are not otherwise accessible. For
+                  example:
+
+        test=> select * from t1 where ctid = '(0, 1)';
+        ERROR:  could not access status of transaction 4007513275
+        DETAIL:  Could not open file "pg_xact/0EED": No such file or directory.
+
+        test=# select heap_force_kill('t1'::regclass, ARRAY['(0, 1)']::tid[]);
+         heap_force_kill
+        -----------------
+
+        (1 row)
+
+        test=# select * from t1 where ctid = '(0, 1)';
+        (0 rows)
+
+
+           heap_force_freeze(regclass, tid[]) returns void
+                  heap_force_freeze marks tuples as frozen without examining the
+                  tuple data. The intended use of this function is to make
+                  accessible tuples which are inaccessible due to corrupted
+                  visibility information, or which prevent the table from being
+                  successfully vacuumed due to corrupted visibility information.
+                  For example:
+
+        test=> vacuum t1;
+        ERROR:  found xmin 507 from before relfrozenxid 515
+        CONTEXT:  while scanning block 0 of relation "public.t1"
+
+        test=# select ctid from t1 where xmin = 507;
+         ctid
+        -------
+         (0,3)
+        (1 row)
+
+        test=# select heap_force_freeze('t1'::regclass, ARRAY['(0, 3)']::tid[]);
+         heap_force_freeze
+        -------------------
+
+        (1 row)
+
+        test=# select ctid from t1 where xmin = 2;
+         ctid
+        -------
+         (0,3)
+        (1 row)
+
+
+        F.34.2. Authors
+
+           Ashutosh Sharma <[9]ashu.coek88@gmail.com>
+             __________________________________________________________________
+
+           [10]Prev            [11]Up        [12]Next
+           F.33. pgstattuple  [13]Home  F.35. pg_trgm
+
+
+        ```
+    '14':
+      source: https://ftp.postgresql.org/pub/source/v14.10/postgresql-14.10.tar.gz
+      version: 14.10.0
+      homepage: https://www.postgresql.org/docs/14/pgsurgery.html
+      readme: |
+        For formatted documentation, please see https://www.postgresql.org/docs/14/pgsurgery.html.
+
+        ```
+           #[1]F.31. pgstattuple [2]F.33. pg_trgm
+
+                                      F.32. pg_surgery
+           [3]Prev  [4]Up Appendix F. Additional Supplied Modules [5]Home  [6]Next
+             __________________________________________________________________
+
+        F.32. pg_surgery
+
+           [7]F.32.1. Functions
+           [8]F.32.2. Authors
+
+           The pg_surgery module provides various functions to perform surgery on
+           a damaged relation. These functions are unsafe by design and using them
+           may corrupt (or further corrupt) your database. For example, these
+           functions can easily be used to make a table inconsistent with its own
+           indexes, to cause UNIQUE or FOREIGN KEY constraint violations, or even
+           to make tuples visible which, when read, will cause a database server
+           crash. They should be used with great caution and only as a last
+           resort.
+
+        F.32.1. Functions
+
+           heap_force_kill(regclass, tid[]) returns void
+                  heap_force_kill marks "used" line pointers as "dead" without
+                  examining the tuples. The intended use of this function is to
+                  forcibly remove tuples that are not otherwise accessible. For
+                  example:
+
+        test=> select * from t1 where ctid = '(0, 1)';
+        ERROR:  could not access status of transaction 4007513275
+        DETAIL:  Could not open file "pg_xact/0EED": No such file or directory.
+
+        test=# select heap_force_kill('t1'::regclass, ARRAY['(0, 1)']::tid[]);
+         heap_force_kill
+        -----------------
+
+        (1 row)
+
+        test=# select * from t1 where ctid = '(0, 1)';
+        (0 rows)
+
+
+           heap_force_freeze(regclass, tid[]) returns void
+                  heap_force_freeze marks tuples as frozen without examining the
+                  tuple data. The intended use of this function is to make
+                  accessible tuples which are inaccessible due to corrupted
+                  visibility information, or which prevent the table from being
+                  successfully vacuumed due to corrupted visibility information.
+                  For example:
+
+        test=> vacuum t1;
+        ERROR:  found xmin 507 from before relfrozenxid 515
+        CONTEXT:  while scanning block 0 of relation "public.t1"
+
+        test=# select ctid from t1 where xmin = 507;
+         ctid
+        -------
+         (0,3)
+        (1 row)
+
+        test=# select heap_force_freeze('t1'::regclass, ARRAY['(0, 3)']::tid[]);
+         heap_force_freeze
+        -------------------
+
+        (1 row)
+
+        test=# select ctid from t1 where xmin = 2;
+         ctid
+        -------
+         (0,3)
+        (1 row)
+
+
+        F.32.2. Authors
+
+           Ashutosh Sharma <[9]ashu.coek88@gmail.com>
+             __________________________________________________________________
+
+           [10]Prev            [11]Up        [12]Next
+           F.31. pgstattuple  [13]Home  F.33. pg_trgm
+
+
+        ```
 pgVersions:
-  - "15"
-readme: |
-  For formatted documentation, please see https://www.postgresql.org/docs/15/pgsurgery.html.
-  
-  ```
-     #F.33. pgstattuple F.35. pg_trgm
-  
-                                F.34. pg_surgery
-     Prev  Up Appendix F. Additional Supplied Modules Home  Next
-       __________________________________________________________________
-  
-  F.34. pg_surgery
-  
-     F.34.1. Functions
-     F.34.2. Authors
-  
-     The pg_surgery module provides various functions to perform surgery on
-     a damaged relation. These functions are unsafe by design and using them
-     may corrupt (or further corrupt) your database. For example, these
-     functions can easily be used to make a table inconsistent with its own
-     indexes, to cause UNIQUE or FOREIGN KEY constraint violations, or even
-     to make tuples visible which, when read, will cause a database server
-     crash. They should be used with great caution and only as a last
-     resort.
-  
-  F.34.1. Functions
-  
-     heap_force_kill(regclass, tid[]) returns void
-            heap_force_kill marks "used" line pointers as "dead" without
-            examining the tuples. The intended use of this function is to
-            forcibly remove tuples that are not otherwise accessible. For
-            example:
-  
-  test=> select * from t1 where ctid = '(0, 1)';
-  ERROR:  could not access status of transaction 4007513275
-  DETAIL:  Could not open file "pg_xact/0EED": No such file or directory.
-  
-  test=# select heap_force_kill('t1'::regclass, ARRAY['(0, 1)']::tid[]);
-   heap_force_kill
-  -----------------
-  
-  (1 row)
-  
-  test=# select * from t1 where ctid = '(0, 1)';
-  (0 rows)
-  
-  
-     heap_force_freeze(regclass, tid[]) returns void
-            heap_force_freeze marks tuples as frozen without examining the
-            tuple data. The intended use of this function is to make
-            accessible tuples which are inaccessible due to corrupted
-            visibility information, or which prevent the table from being
-            successfully vacuumed due to corrupted visibility information.
-            For example:
-  
-  test=> vacuum t1;
-  ERROR:  found xmin 507 from before relfrozenxid 515
-  CONTEXT:  while scanning block 0 of relation "public.t1"
-  
-  test=# select ctid from t1 where xmin = 507;
-   ctid
-  -------
-   (0,3)
-  (1 row)
-  
-  test=# select heap_force_freeze('t1'::regclass, ARRAY['(0, 3)']::tid[]);
-   heap_force_freeze
-  -------------------
-  
-  (1 row)
-  
-  test=# select ctid from t1 where xmin = 2;
-   ctid
-  -------
-   (0,3)
-  (1 row)
-  
-  
-  F.34.2. Authors
-  
-     Ashutosh Sharma <ashu.coek88@gmail.com>
-       __________________________________________________________________
-  
-     Prev            Up        Next
-     F.33. pgstattuple  Home  F.35. pg_trgm
-  
-  ```
+- '16'
+- '15'
+- '14'

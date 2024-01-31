@@ -1,78 +1,271 @@
+---
 apiVersion: v1
 name: btree_gin
-version: "15.5.0"
-homepage: https://www.postgresql.org/docs/15/btreegin.html
 repository: https://github.com/postgres/postgres
-source: https://ftp.postgresql.org/pub/source/v15.5/postgresql-15.5.tar.gz
 description: support for indexing common datatypes in GIN
 license: PostgreSQL
 arch:
-  - amd64
-  - arm64
+- amd64
+- arm64
 maintainers:
-  - name: Jonathan Dance
-    email: jd@hydra.so
+- name: Jonathan Dance
+  email: jd@hydra.so
+- name: Owen Ou
+  email: o@hydra.so
 build:
   main:
-    - name: Build btree_gin
-      run: |
-        cd contrib/btree_gin
-        make
-        DESTDIR=${DESTDIR} make install
+  - name: Build btree_gin
+    run: |
+      cd contrib/btree_gin
+      make
+      DESTDIR=${DESTDIR} make install
+overrides:
+  pgVersions:
+    '16':
+      source: https://ftp.postgresql.org/pub/source/v16.1/postgresql-16.1.tar.gz
+      version: 16.1.0
+      homepage: https://www.postgresql.org/docs/16/btree-gin.html
+      readme: |
+        For formatted documentation, please see https://www.postgresql.org/docs/16/btree-gin.html.
+
+        ```
+           #[1]F.7. bloom -- bloom filter index access method [2]F.9. btree_gist
+           -- GiST operator classes with B-tree behavior
+
+           F.8. btree_gin -- GIN operator classes with B-tree behavior
+           [3]Prev  [4]Up Appendix F. Additional Supplied Modules and Extensions
+           [5]Home  [6]Next
+             __________________________________________________________________
+
+        F.8. btree_gin -- GIN operator classes with B-tree behavior [7]#
+
+           [8]F.8.1. Example Usage
+           [9]F.8.2. Authors
+
+           btree_gin provides GIN operator classes that implement B-tree
+           equivalent behavior for the data types int2, int4, int8, float4,
+           float8, timestamp with time zone, timestamp without time zone, time
+           with time zone, time without time zone, date, interval, oid, money,
+           "char", varchar, text, bytea, bit, varbit, macaddr, macaddr8, inet,
+           cidr, uuid, name, bool, bpchar, and all enum types.
+
+           In general, these operator classes will not outperform the equivalent
+           standard B-tree index methods, and they lack one major feature of the
+           standard B-tree code: the ability to enforce uniqueness. However, they
+           are useful for GIN testing and as a base for developing other GIN
+           operator classes. Also, for queries that test both a GIN-indexable
+           column and a B-tree-indexable column, it might be more efficient to
+           create a multicolumn GIN index that uses one of these operator classes
+           than to create two separate indexes that would have to be combined via
+           bitmap ANDing.
+
+           This module is considered "trusted", that is, it can be installed by
+           non-superusers who have CREATE privilege on the current database.
+
+        F.8.1. Example Usage [10]#
+
+        CREATE TABLE test (a int4);
+        -- create index
+        CREATE INDEX testidx ON test USING GIN (a);
+        -- query
+        SELECT * FROM test WHERE a < 10;
+
+        F.8.2. Authors [11]#
+
+           Teodor Sigaev (<[12]teodor@stack.net>) and Oleg Bartunov
+           (<[13]oleg@sai.msu.su>). See
+           [14]http://www.sai.msu.su/~megera/oddmuse/index.cgi/Gin for additional
+           information.
+             __________________________________________________________________
+
+           [15]Prev                                         [16]Up   [17]Next
+           F.7. bloom -- bloom filter index access method  [18]Home
+           F.9. btree_gist -- GiST operator classes with B-tree behavior
+
+
+        ```
+    '15':
+      source: https://ftp.postgresql.org/pub/source/v15.5/postgresql-15.5.tar.gz
+      version: 15.5.0
+      homepage: https://www.postgresql.org/docs/15/btree-gin.html
+      readme: |
+        For formatted documentation, please see https://www.postgresql.org/docs/15/btree-gin.html.
+
+        ```
+           #[1]F.7. bloom [2]F.9. btree_gist
+
+                                       F.8. btree_gin
+           [3]Prev  [4]Up Appendix F. Additional Supplied Modules [5]Home  [6]Next
+             __________________________________________________________________
+
+        F.8. btree_gin
+
+           [7]F.8.1. Example Usage
+           [8]F.8.2. Authors
+
+           btree_gin provides sample GIN operator classes that implement B-tree
+           equivalent behavior for the data types int2, int4, int8, float4,
+           float8, timestamp with time zone, timestamp without time zone, time
+           with time zone, time without time zone, date, interval, oid, money,
+           "char", varchar, text, bytea, bit, varbit, macaddr, macaddr8, inet,
+           cidr, uuid, name, bool, bpchar, and all enum types.
+
+           In general, these operator classes will not outperform the equivalent
+           standard B-tree index methods, and they lack one major feature of the
+           standard B-tree code: the ability to enforce uniqueness. However, they
+           are useful for GIN testing and as a base for developing other GIN
+           operator classes. Also, for queries that test both a GIN-indexable
+           column and a B-tree-indexable column, it might be more efficient to
+           create a multicolumn GIN index that uses one of these operator classes
+           than to create two separate indexes that would have to be combined via
+           bitmap ANDing.
+
+           This module is considered "trusted", that is, it can be installed by
+           non-superusers who have CREATE privilege on the current database.
+
+        F.8.1. Example Usage
+
+        CREATE TABLE test (a int4);
+        -- create index
+        CREATE INDEX testidx ON test USING GIN (a);
+        -- query
+        SELECT * FROM test WHERE a < 10;
+
+        F.8.2. Authors
+
+           Teodor Sigaev (<[9]teodor@stack.net>) and Oleg Bartunov
+           (<[10]oleg@sai.msu.su>). See
+           [11]http://www.sai.msu.su/~megera/oddmuse/index.cgi/Gin for additional
+           information.
+             __________________________________________________________________
+
+           [12]Prev     [13]Up          [14]Next
+           F.7. bloom  [15]Home  F.9. btree_gist
+
+
+        ```
+    '14':
+      source: https://ftp.postgresql.org/pub/source/v14.10/postgresql-14.10.tar.gz
+      version: 14.10.0
+      homepage: https://www.postgresql.org/docs/14/btree-gin.html
+      readme: |
+        For formatted documentation, please see https://www.postgresql.org/docs/14/btree-gin.html.
+
+        ```
+           #[1]F.5. bloom [2]F.7. btree_gist
+
+                                       F.6. btree_gin
+           [3]Prev  [4]Up Appendix F. Additional Supplied Modules [5]Home  [6]Next
+             __________________________________________________________________
+
+        F.6. btree_gin
+
+           [7]F.6.1. Example Usage
+           [8]F.6.2. Authors
+
+           btree_gin provides sample GIN operator classes that implement B-tree
+           equivalent behavior for the data types int2, int4, int8, float4,
+           float8, timestamp with time zone, timestamp without time zone, time
+           with time zone, time without time zone, date, interval, oid, money,
+           "char", varchar, text, bytea, bit, varbit, macaddr, macaddr8, inet,
+           cidr, uuid, name, bool, bpchar, and all enum types.
+
+           In general, these operator classes will not outperform the equivalent
+           standard B-tree index methods, and they lack one major feature of the
+           standard B-tree code: the ability to enforce uniqueness. However, they
+           are useful for GIN testing and as a base for developing other GIN
+           operator classes. Also, for queries that test both a GIN-indexable
+           column and a B-tree-indexable column, it might be more efficient to
+           create a multicolumn GIN index that uses one of these operator classes
+           than to create two separate indexes that would have to be combined via
+           bitmap ANDing.
+
+           This module is considered "trusted", that is, it can be installed by
+           non-superusers who have CREATE privilege on the current database.
+
+        F.6.1. Example Usage
+
+        CREATE TABLE test (a int4);
+        -- create index
+        CREATE INDEX testidx ON test USING GIN (a);
+        -- query
+        SELECT * FROM test WHERE a < 10;
+
+        F.6.2. Authors
+
+           Teodor Sigaev (<[9]teodor@stack.net>) and Oleg Bartunov
+           (<[10]oleg@sai.msu.su>). See
+           [11]http://www.sai.msu.su/~megera/oddmuse/index.cgi/Gin for additional
+           information.
+             __________________________________________________________________
+
+           [12]Prev     [13]Up          [14]Next
+           F.5. bloom  [15]Home  F.7. btree_gist
+
+
+        ```
+    '13':
+      source: https://ftp.postgresql.org/pub/source/v13.13/postgresql-13.13.tar.gz
+      version: 13.13.0
+      homepage: https://www.postgresql.org/docs/13/btree-gin.html
+      readme: |
+        For formatted documentation, please see https://www.postgresql.org/docs/13/btree-gin.html.
+
+        ```
+           #[1]F.5. bloom [2]F.7. btree_gist
+
+                                       F.6. btree_gin
+           [3]Prev  [4]Up Appendix F. Additional Supplied Modules [5]Home  [6]Next
+             __________________________________________________________________
+
+        F.6. btree_gin
+
+           [7]F.6.1. Example Usage
+           [8]F.6.2. Authors
+
+           btree_gin provides sample GIN operator classes that implement B-tree
+           equivalent behavior for the data types int2, int4, int8, float4,
+           float8, timestamp with time zone, timestamp without time zone, time
+           with time zone, time without time zone, date, interval, oid, money,
+           "char", varchar, text, bytea, bit, varbit, macaddr, macaddr8, inet,
+           cidr, uuid, name, bool, bpchar, and all enum types.
+
+           In general, these operator classes will not outperform the equivalent
+           standard B-tree index methods, and they lack one major feature of the
+           standard B-tree code: the ability to enforce uniqueness. However, they
+           are useful for GIN testing and as a base for developing other GIN
+           operator classes. Also, for queries that test both a GIN-indexable
+           column and a B-tree-indexable column, it might be more efficient to
+           create a multicolumn GIN index that uses one of these operator classes
+           than to create two separate indexes that would have to be combined via
+           bitmap ANDing.
+
+           This module is considered "trusted", that is, it can be installed by
+           non-superusers who have CREATE privilege on the current database.
+
+        F.6.1. Example Usage
+
+        CREATE TABLE test (a int4);
+        -- create index
+        CREATE INDEX testidx ON test USING GIN (a);
+        -- query
+        SELECT * FROM test WHERE a < 10;
+
+        F.6.2. Authors
+
+           Teodor Sigaev (<[9]teodor@stack.net>) and Oleg Bartunov
+           (<[10]oleg@sai.msu.su>). See
+           [11]http://www.sai.msu.su/~megera/oddmuse/index.cgi/Gin for additional
+           information.
+             __________________________________________________________________
+
+           [12]Prev     [13]Up          [14]Next
+           F.5. bloom  [15]Home  F.7. btree_gist
+
+
+        ```
 pgVersions:
-  - "15"
-readme: |
-  For formatted documentation, please see https://www.postgresql.org/docs/15/btree-gin.html.
-  
-  ```
-     #F.7. bloom F.9. btree_gist
-  
-                                 F.8. btree_gin
-     Prev  Up Appendix F. Additional Supplied Modules Home  Next
-       __________________________________________________________________
-  
-  F.8. btree_gin
-  
-     F.8.1. Example Usage
-     F.8.2. Authors
-  
-     btree_gin provides sample GIN operator classes that implement B-tree
-     equivalent behavior for the data types int2, int4, int8, float4,
-     float8, timestamp with time zone, timestamp without time zone, time
-     with time zone, time without time zone, date, interval, oid, money,
-     "char", varchar, text, bytea, bit, varbit, macaddr, macaddr8, inet,
-     cidr, uuid, name, bool, bpchar, and all enum types.
-  
-     In general, these operator classes will not outperform the equivalent
-     standard B-tree index methods, and they lack one major feature of the
-     standard B-tree code: the ability to enforce uniqueness. However, they
-     are useful for GIN testing and as a base for developing other GIN
-     operator classes. Also, for queries that test both a GIN-indexable
-     column and a B-tree-indexable column, it might be more efficient to
-     create a multicolumn GIN index that uses one of these operator classes
-     than to create two separate indexes that would have to be combined via
-     bitmap ANDing.
-  
-     This module is considered "trusted", that is, it can be installed by
-     non-superusers who have CREATE privilege on the current database.
-  
-  F.8.1. Example Usage
-  
-  CREATE TABLE test (a int4);
-  -- create index
-  CREATE INDEX testidx ON test USING GIN (a);
-  -- query
-  SELECT * FROM test WHERE a < 10;
-  
-  F.8.2. Authors
-  
-     Teodor Sigaev (<teodor@stack.net>) and Oleg Bartunov
-     (<oleg@sai.msu.su>). See
-     http://www.sai.msu.su/~megera/oddmuse/index.cgi/Gin for additional
-     information.
-       __________________________________________________________________
-  
-     Prev     Up          Next
-     F.7. bloom  Home  F.9. btree_gist
-  
-  ```
+- '16'
+- '15'
+- '14'
+- '13'

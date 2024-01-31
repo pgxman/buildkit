@@ -1,111 +1,403 @@
+---
 apiVersion: v1
 name: adminpack
-version: "15.5.0"
-homepage: https://www.postgresql.org/docs/15/adminpack.html
 repository: https://github.com/postgres/postgres
-source: https://ftp.postgresql.org/pub/source/v15.5/postgresql-15.5.tar.gz
 description: administrative functions for PostgreSQL
 license: PostgreSQL
 arch:
-  - amd64
-  - arm64
+- amd64
+- arm64
 maintainers:
-  - name: Jonathan Dance
-    email: jd@hydra.so
+- name: Jonathan Dance
+  email: jd@hydra.so
+- name: Owen Ou
+  email: o@hydra.so
 build:
   main:
-    - name: Build adminpack
-      run: |
-        cd contrib/adminpack
-        make
-        DESTDIR=${DESTDIR} make install
+  - name: Build adminpack
+    run: |
+      cd contrib/adminpack
+      make
+      DESTDIR=${DESTDIR} make install
+overrides:
+  pgVersions:
+    '16':
+      source: https://ftp.postgresql.org/pub/source/v16.1/postgresql-16.1.tar.gz
+      version: 16.1.0
+      homepage: https://www.postgresql.org/docs/16/adminpack.html
+      readme: |
+        For formatted documentation, please see https://www.postgresql.org/docs/16/adminpack.html.
+
+        ```
+           #[1]Appendix F. Additional Supplied Modules and Extensions
+           [2]F.2. amcheck -- tools to verify table and index consistency
+
+           F.1. adminpack -- pgAdmin support toolpack
+           [3]Prev  [4]Up Appendix F. Additional Supplied Modules and Extensions
+           [5]Home  [6]Next
+             __________________________________________________________________
+
+        F.1. adminpack -- pgAdmin support toolpack [7]#
+
+           adminpack provides a number of support functions which pgAdmin and
+           other administration and management tools can use to provide additional
+           functionality, such as remote management of server log files. Use of
+           all these functions is only allowed to database superusers by default,
+           but may be allowed to other users by using the GRANT command.
+
+           The functions shown in [8]Table F.1 provide write access to files on
+           the machine hosting the server. (See also the functions in
+           [9]Table 9.101, which provide read-only access.) Only files within the
+           database cluster directory can be accessed, unless the user is a
+           superuser or given privileges of one of the pg_read_server_files or
+           pg_write_server_files roles, as appropriate for the function, but
+           either a relative or absolute path is allowable.
+
+           Table F.1. adminpack Functions
+
+           Function
+
+           Description
+
+           pg_catalog.pg_file_write ( filename text, data text, append boolean )
+           -> bigint
+
+           Writes, or appends to, a text file.
+
+           pg_catalog.pg_file_sync ( filename text ) -> void
+
+           Flushes a file or directory to disk.
+
+           pg_catalog.pg_file_rename ( oldname text, newname text [, archivename
+           text ] ) -> boolean
+
+           Renames a file.
+
+           pg_catalog.pg_file_unlink ( filename text ) -> boolean
+
+           Removes a file.
+
+           pg_catalog.pg_logdir_ls () -> setof record
+
+           Lists the log files in the log_directory directory.
+
+           pg_file_write writes the specified data into the file named by
+           filename. If append is false, the file must not already exist. If
+           append is true, the file can already exist, and will be appended to if
+           so. Returns the number of bytes written.
+
+           pg_file_sync fsyncs the specified file or directory named by filename.
+           An error is thrown on failure (e.g., the specified file is not
+           present). Note that [10]data_sync_retry has no effect on this function,
+           and therefore a PANIC-level error will not be raised even on failure to
+           flush database files.
+
+           pg_file_rename renames a file. If archivename is omitted or NULL, it
+           simply renames oldname to newname (which must not already exist). If
+           archivename is provided, it first renames newname to archivename (which
+           must not already exist), and then renames oldname to newname. In event
+           of failure of the second rename step, it will try to rename archivename
+           back to newname before reporting the error. Returns true on success,
+           false if the source file(s) are not present or not writable; other
+           cases throw errors.
+
+           pg_file_unlink removes the specified file. Returns true on success,
+           false if the specified file is not present or the unlink() call fails;
+           other cases throw errors.
+
+           pg_logdir_ls returns the start timestamps and path names of all the log
+           files in the [11]log_directory directory. The [12]log_filename
+           parameter must have its default setting
+           (postgresql-%Y-%m-%d_%H%M%S.log) to use this function.
+             __________________________________________________________________
+
+           [13]Prev                                                 [14]Up   [15]Next
+           Appendix F. Additional Supplied Modules and Extensions  [16]Home
+           F.2. amcheck -- tools to verify table and index consistency
+
+
+        ```
+    '15':
+      source: https://ftp.postgresql.org/pub/source/v15.5/postgresql-15.5.tar.gz
+      version: 15.5.0
+      homepage: https://www.postgresql.org/docs/15/adminpack.html
+      readme: |
+        For formatted documentation, please see https://www.postgresql.org/docs/15/adminpack.html.
+
+        ```
+           #[1]Appendix F. Additional Supplied Modules [2]F.2. amcheck
+
+                                       F.1. adminpack
+           [3]Prev  [4]Up Appendix F. Additional Supplied Modules [5]Home  [6]Next
+             __________________________________________________________________
+
+        F.1. adminpack
+
+           adminpack provides a number of support functions which pgAdmin and
+           other administration and management tools can use to provide additional
+           functionality, such as remote management of server log files. Use of
+           all these functions is only allowed to the superuser by default but may
+           be allowed to other users by using the GRANT command.
+
+           The functions shown in [7]Table F.1 provide write access to files on
+           the machine hosting the server. (See also the functions in
+           [8]Table 9.99, which provide read-only access.) Only files within the
+           database cluster directory can be accessed, unless the user is a
+           superuser or given privileges of one of the pg_read_server_files or
+           pg_write_server_files roles, as appropriate for the function, but
+           either a relative or absolute path is allowable.
+
+           Table F.1. adminpack Functions
+
+           Function
+
+           Description
+
+           pg_catalog.pg_file_write ( filename text, data text, append boolean )
+           -> bigint
+
+           Writes, or appends to, a text file.
+
+           pg_catalog.pg_file_sync ( filename text ) -> void
+
+           Flushes a file or directory to disk.
+
+           pg_catalog.pg_file_rename ( oldname text, newname text [, archivename
+           text ] ) -> boolean
+
+           Renames a file.
+
+           pg_catalog.pg_file_unlink ( filename text ) -> boolean
+
+           Removes a file.
+
+           pg_catalog.pg_logdir_ls () -> setof record
+
+           Lists the log files in the log_directory directory.
+
+           pg_file_write writes the specified data into the file named by
+           filename. If append is false, the file must not already exist. If
+           append is true, the file can already exist, and will be appended to if
+           so. Returns the number of bytes written.
+
+           pg_file_sync fsyncs the specified file or directory named by filename.
+           An error is thrown on failure (e.g., the specified file is not
+           present). Note that [9]data_sync_retry has no effect on this function,
+           and therefore a PANIC-level error will not be raised even on failure to
+           flush database files.
+
+           pg_file_rename renames a file. If archivename is omitted or NULL, it
+           simply renames oldname to newname (which must not already exist). If
+           archivename is provided, it first renames newname to archivename (which
+           must not already exist), and then renames oldname to newname. In event
+           of failure of the second rename step, it will try to rename archivename
+           back to newname before reporting the error. Returns true on success,
+           false if the source file(s) are not present or not writable; other
+           cases throw errors.
+
+           pg_file_unlink removes the specified file. Returns true on success,
+           false if the specified file is not present or the unlink() call fails;
+           other cases throw errors.
+
+           pg_logdir_ls returns the start timestamps and path names of all the log
+           files in the [10]log_directory directory. The [11]log_filename
+           parameter must have its default setting
+           (postgresql-%Y-%m-%d_%H%M%S.log) to use this function.
+             __________________________________________________________________
+
+           [12]Prev                                  [13]Up       [14]Next
+           Appendix F. Additional Supplied Modules  [15]Home  F.2. amcheck
+
+
+        ```
+    '14':
+      source: https://ftp.postgresql.org/pub/source/v14.10/postgresql-14.10.tar.gz
+      version: 14.10.0
+      homepage: https://www.postgresql.org/docs/14/adminpack.html
+      readme: |
+        For formatted documentation, please see https://www.postgresql.org/docs/14/adminpack.html.
+
+        ```
+           #[1]Appendix F. Additional Supplied Modules [2]F.2. amcheck
+
+                                       F.1. adminpack
+           [3]Prev  [4]Up Appendix F. Additional Supplied Modules [5]Home  [6]Next
+             __________________________________________________________________
+
+        F.1. adminpack
+
+           adminpack provides a number of support functions which pgAdmin and
+           other administration and management tools can use to provide additional
+           functionality, such as remote management of server log files. Use of
+           all these functions is only allowed to the superuser by default but may
+           be allowed to other users by using the GRANT command.
+
+           The functions shown in [7]Table F.1 provide write access to files on
+           the machine hosting the server. (See also the functions in
+           [8]Table 9.97, which provide read-only access.) Only files within the
+           database cluster directory can be accessed, unless the user is a
+           superuser or given one of the pg_read_server_files, or
+           pg_write_server_files roles, as appropriate for the function, but
+           either a relative or absolute path is allowable.
+
+           Table F.1. adminpack Functions
+
+           Function
+
+           Description
+
+           pg_catalog.pg_file_write ( filename text, data text, append boolean )
+           -> bigint
+
+           Writes, or appends to, a text file.
+
+           pg_catalog.pg_file_sync ( filename text ) -> void
+
+           Flushes a file or directory to disk.
+
+           pg_catalog.pg_file_rename ( oldname text, newname text [, archivename
+           text ] ) -> boolean
+
+           Renames a file.
+
+           pg_catalog.pg_file_unlink ( filename text ) -> boolean
+
+           Removes a file.
+
+           pg_catalog.pg_logdir_ls () -> setof record
+
+           Lists the log files in the log_directory directory.
+
+           pg_file_write writes the specified data into the file named by
+           filename. If append is false, the file must not already exist. If
+           append is true, the file can already exist, and will be appended to if
+           so. Returns the number of bytes written.
+
+           pg_file_sync fsyncs the specified file or directory named by filename.
+           An error is thrown on failure (e.g., the specified file is not
+           present). Note that [9]data_sync_retry has no effect on this function,
+           and therefore a PANIC-level error will not be raised even on failure to
+           flush database files.
+
+           pg_file_rename renames a file. If archivename is omitted or NULL, it
+           simply renames oldname to newname (which must not already exist). If
+           archivename is provided, it first renames newname to archivename (which
+           must not already exist), and then renames oldname to newname. In event
+           of failure of the second rename step, it will try to rename archivename
+           back to newname before reporting the error. Returns true on success,
+           false if the source file(s) are not present or not writable; other
+           cases throw errors.
+
+           pg_file_unlink removes the specified file. Returns true on success,
+           false if the specified file is not present or the unlink() call fails;
+           other cases throw errors.
+
+           pg_logdir_ls returns the start timestamps and path names of all the log
+           files in the [10]log_directory directory. The [11]log_filename
+           parameter must have its default setting
+           (postgresql-%Y-%m-%d_%H%M%S.log) to use this function.
+             __________________________________________________________________
+
+           [12]Prev                                  [13]Up       [14]Next
+           Appendix F. Additional Supplied Modules  [15]Home  F.2. amcheck
+
+
+        ```
+    '13':
+      source: https://ftp.postgresql.org/pub/source/v13.13/postgresql-13.13.tar.gz
+      version: 13.13.0
+      homepage: https://www.postgresql.org/docs/13/adminpack.html
+      readme: |
+        For formatted documentation, please see https://www.postgresql.org/docs/13/adminpack.html.
+
+        ```
+           #[1]Appendix F. Additional Supplied Modules [2]F.2. amcheck
+
+                                       F.1. adminpack
+           [3]Prev  [4]Up Appendix F. Additional Supplied Modules [5]Home  [6]Next
+             __________________________________________________________________
+
+        F.1. adminpack
+
+           adminpack provides a number of support functions which pgAdmin and
+           other administration and management tools can use to provide additional
+           functionality, such as remote management of server log files. Use of
+           all these functions is only allowed to the superuser by default but may
+           be allowed to other users by using the GRANT command.
+
+           The functions shown in [7]Table F.1 provide write access to files on
+           the machine hosting the server. (See also the functions in
+           [8]Table 9.95, which provide read-only access.) Only files within the
+           database cluster directory can be accessed, unless the user is a
+           superuser or given one of the pg_read_server_files, or
+           pg_write_server_files roles, as appropriate for the function, but
+           either a relative or absolute path is allowable.
+
+           Table F.1. adminpack Functions
+
+           Function
+
+           Description
+
+           pg_catalog.pg_file_write ( filename text, data text, append boolean )
+           -> bigint
+
+           Writes, or appends to, a text file.
+
+           pg_catalog.pg_file_sync ( filename text ) -> void
+
+           Flushes a file or directory to disk.
+
+           pg_catalog.pg_file_rename ( oldname text, newname text [, archivename
+           text ] ) -> boolean
+
+           Renames a file.
+
+           pg_catalog.pg_file_unlink ( filename text ) -> boolean
+
+           Removes a file.
+
+           pg_catalog.pg_logdir_ls () -> setof record
+
+           Lists the log files in the log_directory directory.
+
+           pg_file_write writes the specified data into the file named by
+           filename. If append is false, the file must not already exist. If
+           append is true, the file can already exist, and will be appended to if
+           so. Returns the number of bytes written.
+
+           pg_file_sync fsyncs the specified file or directory named by filename.
+           An error is thrown on failure (e.g., the specified file is not
+           present). Note that [9]data_sync_retry has no effect on this function,
+           and therefore a PANIC-level error will not be raised even on failure to
+           flush database files.
+
+           pg_file_rename renames a file. If archivename is omitted or NULL, it
+           simply renames oldname to newname (which must not already exist). If
+           archivename is provided, it first renames newname to archivename (which
+           must not already exist), and then renames oldname to newname. In event
+           of failure of the second rename step, it will try to rename archivename
+           back to newname before reporting the error. Returns true on success,
+           false if the source file(s) are not present or not writable; other
+           cases throw errors.
+
+           pg_file_unlink removes the specified file. Returns true on success,
+           false if the specified file is not present or the unlink() call fails;
+           other cases throw errors.
+
+           pg_logdir_ls returns the start timestamps and path names of all the log
+           files in the [10]log_directory directory. The [11]log_filename
+           parameter must have its default setting
+           (postgresql-%Y-%m-%d_%H%M%S.log) to use this function.
+             __________________________________________________________________
+
+           [12]Prev                                  [13]Up       [14]Next
+           Appendix F. Additional Supplied Modules  [15]Home  F.2. amcheck
+
+
+        ```
 pgVersions:
-  - "15"
-readme: |
-  For formatted documentation, please see https://www.postgresql.org/docs/15/adminpack.html.
-  
-  ```
-     #Appendix F. Additional Supplied Modules F.2. amcheck
-  
-                                 F.1. adminpack
-     Prev  Up Appendix F. Additional Supplied Modules Home  Next
-       __________________________________________________________________
-  
-  F.1. adminpack
-  
-     adminpack provides a number of support functions which pgAdmin and
-     other administration and management tools can use to provide additional
-     functionality, such as remote management of server log files. Use of
-     all these functions is only allowed to the superuser by default but may
-     be allowed to other users by using the GRANT command.
-  
-     The functions shown in Table F.1 provide write access to files on
-     the machine hosting the server. (See also the functions in
-     Table 9.99, which provide read-only access.) Only files within the
-     database cluster directory can be accessed, unless the user is a
-     superuser or given privileges of one of the pg_read_server_files or
-     pg_write_server_files roles, as appropriate for the function, but
-     either a relative or absolute path is allowable.
-  
-     Table F.1. adminpack Functions
-  
-     Function
-  
-     Description
-  
-     pg_catalog.pg_file_write ( filename text, data text, append boolean )
-     -> bigint
-  
-     Writes, or appends to, a text file.
-  
-     pg_catalog.pg_file_sync ( filename text ) -> void
-  
-     Flushes a file or directory to disk.
-  
-     pg_catalog.pg_file_rename ( oldname text, newname text [, archivename
-     text ] ) -> boolean
-  
-     Renames a file.
-  
-     pg_catalog.pg_file_unlink ( filename text ) -> boolean
-  
-     Removes a file.
-  
-     pg_catalog.pg_logdir_ls () -> setof record
-  
-     Lists the log files in the log_directory directory.
-  
-     pg_file_write writes the specified data into the file named by
-     filename. If append is false, the file must not already exist. If
-     append is true, the file can already exist, and will be appended to if
-     so. Returns the number of bytes written.
-  
-     pg_file_sync fsyncs the specified file or directory named by filename.
-     An error is thrown on failure (e.g., the specified file is not
-     present). Note that data_sync_retry has no effect on this function,
-     and therefore a PANIC-level error will not be raised even on failure to
-     flush database files.
-  
-     pg_file_rename renames a file. If archivename is omitted or NULL, it
-     simply renames oldname to newname (which must not already exist). If
-     archivename is provided, it first renames newname to archivename (which
-     must not already exist), and then renames oldname to newname. In event
-     of failure of the second rename step, it will try to rename archivename
-     back to newname before reporting the error. Returns true on success,
-     false if the source file(s) are not present or not writable; other
-     cases throw errors.
-  
-     pg_file_unlink removes the specified file. Returns true on success,
-     false if the specified file is not present or the unlink() call fails;
-     other cases throw errors.
-  
-     pg_logdir_ls returns the start timestamps and path names of all the log
-     files in the log_directory directory. The log_filename
-     parameter must have its default setting
-     (postgresql-%Y-%m-%d_%H%M%S.log) to use this function.
-       __________________________________________________________________
-  
-     Prev                                  Up       Next
-     Appendix F. Additional Supplied Modules  Home  F.2. amcheck
-  
-  ```
+- '16'
+- '15'
+- '14'
+- '13'

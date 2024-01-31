@@ -1,113 +1,411 @@
+---
 apiVersion: v1
 name: btree_gist
-version: "15.5.0"
-homepage: https://www.postgresql.org/docs/15/btreegist.html
 repository: https://github.com/postgres/postgres
-source: https://ftp.postgresql.org/pub/source/v15.5/postgresql-15.5.tar.gz
 description: support for indexing common datatypes in GiST
 license: PostgreSQL
 arch:
-  - amd64
-  - arm64
+- amd64
+- arm64
 maintainers:
-  - name: Jonathan Dance
-    email: jd@hydra.so
+- name: Jonathan Dance
+  email: jd@hydra.so
+- name: Owen Ou
+  email: o@hydra.so
 build:
   main:
-    - name: Build btree_gist
-      run: |
-        cd contrib/btree_gist
-        make
-        DESTDIR=${DESTDIR} make install
+  - name: Build btree_gist
+    run: |
+      cd contrib/btree_gist
+      make
+      DESTDIR=${DESTDIR} make install
+overrides:
+  pgVersions:
+    '16':
+      source: https://ftp.postgresql.org/pub/source/v16.1/postgresql-16.1.tar.gz
+      version: 16.1.0
+      homepage: https://www.postgresql.org/docs/16/btree-gist.html
+      readme: |
+        For formatted documentation, please see https://www.postgresql.org/docs/16/btree-gist.html.
+
+        ```
+           #[1]F.8. btree_gin -- GIN operator classes with B-tree behavior
+           [2]F.10. citext -- a case-insensitive character string type
+
+           F.9. btree_gist -- GiST operator classes with B-tree behavior
+           [3]Prev  [4]Up Appendix F. Additional Supplied Modules and Extensions
+           [5]Home  [6]Next
+             __________________________________________________________________
+
+        F.9. btree_gist -- GiST operator classes with B-tree behavior [7]#
+
+           [8]F.9.1. Example Usage
+           [9]F.9.2. Authors
+
+           btree_gist provides GiST index operator classes that implement B-tree
+           equivalent behavior for the data types int2, int4, int8, float4,
+           float8, numeric, timestamp with time zone, timestamp without time zone,
+           time with time zone, time without time zone, date, interval, oid,
+           money, char, varchar, text, bytea, bit, varbit, macaddr, macaddr8,
+           inet, cidr, uuid, bool and all enum types.
+
+           In general, these operator classes will not outperform the equivalent
+           standard B-tree index methods, and they lack one major feature of the
+           standard B-tree code: the ability to enforce uniqueness. However, they
+           provide some other features that are not available with a B-tree index,
+           as described below. Also, these operator classes are useful when a
+           multicolumn GiST index is needed, wherein some of the columns are of
+           data types that are only indexable with GiST but other columns are just
+           simple data types. Lastly, these operator classes are useful for GiST
+           testing and as a base for developing other GiST operator classes.
+
+           In addition to the typical B-tree search operators, btree_gist also
+           provides index support for <> ("not equals"). This may be useful in
+           combination with an [10]exclusion constraint, as described below.
+
+           Also, for data types for which there is a natural distance metric,
+           btree_gist defines a distance operator <->, and provides GiST index
+           support for nearest-neighbor searches using this operator. Distance
+           operators are provided for int2, int4, int8, float4, float8, timestamp
+           with time zone, timestamp without time zone, time without time zone,
+           date, interval, oid, and money.
+
+           This module is considered "trusted", that is, it can be installed by
+           non-superusers who have CREATE privilege on the current database.
+
+        F.9.1. Example Usage [11]#
+
+           Simple example using btree_gist instead of btree:
+        CREATE TABLE test (a int4);
+        -- create index
+        CREATE INDEX testidx ON test USING GIST (a);
+        -- query
+        SELECT * FROM test WHERE a < 10;
+        -- nearest-neighbor search: find the ten entries closest to "42"
+        SELECT *, a <-> 42 AS dist FROM test ORDER BY a <-> 42 LIMIT 10;
+
+           Use an [12]exclusion constraint to enforce the rule that a cage at a
+           zoo can contain only one kind of animal:
+        => CREATE TABLE zoo (
+          cage   INTEGER,
+          animal TEXT,
+          EXCLUDE USING GIST (cage WITH =, animal WITH <>)
+        );
+
+        => INSERT INTO zoo VALUES(123, 'zebra');
+        INSERT 0 1
+        => INSERT INTO zoo VALUES(123, 'zebra');
+        INSERT 0 1
+        => INSERT INTO zoo VALUES(123, 'lion');
+        ERROR:  conflicting key value violates exclusion constraint "zoo_cage_animal_exc
+        l"
+        DETAIL:  Key (cage, animal)=(123, lion) conflicts with existing key (cage, anima
+        l)=(123, zebra).
+        => INSERT INTO zoo VALUES(124, 'lion');
+        INSERT 0 1
+
+        F.9.2. Authors [13]#
+
+           Teodor Sigaev (<[14]teodor@stack.net>), Oleg Bartunov
+           (<[15]oleg@sai.msu.su>), Janko Richter (<[16]jankorichter@yahoo.de>),
+           and Paul Jungwirth (<[17]pj@illuminatedcomputing.com>). See
+           [18]http://www.sai.msu.su/~megera/postgres/gist/ for additional
+           information.
+             __________________________________________________________________
+
+         [19]Prev                                                      [20]Up   [21]Next
+         F.8. btree_gin -- GIN operator classes with B-tree behavior  [22]Home
+           F.10. citext -- a case-insensitive character string type
+
+
+        ```
+    '15':
+      source: https://ftp.postgresql.org/pub/source/v15.5/postgresql-15.5.tar.gz
+      version: 15.5.0
+      homepage: https://www.postgresql.org/docs/15/btree-gist.html
+      readme: |
+        For formatted documentation, please see https://www.postgresql.org/docs/15/btree-gist.html.
+
+        ```
+           #[1]F.8. btree_gin [2]F.10. citext
+
+                                      F.9. btree_gist
+           [3]Prev  [4]Up Appendix F. Additional Supplied Modules [5]Home  [6]Next
+             __________________________________________________________________
+
+        F.9. btree_gist
+
+           [7]F.9.1. Example Usage
+           [8]F.9.2. Authors
+
+           btree_gist provides GiST index operator classes that implement B-tree
+           equivalent behavior for the data types int2, int4, int8, float4,
+           float8, numeric, timestamp with time zone, timestamp without time zone,
+           time with time zone, time without time zone, date, interval, oid,
+           money, char, varchar, text, bytea, bit, varbit, macaddr, macaddr8,
+           inet, cidr, uuid, bool and all enum types.
+
+           In general, these operator classes will not outperform the equivalent
+           standard B-tree index methods, and they lack one major feature of the
+           standard B-tree code: the ability to enforce uniqueness. However, they
+           provide some other features that are not available with a B-tree index,
+           as described below. Also, these operator classes are useful when a
+           multicolumn GiST index is needed, wherein some of the columns are of
+           data types that are only indexable with GiST but other columns are just
+           simple data types. Lastly, these operator classes are useful for GiST
+           testing and as a base for developing other GiST operator classes.
+
+           In addition to the typical B-tree search operators, btree_gist also
+           provides index support for <> ("not equals"). This may be useful in
+           combination with an [9]exclusion constraint, as described below.
+
+           Also, for data types for which there is a natural distance metric,
+           btree_gist defines a distance operator <->, and provides GiST index
+           support for nearest-neighbor searches using this operator. Distance
+           operators are provided for int2, int4, int8, float4, float8, timestamp
+           with time zone, timestamp without time zone, time without time zone,
+           date, interval, oid, and money.
+
+           This module is considered "trusted", that is, it can be installed by
+           non-superusers who have CREATE privilege on the current database.
+
+        F.9.1. Example Usage
+
+           Simple example using btree_gist instead of btree:
+        CREATE TABLE test (a int4);
+        -- create index
+        CREATE INDEX testidx ON test USING GIST (a);
+        -- query
+        SELECT * FROM test WHERE a < 10;
+        -- nearest-neighbor search: find the ten entries closest to "42"
+        SELECT *, a <-> 42 AS dist FROM test ORDER BY a <-> 42 LIMIT 10;
+
+           Use an [10]exclusion constraint to enforce the rule that a cage at a
+           zoo can contain only one kind of animal:
+        => CREATE TABLE zoo (
+          cage   INTEGER,
+          animal TEXT,
+          EXCLUDE USING GIST (cage WITH =, animal WITH <>)
+        );
+
+        => INSERT INTO zoo VALUES(123, 'zebra');
+        INSERT 0 1
+        => INSERT INTO zoo VALUES(123, 'zebra');
+        INSERT 0 1
+        => INSERT INTO zoo VALUES(123, 'lion');
+        ERROR:  conflicting key value violates exclusion constraint "zoo_cage_animal_exc
+        l"
+        DETAIL:  Key (cage, animal)=(123, lion) conflicts with existing key (cage, anima
+        l)=(123, zebra).
+        => INSERT INTO zoo VALUES(124, 'lion');
+        INSERT 0 1
+
+        F.9.2. Authors
+
+           Teodor Sigaev (<[11]teodor@stack.net>), Oleg Bartunov
+           (<[12]oleg@sai.msu.su>), Janko Richter (<[13]jankorichter@yahoo.de>),
+           and Paul Jungwirth (<[14]pj@illuminatedcomputing.com>). See
+           [15]http://www.sai.msu.su/~megera/postgres/gist/ for additional
+           information.
+             __________________________________________________________________
+
+           [16]Prev         [17]Up       [18]Next
+           F.8. btree_gin  [19]Home  F.10. citext
+
+
+        ```
+    '14':
+      source: https://ftp.postgresql.org/pub/source/v14.10/postgresql-14.10.tar.gz
+      version: 14.10.0
+      homepage: https://www.postgresql.org/docs/14/btree-gist.html
+      readme: |
+        For formatted documentation, please see https://www.postgresql.org/docs/14/btree-gist.html.
+
+        ```
+           #[1]F.6. btree_gin [2]F.8. citext
+
+                                      F.7. btree_gist
+           [3]Prev  [4]Up Appendix F. Additional Supplied Modules [5]Home  [6]Next
+             __________________________________________________________________
+
+        F.7. btree_gist
+
+           [7]F.7.1. Example Usage
+           [8]F.7.2. Authors
+
+           btree_gist provides GiST index operator classes that implement B-tree
+           equivalent behavior for the data types int2, int4, int8, float4,
+           float8, numeric, timestamp with time zone, timestamp without time zone,
+           time with time zone, time without time zone, date, interval, oid,
+           money, char, varchar, text, bytea, bit, varbit, macaddr, macaddr8,
+           inet, cidr, uuid, and all enum types.
+
+           In general, these operator classes will not outperform the equivalent
+           standard B-tree index methods, and they lack one major feature of the
+           standard B-tree code: the ability to enforce uniqueness. However, they
+           provide some other features that are not available with a B-tree index,
+           as described below. Also, these operator classes are useful when a
+           multicolumn GiST index is needed, wherein some of the columns are of
+           data types that are only indexable with GiST but other columns are just
+           simple data types. Lastly, these operator classes are useful for GiST
+           testing and as a base for developing other GiST operator classes.
+
+           In addition to the typical B-tree search operators, btree_gist also
+           provides index support for <> ("not equals"). This may be useful in
+           combination with an [9]exclusion constraint, as described below.
+
+           Also, for data types for which there is a natural distance metric,
+           btree_gist defines a distance operator <->, and provides GiST index
+           support for nearest-neighbor searches using this operator. Distance
+           operators are provided for int2, int4, int8, float4, float8, timestamp
+           with time zone, timestamp without time zone, time without time zone,
+           date, interval, oid, and money.
+
+           This module is considered "trusted", that is, it can be installed by
+           non-superusers who have CREATE privilege on the current database.
+
+        F.7.1. Example Usage
+
+           Simple example using btree_gist instead of btree:
+        CREATE TABLE test (a int4);
+        -- create index
+        CREATE INDEX testidx ON test USING GIST (a);
+        -- query
+        SELECT * FROM test WHERE a < 10;
+        -- nearest-neighbor search: find the ten entries closest to "42"
+        SELECT *, a <-> 42 AS dist FROM test ORDER BY a <-> 42 LIMIT 10;
+
+           Use an [10]exclusion constraint to enforce the rule that a cage at a
+           zoo can contain only one kind of animal:
+        => CREATE TABLE zoo (
+          cage   INTEGER,
+          animal TEXT,
+          EXCLUDE USING GIST (cage WITH =, animal WITH <>)
+        );
+
+        => INSERT INTO zoo VALUES(123, 'zebra');
+        INSERT 0 1
+        => INSERT INTO zoo VALUES(123, 'zebra');
+        INSERT 0 1
+        => INSERT INTO zoo VALUES(123, 'lion');
+        ERROR:  conflicting key value violates exclusion constraint "zoo_cage_animal_exc
+        l"
+        DETAIL:  Key (cage, animal)=(123, lion) conflicts with existing key (cage, anima
+        l)=(123, zebra).
+        => INSERT INTO zoo VALUES(124, 'lion');
+        INSERT 0 1
+
+        F.7.2. Authors
+
+           Teodor Sigaev (<[11]teodor@stack.net>), Oleg Bartunov
+           (<[12]oleg@sai.msu.su>), Janko Richter (<[13]jankorichter@yahoo.de>),
+           and Paul Jungwirth (<[14]pj@illuminatedcomputing.com>). See
+           [15]http://www.sai.msu.su/~megera/postgres/gist/ for additional
+           information.
+             __________________________________________________________________
+
+           [16]Prev         [17]Up      [18]Next
+           F.6. btree_gin  [19]Home  F.8. citext
+
+
+        ```
+    '13':
+      source: https://ftp.postgresql.org/pub/source/v13.13/postgresql-13.13.tar.gz
+      version: 13.13.0
+      homepage: https://www.postgresql.org/docs/13/btree-gist.html
+      readme: |
+        For formatted documentation, please see https://www.postgresql.org/docs/13/btree-gist.html.
+
+        ```
+           #[1]F.6. btree_gin [2]F.8. citext
+
+                                      F.7. btree_gist
+           [3]Prev  [4]Up Appendix F. Additional Supplied Modules [5]Home  [6]Next
+             __________________________________________________________________
+
+        F.7. btree_gist
+
+           [7]F.7.1. Example Usage
+           [8]F.7.2. Authors
+
+           btree_gist provides GiST index operator classes that implement B-tree
+           equivalent behavior for the data types int2, int4, int8, float4,
+           float8, numeric, timestamp with time zone, timestamp without time zone,
+           time with time zone, time without time zone, date, interval, oid,
+           money, char, varchar, text, bytea, bit, varbit, macaddr, macaddr8,
+           inet, cidr, uuid, and all enum types.
+
+           In general, these operator classes will not outperform the equivalent
+           standard B-tree index methods, and they lack one major feature of the
+           standard B-tree code: the ability to enforce uniqueness. However, they
+           provide some other features that are not available with a B-tree index,
+           as described below. Also, these operator classes are useful when a
+           multicolumn GiST index is needed, wherein some of the columns are of
+           data types that are only indexable with GiST but other columns are just
+           simple data types. Lastly, these operator classes are useful for GiST
+           testing and as a base for developing other GiST operator classes.
+
+           In addition to the typical B-tree search operators, btree_gist also
+           provides index support for <> ("not equals"). This may be useful in
+           combination with an [9]exclusion constraint, as described below.
+
+           Also, for data types for which there is a natural distance metric,
+           btree_gist defines a distance operator <->, and provides GiST index
+           support for nearest-neighbor searches using this operator. Distance
+           operators are provided for int2, int4, int8, float4, float8, timestamp
+           with time zone, timestamp without time zone, time without time zone,
+           date, interval, oid, and money.
+
+           This module is considered "trusted", that is, it can be installed by
+           non-superusers who have CREATE privilege on the current database.
+
+        F.7.1. Example Usage
+
+           Simple example using btree_gist instead of btree:
+        CREATE TABLE test (a int4);
+        -- create index
+        CREATE INDEX testidx ON test USING GIST (a);
+        -- query
+        SELECT * FROM test WHERE a < 10;
+        -- nearest-neighbor search: find the ten entries closest to "42"
+        SELECT *, a <-> 42 AS dist FROM test ORDER BY a <-> 42 LIMIT 10;
+
+           Use an [10]exclusion constraint to enforce the rule that a cage at a
+           zoo can contain only one kind of animal:
+        => CREATE TABLE zoo (
+          cage   INTEGER,
+          animal TEXT,
+          EXCLUDE USING GIST (cage WITH =, animal WITH <>)
+        );
+
+        => INSERT INTO zoo VALUES(123, 'zebra');
+        INSERT 0 1
+        => INSERT INTO zoo VALUES(123, 'zebra');
+        INSERT 0 1
+        => INSERT INTO zoo VALUES(123, 'lion');
+        ERROR:  conflicting key value violates exclusion constraint "zoo_cage_animal_exc
+        l"
+        DETAIL:  Key (cage, animal)=(123, lion) conflicts with existing key (cage, anima
+        l)=(123, zebra).
+        => INSERT INTO zoo VALUES(124, 'lion');
+        INSERT 0 1
+
+        F.7.2. Authors
+
+           Teodor Sigaev (<[11]teodor@stack.net>), Oleg Bartunov
+           (<[12]oleg@sai.msu.su>), Janko Richter (<[13]jankorichter@yahoo.de>),
+           and Paul Jungwirth (<[14]pj@illuminatedcomputing.com>). See
+           [15]http://www.sai.msu.su/~megera/postgres/gist/ for additional
+           information.
+             __________________________________________________________________
+
+           [16]Prev         [17]Up      [18]Next
+           F.6. btree_gin  [19]Home  F.8. citext
+
+
+        ```
 pgVersions:
-  - "15"
-readme: |
-  For formatted documentation, please see https://www.postgresql.org/docs/15/btree-gist.html.
-  
-  ```
-     #F.8. btree_gin F.10. citext
-  
-                                F.9. btree_gist
-     Prev  Up Appendix F. Additional Supplied Modules Home  Next
-       __________________________________________________________________
-  
-  F.9. btree_gist
-  
-     F.9.1. Example Usage
-     F.9.2. Authors
-  
-     btree_gist provides GiST index operator classes that implement B-tree
-     equivalent behavior for the data types int2, int4, int8, float4,
-     float8, numeric, timestamp with time zone, timestamp without time zone,
-     time with time zone, time without time zone, date, interval, oid,
-     money, char, varchar, text, bytea, bit, varbit, macaddr, macaddr8,
-     inet, cidr, uuid, bool and all enum types.
-  
-     In general, these operator classes will not outperform the equivalent
-     standard B-tree index methods, and they lack one major feature of the
-     standard B-tree code: the ability to enforce uniqueness. However, they
-     provide some other features that are not available with a B-tree index,
-     as described below. Also, these operator classes are useful when a
-     multicolumn GiST index is needed, wherein some of the columns are of
-     data types that are only indexable with GiST but other columns are just
-     simple data types. Lastly, these operator classes are useful for GiST
-     testing and as a base for developing other GiST operator classes.
-  
-     In addition to the typical B-tree search operators, btree_gist also
-     provides index support for <> ("not equals"). This may be useful in
-     combination with an exclusion constraint, as described below.
-  
-     Also, for data types for which there is a natural distance metric,
-     btree_gist defines a distance operator <->, and provides GiST index
-     support for nearest-neighbor searches using this operator. Distance
-     operators are provided for int2, int4, int8, float4, float8, timestamp
-     with time zone, timestamp without time zone, time without time zone,
-     date, interval, oid, and money.
-  
-     This module is considered "trusted", that is, it can be installed by
-     non-superusers who have CREATE privilege on the current database.
-  
-  F.9.1. Example Usage
-  
-     Simple example using btree_gist instead of btree:
-  CREATE TABLE test (a int4);
-  -- create index
-  CREATE INDEX testidx ON test USING GIST (a);
-  -- query
-  SELECT * FROM test WHERE a < 10;
-  -- nearest-neighbor search: find the ten entries closest to "42"
-  SELECT *, a <-> 42 AS dist FROM test ORDER BY a <-> 42 LIMIT 10;
-  
-     Use an exclusion constraint to enforce the rule that a cage at a
-     zoo can contain only one kind of animal:
-  => CREATE TABLE zoo (
-    cage   INTEGER,
-    animal TEXT,
-    EXCLUDE USING GIST (cage WITH =, animal WITH <>)
-  );
-  
-  => INSERT INTO zoo VALUES(123, 'zebra');
-  INSERT 0 1
-  => INSERT INTO zoo VALUES(123, 'zebra');
-  INSERT 0 1
-  => INSERT INTO zoo VALUES(123, 'lion');
-  ERROR:  conflicting key value violates exclusion constraint "zoo_cage_animal_exc
-  l"
-  DETAIL:  Key (cage, animal)=(123, lion) conflicts with existing key (cage, anima
-  l)=(123, zebra).
-  => INSERT INTO zoo VALUES(124, 'lion');
-  INSERT 0 1
-  
-  F.9.2. Authors
-  
-     Teodor Sigaev (<teodor@stack.net>), Oleg Bartunov
-     (<oleg@sai.msu.su>), Janko Richter (<jankorichter@yahoo.de>),
-     and Paul Jungwirth (<pj@illuminatedcomputing.com>). See
-     http://www.sai.msu.su/~megera/postgres/gist/ for additional
-     information.
-       __________________________________________________________________
-  
-     Prev         Up       Next
-     F.8. btree_gin  Home  F.10. citext
-  
-  ```
+- '16'
+- '15'
+- '14'
+- '13'

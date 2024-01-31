@@ -1,53 +1,135 @@
+---
 apiVersion: v1
 name: old_snapshot
-version: "15.5.0"
-homepage: https://www.postgresql.org/docs/15/oldsnapshot.html
 repository: https://github.com/postgres/postgres
-source: https://ftp.postgresql.org/pub/source/v15.5/postgresql-15.5.tar.gz
 description: utilities in support of old_snapshot_threshold
 license: PostgreSQL
 arch:
-  - amd64
-  - arm64
+- amd64
+- arm64
 maintainers:
-  - name: Jonathan Dance
-    email: jd@hydra.so
+- name: Jonathan Dance
+  email: jd@hydra.so
+- name: Owen Ou
+  email: o@hydra.so
 build:
   main:
-    - name: Build old_snapshot
-      run: |
-        cd contrib/old_snapshot
-        make
-        DESTDIR=${DESTDIR} make install
+  - name: Build old_snapshot
+    run: |
+      cd contrib/old_snapshot
+      make
+      DESTDIR=${DESTDIR} make install
+overrides:
+  pgVersions:
+    '16':
+      source: https://ftp.postgresql.org/pub/source/v16.1/postgresql-16.1.tar.gz
+      version: 16.1.0
+      homepage: https://www.postgresql.org/docs/16/oldsnapshot.html
+      readme: |
+        For formatted documentation, please see https://www.postgresql.org/docs/16/oldsnapshot.html.
+
+        ```
+           #[1]F.23. ltree -- hierarchical tree-like data type
+           [2]F.25. pageinspect -- low-level inspection of database pages
+
+           F.24. old_snapshot -- inspect old_snapshot_threshold state
+           [3]Prev  [4]Up Appendix F. Additional Supplied Modules and Extensions
+           [5]Home  [6]Next
+             __________________________________________________________________
+
+        F.24. old_snapshot -- inspect old_snapshot_threshold state [7]#
+
+           [8]F.24.1. Functions
+
+           The old_snapshot module allows inspection of the server state that is
+           used to implement [9]old_snapshot_threshold.
+
+        F.24.1. Functions [10]#
+
+           pg_old_snapshot_time_mapping(array_offset OUT int4, end_timestamp OUT
+                  timestamptz, newest_xmin OUT xid) returns setof record
+                  Returns all of the entries in the server's timestamp to XID
+                  mapping. Each entry represents the newest xmin of any snapshot
+                  taken in the corresponding minute.
+             __________________________________________________________________
+
+           [11]Prev                                          [12]Up   [13]Next
+           F.23. ltree -- hierarchical tree-like data type  [14]Home
+           F.25. pageinspect -- low-level inspection of database pages
+
+
+        ```
+    '15':
+      source: https://ftp.postgresql.org/pub/source/v15.5/postgresql-15.5.tar.gz
+      version: 15.5.0
+      homepage: https://www.postgresql.org/docs/15/oldsnapshot.html
+      readme: |
+        For formatted documentation, please see https://www.postgresql.org/docs/15/oldsnapshot.html.
+
+        ```
+           #[1]F.23. ltree [2]F.25. pageinspect
+
+                                     F.24. old_snapshot
+           [3]Prev  [4]Up Appendix F. Additional Supplied Modules [5]Home  [6]Next
+             __________________________________________________________________
+
+        F.24. old_snapshot
+
+           [7]F.24.1. Functions
+
+           The old_snapshot module allows inspection of the server state that is
+           used to implement [8]old_snapshot_threshold.
+
+        F.24.1. Functions
+
+           pg_old_snapshot_time_mapping(array_offset OUT int4, end_timestamp OUT
+                  timestamptz, newest_xmin OUT xid) returns setof record
+                  Returns all of the entries in the server's timestamp to XID
+                  mapping. Each entry represents the newest xmin of any snapshot
+                  taken in the corresponding minute.
+             __________________________________________________________________
+
+           [9]Prev       [10]Up            [11]Next
+           F.23. ltree  [12]Home  F.25. pageinspect
+
+
+        ```
+    '14':
+      source: https://ftp.postgresql.org/pub/source/v14.10/postgresql-14.10.tar.gz
+      version: 14.10.0
+      homepage: https://www.postgresql.org/docs/14/oldsnapshot.html
+      readme: |
+        For formatted documentation, please see https://www.postgresql.org/docs/14/oldsnapshot.html.
+
+        ```
+           #[1]F.21. ltree [2]F.23. pageinspect
+
+                                     F.22. old_snapshot
+           [3]Prev  [4]Up Appendix F. Additional Supplied Modules [5]Home  [6]Next
+             __________________________________________________________________
+
+        F.22. old_snapshot
+
+           [7]F.22.1. Functions
+
+           The old_snapshot module allows inspection of the server state that is
+           used to implement [8]old_snapshot_threshold.
+
+        F.22.1. Functions
+
+           pg_old_snapshot_time_mapping(array_offset OUT int4, end_timestamp OUT
+                  timestamptz, newest_xmin OUT xid) returns setof record
+                  Returns all of the entries in the server's timestamp to XID
+                  mapping. Each entry represents the newest xmin of any snapshot
+                  taken in the corresponding minute.
+             __________________________________________________________________
+
+           [9]Prev       [10]Up            [11]Next
+           F.21. ltree  [12]Home  F.23. pageinspect
+
+
+        ```
 pgVersions:
-  - "15"
-readme: |
-  For formatted documentation, please see https://www.postgresql.org/docs/15/oldsnapshot.html.
-  
-  ```
-     #F.23. ltree F.25. pageinspect
-  
-                               F.24. old_snapshot
-     Prev  Up Appendix F. Additional Supplied Modules Home  Next
-       __________________________________________________________________
-  
-  F.24. old_snapshot
-  
-     F.24.1. Functions
-  
-     The old_snapshot module allows inspection of the server state that is
-     used to implement old_snapshot_threshold.
-  
-  F.24.1. Functions
-  
-     pg_old_snapshot_time_mapping(array_offset OUT int4, end_timestamp OUT
-            timestamptz, newest_xmin OUT xid) returns setof record
-            Returns all of the entries in the server's timestamp to XID
-            mapping. Each entry represents the newest xmin of any snapshot
-            taken in the corresponding minute.
-       __________________________________________________________________
-  
-     Prev       Up            Next
-     F.23. ltree  Home  F.25. pageinspect
-  
-  ```
+- '16'
+- '15'
+- '14'

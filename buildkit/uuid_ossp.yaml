@@ -1,162 +1,458 @@
+---
 apiVersion: v1
 name: uuid-ossp
-version: "15.5.0"
-homepage: https://www.postgresql.org/docs/15/uuid-ossp.html
 repository: https://github.com/postgres/postgres
-source: https://ftp.postgresql.org/pub/source/v15.5/postgresql-15.5.tar.gz
 description: generate universally unique identifiers (UUIDs)
 license: PostgreSQL
 arch:
-  - amd64
-  - arm64
+- amd64
+- arm64
 maintainers:
-  - name: Jonathan Dance
-    email: jd@hydra.so
+- name: Jonathan Dance
+  email: jd@hydra.so
+- name: Owen Ou
+  email: o@hydra.so
 build:
   main:
-    - name: Build uuid-ossp
-      run: |
-        cd contrib/uuid-ossp
-        make
-        DESTDIR=${DESTDIR} make install
+  - name: Build uuid-ossp
+    run: |
+      cd contrib/uuid-ossp
+      make
+      DESTDIR=${DESTDIR} make install
+overrides:
+  pgVersions:
+    '16':
+      source: https://ftp.postgresql.org/pub/source/v16.1/postgresql-16.1.tar.gz
+      version: 16.1.0
+      homepage: https://www.postgresql.org/docs/16/uuid-ossp.html
+      readme: |
+        For formatted documentation, please see https://www.postgresql.org/docs/16/uuid-ossp.html.
+
+        ```
+           #[1]F.48. unaccent -- a text search dictionary which removes diacritics
+           [2]F.50. xml2 -- XPath querying and XSLT functionality
+
+           F.49. uuid-ossp -- a UUID generator
+           [3]Prev  [4]Up Appendix F. Additional Supplied Modules and Extensions
+           [5]Home  [6]Next
+             __________________________________________________________________
+
+        F.49. uuid-ossp -- a UUID generator [7]#
+
+           [8]F.49.1. uuid-ossp Functions
+           [9]F.49.2. Building uuid-ossp
+           [10]F.49.3. Author
+
+           The uuid-ossp module provides functions to generate universally unique
+           identifiers (UUIDs) using one of several standard algorithms. There are
+           also functions to produce certain special UUID constants. This module
+           is only necessary for special requirements beyond what is available in
+           core PostgreSQL. See [11]Section 9.14 for built-in ways to generate
+           UUIDs.
+
+           This module is considered "trusted", that is, it can be installed by
+           non-superusers who have CREATE privilege on the current database.
+
+        F.49.1. uuid-ossp Functions [12]#
+
+           [13]Table F.34 shows the functions available to generate UUIDs. The
+           relevant standards ITU-T Rec. X.667, ISO/IEC 9834-8:2005, and [14]RFC
+           4122 specify four algorithms for generating UUIDs, identified by the
+           version numbers 1, 3, 4, and 5. (There is no version 2 algorithm.) Each
+           of these algorithms could be suitable for a different set of
+           applications.
+
+           Table F.34. Functions for UUID Generation
+
+           Function
+
+           Description
+
+           uuid_generate_v1 () -> uuid
+
+           Generates a version 1 UUID. This involves the MAC address of the
+           computer and a time stamp. Note that UUIDs of this kind reveal the
+           identity of the computer that created the identifier and the time at
+           which it did so, which might make it unsuitable for certain
+           security-sensitive applications.
+
+           uuid_generate_v1mc () -> uuid
+
+           Generates a version 1 UUID, but uses a random multicast MAC address
+           instead of the real MAC address of the computer.
+
+           uuid_generate_v3 ( namespace uuid, name text ) -> uuid
+
+           Generates a version 3 UUID in the given namespace using the specified
+           input name. The namespace should be one of the special constants
+           produced by the uuid_ns_*() functions shown in [15]Table F.35. (It
+           could be any UUID in theory.) The name is an identifier in the selected
+           namespace.
+
+           For example:
+        SELECT uuid_generate_v3(uuid_ns_url(), 'http://www.postgresql.org');
+
+           The name parameter will be MD5-hashed, so the cleartext cannot be
+           derived from the generated UUID. The generation of UUIDs by this method
+           has no random or environment-dependent element and is therefore
+           reproducible.
+
+           uuid_generate_v4 () -> uuid
+
+           Generates a version 4 UUID, which is derived entirely from random
+           numbers.
+
+           uuid_generate_v5 ( namespace uuid, name text ) -> uuid
+
+           Generates a version 5 UUID, which works like a version 3 UUID except
+           that SHA-1 is used as a hashing method. Version 5 should be preferred
+           over version 3 because SHA-1 is thought to be more secure than MD5.
+
+           Table F.35. Functions Returning UUID Constants
+
+           Function
+
+           Description
+
+           uuid_nil () -> uuid
+
+           Returns a "nil" UUID constant, which does not occur as a real UUID.
+
+           uuid_ns_dns () -> uuid
+
+           Returns a constant designating the DNS namespace for UUIDs.
+
+           uuid_ns_url () -> uuid
+
+           Returns a constant designating the URL namespace for UUIDs.
+
+           uuid_ns_oid () -> uuid
+
+           Returns a constant designating the ISO object identifier (OID)
+           namespace for UUIDs. (This pertains to ASN.1 OIDs, which are unrelated
+           to the OIDs used in PostgreSQL.)
+
+           uuid_ns_x500 () -> uuid
+
+           Returns a constant designating the X.500 distinguished name (DN)
+           namespace for UUIDs.
+
+        F.49.2. Building uuid-ossp [16]#
+
+           Historically this module depended on the OSSP UUID library, which
+           accounts for the module's name. While the OSSP UUID library can still
+           be found at [17]http://www.ossp.org/pkg/lib/uuid/, it is not well
+           maintained, and is becoming increasingly difficult to port to newer
+           platforms. uuid-ossp can now be built without the OSSP library on some
+           platforms. On FreeBSD and some other BSD-derived platforms, suitable
+           UUID creation functions are included in the core libc library. On
+           Linux, macOS, and some other platforms, suitable functions are provided
+           in the libuuid library, which originally came from the e2fsprogs
+           project (though on modern Linux it is considered part of
+           util-linux-ng). When invoking configure, specify --with-uuid=bsd to use
+           the BSD functions, or --with-uuid=e2fs to use e2fsprogs' libuuid, or
+           --with-uuid=ossp to use the OSSP UUID library. More than one of these
+           libraries might be available on a particular machine, so configure does
+           not automatically choose one.
+
+        F.49.3. Author [18]#
+
+           Peter Eisentraut <[19]peter_e@gmx.net>
+             __________________________________________________________________
+
+           [20]Prev  [21]Up  [22]Next
+           F.48. unaccent -- a text search dictionary which removes diacritics
+           [23]Home  F.50. xml2 -- XPath querying and XSLT functionality
+
+
+        ```
+    '15':
+      source: https://ftp.postgresql.org/pub/source/v15.5/postgresql-15.5.tar.gz
+      version: 15.5.0
+      homepage: https://www.postgresql.org/docs/15/uuid-ossp.html
+      readme: |
+        For formatted documentation, please see https://www.postgresql.org/docs/15/uuid-ossp.html.
+
+        ```
+           #[1]F.48. unaccent [2]F.50. xml2
+
+                                      F.49. uuid-ossp
+           [3]Prev  [4]Up Appendix F. Additional Supplied Modules [5]Home  [6]Next
+             __________________________________________________________________
+
+        F.49. uuid-ossp
+
+           [7]F.49.1. uuid-ossp Functions
+           [8]F.49.2. Building uuid-ossp
+           [9]F.49.3. Author
+
+           The uuid-ossp module provides functions to generate universally unique
+           identifiers (UUIDs) using one of several standard algorithms. There are
+           also functions to produce certain special UUID constants. This module
+           is only necessary for special requirements beyond what is available in
+           core PostgreSQL. See [10]Section 9.14 for built-in ways to generate
+           UUIDs.
+
+           This module is considered "trusted", that is, it can be installed by
+           non-superusers who have CREATE privilege on the current database.
+
+        F.49.1. uuid-ossp Functions
+
+           [11]Table F.32 shows the functions available to generate UUIDs. The
+           relevant standards ITU-T Rec. X.667, ISO/IEC 9834-8:2005, and [12]RFC
+           4122 specify four algorithms for generating UUIDs, identified by the
+           version numbers 1, 3, 4, and 5. (There is no version 2 algorithm.) Each
+           of these algorithms could be suitable for a different set of
+           applications.
+
+           Table F.32. Functions for UUID Generation
+
+           Function
+
+           Description
+
+           uuid_generate_v1 () -> uuid
+
+           Generates a version 1 UUID. This involves the MAC address of the
+           computer and a time stamp. Note that UUIDs of this kind reveal the
+           identity of the computer that created the identifier and the time at
+           which it did so, which might make it unsuitable for certain
+           security-sensitive applications.
+
+           uuid_generate_v1mc () -> uuid
+
+           Generates a version 1 UUID, but uses a random multicast MAC address
+           instead of the real MAC address of the computer.
+
+           uuid_generate_v3 ( namespace uuid, name text ) -> uuid
+
+           Generates a version 3 UUID in the given namespace using the specified
+           input name. The namespace should be one of the special constants
+           produced by the uuid_ns_*() functions shown in [13]Table F.33. (It
+           could be any UUID in theory.) The name is an identifier in the selected
+           namespace.
+
+           For example:
+        SELECT uuid_generate_v3(uuid_ns_url(), 'http://www.postgresql.org');
+
+           The name parameter will be MD5-hashed, so the cleartext cannot be
+           derived from the generated UUID. The generation of UUIDs by this method
+           has no random or environment-dependent element and is therefore
+           reproducible.
+
+           uuid_generate_v4 () -> uuid
+
+           Generates a version 4 UUID, which is derived entirely from random
+           numbers.
+
+           uuid_generate_v5 ( namespace uuid, name text ) -> uuid
+
+           Generates a version 5 UUID, which works like a version 3 UUID except
+           that SHA-1 is used as a hashing method. Version 5 should be preferred
+           over version 3 because SHA-1 is thought to be more secure than MD5.
+
+           Table F.33. Functions Returning UUID Constants
+
+           Function
+
+           Description
+
+           uuid_nil () -> uuid
+
+           Returns a "nil" UUID constant, which does not occur as a real UUID.
+
+           uuid_ns_dns () -> uuid
+
+           Returns a constant designating the DNS namespace for UUIDs.
+
+           uuid_ns_url () -> uuid
+
+           Returns a constant designating the URL namespace for UUIDs.
+
+           uuid_ns_oid () -> uuid
+
+           Returns a constant designating the ISO object identifier (OID)
+           namespace for UUIDs. (This pertains to ASN.1 OIDs, which are unrelated
+           to the OIDs used in PostgreSQL.)
+
+           uuid_ns_x500 () -> uuid
+
+           Returns a constant designating the X.500 distinguished name (DN)
+           namespace for UUIDs.
+
+        F.49.2. Building uuid-ossp
+
+           Historically this module depended on the OSSP UUID library, which
+           accounts for the module's name. While the OSSP UUID library can still
+           be found at [14]http://www.ossp.org/pkg/lib/uuid/, it is not well
+           maintained, and is becoming increasingly difficult to port to newer
+           platforms. uuid-ossp can now be built without the OSSP library on some
+           platforms. On FreeBSD and some other BSD-derived platforms, suitable
+           UUID creation functions are included in the core libc library. On
+           Linux, macOS, and some other platforms, suitable functions are provided
+           in the libuuid library, which originally came from the e2fsprogs
+           project (though on modern Linux it is considered part of
+           util-linux-ng). When invoking configure, specify --with-uuid=bsd to use
+           the BSD functions, or --with-uuid=e2fs to use e2fsprogs' libuuid, or
+           --with-uuid=ossp to use the OSSP UUID library. More than one of these
+           libraries might be available on a particular machine, so configure does
+           not automatically choose one.
+
+        F.49.3. Author
+
+           Peter Eisentraut <[15]peter_e@gmx.net>
+             __________________________________________________________________
+
+           [16]Prev         [17]Up     [18]Next
+           F.48. unaccent  [19]Home  F.50. xml2
+
+
+        ```
+    '14':
+      source: https://ftp.postgresql.org/pub/source/v14.10/postgresql-14.10.tar.gz
+      version: 14.10.0
+      homepage: https://www.postgresql.org/docs/14/uuid-ossp.html
+      readme: |
+        For formatted documentation, please see https://www.postgresql.org/docs/14/uuid-ossp.html.
+
+        ```
+           #[1]F.45. unaccent [2]F.47. xml2
+
+                                      F.46. uuid-ossp
+           [3]Prev  [4]Up Appendix F. Additional Supplied Modules [5]Home  [6]Next
+             __________________________________________________________________
+
+        F.46. uuid-ossp
+
+           [7]F.46.1. uuid-ossp Functions
+           [8]F.46.2. Building uuid-ossp
+           [9]F.46.3. Author
+
+           The uuid-ossp module provides functions to generate universally unique
+           identifiers (UUIDs) using one of several standard algorithms. There are
+           also functions to produce certain special UUID constants. This module
+           is only necessary for special requirements beyond what is available in
+           core PostgreSQL. See [10]Section 9.14 for built-in ways to generate
+           UUIDs.
+
+           This module is considered "trusted", that is, it can be installed by
+           non-superusers who have CREATE privilege on the current database.
+
+        F.46.1. uuid-ossp Functions
+
+           [11]Table F.33 shows the functions available to generate UUIDs. The
+           relevant standards ITU-T Rec. X.667, ISO/IEC 9834-8:2005, and [12]RFC
+           4122 specify four algorithms for generating UUIDs, identified by the
+           version numbers 1, 3, 4, and 5. (There is no version 2 algorithm.) Each
+           of these algorithms could be suitable for a different set of
+           applications.
+
+           Table F.33. Functions for UUID Generation
+
+           Function
+
+           Description
+
+           uuid_generate_v1 () -> uuid
+
+           Generates a version 1 UUID. This involves the MAC address of the
+           computer and a time stamp. Note that UUIDs of this kind reveal the
+           identity of the computer that created the identifier and the time at
+           which it did so, which might make it unsuitable for certain
+           security-sensitive applications.
+
+           uuid_generate_v1mc () -> uuid
+
+           Generates a version 1 UUID, but uses a random multicast MAC address
+           instead of the real MAC address of the computer.
+
+           uuid_generate_v3 ( namespace uuid, name text ) -> uuid
+
+           Generates a version 3 UUID in the given namespace using the specified
+           input name. The namespace should be one of the special constants
+           produced by the uuid_ns_*() functions shown in [13]Table F.34. (It
+           could be any UUID in theory.) The name is an identifier in the selected
+           namespace.
+
+           For example:
+        SELECT uuid_generate_v3(uuid_ns_url(), 'http://www.postgresql.org');
+
+           The name parameter will be MD5-hashed, so the cleartext cannot be
+           derived from the generated UUID. The generation of UUIDs by this method
+           has no random or environment-dependent element and is therefore
+           reproducible.
+
+           uuid_generate_v4 () -> uuid
+
+           Generates a version 4 UUID, which is derived entirely from random
+           numbers.
+
+           uuid_generate_v5 ( namespace uuid, name text ) -> uuid
+
+           Generates a version 5 UUID, which works like a version 3 UUID except
+           that SHA-1 is used as a hashing method. Version 5 should be preferred
+           over version 3 because SHA-1 is thought to be more secure than MD5.
+
+           Table F.34. Functions Returning UUID Constants
+
+           Function
+
+           Description
+
+           uuid_nil () -> uuid
+
+           Returns a "nil" UUID constant, which does not occur as a real UUID.
+
+           uuid_ns_dns () -> uuid
+
+           Returns a constant designating the DNS namespace for UUIDs.
+
+           uuid_ns_url () -> uuid
+
+           Returns a constant designating the URL namespace for UUIDs.
+
+           uuid_ns_oid () -> uuid
+
+           Returns a constant designating the ISO object identifier (OID)
+           namespace for UUIDs. (This pertains to ASN.1 OIDs, which are unrelated
+           to the OIDs used in PostgreSQL.)
+
+           uuid_ns_x500 () -> uuid
+
+           Returns a constant designating the X.500 distinguished name (DN)
+           namespace for UUIDs.
+
+        F.46.2. Building uuid-ossp
+
+           Historically this module depended on the OSSP UUID library, which
+           accounts for the module's name. While the OSSP UUID library can still
+           be found at [14]http://www.ossp.org/pkg/lib/uuid/, it is not well
+           maintained, and is becoming increasingly difficult to port to newer
+           platforms. uuid-ossp can now be built without the OSSP library on some
+           platforms. On FreeBSD and some other BSD-derived platforms, suitable
+           UUID creation functions are included in the core libc library. On
+           Linux, macOS, and some other platforms, suitable functions are provided
+           in the libuuid library, which originally came from the e2fsprogs
+           project (though on modern Linux it is considered part of
+           util-linux-ng). When invoking configure, specify --with-uuid=bsd to use
+           the BSD functions, or --with-uuid=e2fs to use e2fsprogs' libuuid, or
+           --with-uuid=ossp to use the OSSP UUID library. More than one of these
+           libraries might be available on a particular machine, so configure does
+           not automatically choose one.
+
+        F.46.3. Author
+
+           Peter Eisentraut <[15]peter_e@gmx.net>
+             __________________________________________________________________
+
+           [16]Prev         [17]Up     [18]Next
+           F.45. unaccent  [19]Home  F.47. xml2
+
+
+        ```
 pgVersions:
-  - "15"
+- '16'
+- '15'
+- '14'
 buildDependencies:
-  - uuid-dev
-readme: |
-  For formatted documentation, please see https://www.postgresql.org/docs/15/uuid-ossp.html.
-  
-  ```
-     #F.48. unaccent F.50. xml2
-  
-                                F.49. uuid-ossp
-     Prev  Up Appendix F. Additional Supplied Modules Home  Next
-       __________________________________________________________________
-  
-  F.49. uuid-ossp
-  
-     F.49.1. uuid-ossp Functions
-     F.49.2. Building uuid-ossp
-     F.49.3. Author
-  
-     The uuid-ossp module provides functions to generate universally unique
-     identifiers (UUIDs) using one of several standard algorithms. There are
-     also functions to produce certain special UUID constants. This module
-     is only necessary for special requirements beyond what is available in
-     core PostgreSQL. See Section 9.14 for built-in ways to generate
-     UUIDs.
-  
-     This module is considered "trusted", that is, it can be installed by
-     non-superusers who have CREATE privilege on the current database.
-  
-  F.49.1. uuid-ossp Functions
-  
-     Table F.32 shows the functions available to generate UUIDs. The
-     relevant standards ITU-T Rec. X.667, ISO/IEC 9834-8:2005, and RFC
-     4122 specify four algorithms for generating UUIDs, identified by the
-     version numbers 1, 3, 4, and 5. (There is no version 2 algorithm.) Each
-     of these algorithms could be suitable for a different set of
-     applications.
-  
-     Table F.32. Functions for UUID Generation
-  
-     Function
-  
-     Description
-  
-     uuid_generate_v1 () -> uuid
-  
-     Generates a version 1 UUID. This involves the MAC address of the
-     computer and a time stamp. Note that UUIDs of this kind reveal the
-     identity of the computer that created the identifier and the time at
-     which it did so, which might make it unsuitable for certain
-     security-sensitive applications.
-  
-     uuid_generate_v1mc () -> uuid
-  
-     Generates a version 1 UUID, but uses a random multicast MAC address
-     instead of the real MAC address of the computer.
-  
-     uuid_generate_v3 ( namespace uuid, name text ) -> uuid
-  
-     Generates a version 3 UUID in the given namespace using the specified
-     input name. The namespace should be one of the special constants
-     produced by the uuid_ns_*() functions shown in Table F.33. (It
-     could be any UUID in theory.) The name is an identifier in the selected
-     namespace.
-  
-     For example:
-  SELECT uuid_generate_v3(uuid_ns_url(), 'http://www.postgresql.org');
-  
-     The name parameter will be MD5-hashed, so the cleartext cannot be
-     derived from the generated UUID. The generation of UUIDs by this method
-     has no random or environment-dependent element and is therefore
-     reproducible.
-  
-     uuid_generate_v4 () -> uuid
-  
-     Generates a version 4 UUID, which is derived entirely from random
-     numbers.
-  
-     uuid_generate_v5 ( namespace uuid, name text ) -> uuid
-  
-     Generates a version 5 UUID, which works like a version 3 UUID except
-     that SHA-1 is used as a hashing method. Version 5 should be preferred
-     over version 3 because SHA-1 is thought to be more secure than MD5.
-  
-     Table F.33. Functions Returning UUID Constants
-  
-     Function
-  
-     Description
-  
-     uuid_nil () -> uuid
-  
-     Returns a "nil" UUID constant, which does not occur as a real UUID.
-  
-     uuid_ns_dns () -> uuid
-  
-     Returns a constant designating the DNS namespace for UUIDs.
-  
-     uuid_ns_url () -> uuid
-  
-     Returns a constant designating the URL namespace for UUIDs.
-  
-     uuid_ns_oid () -> uuid
-  
-     Returns a constant designating the ISO object identifier (OID)
-     namespace for UUIDs. (This pertains to ASN.1 OIDs, which are unrelated
-     to the OIDs used in PostgreSQL.)
-  
-     uuid_ns_x500 () -> uuid
-  
-     Returns a constant designating the X.500 distinguished name (DN)
-     namespace for UUIDs.
-  
-  F.49.2. Building uuid-ossp
-  
-     Historically this module depended on the OSSP UUID library, which
-     accounts for the module's name. While the OSSP UUID library can still
-     be found at http://www.ossp.org/pkg/lib/uuid/, it is not well
-     maintained, and is becoming increasingly difficult to port to newer
-     platforms. uuid-ossp can now be built without the OSSP library on some
-     platforms. On FreeBSD and some other BSD-derived platforms, suitable
-     UUID creation functions are included in the core libc library. On
-     Linux, macOS, and some other platforms, suitable functions are provided
-     in the libuuid library, which originally came from the e2fsprogs
-     project (though on modern Linux it is considered part of
-     util-linux-ng). When invoking configure, specify --with-uuid=bsd to use
-     the BSD functions, or --with-uuid=e2fs to use e2fsprogs' libuuid, or
-     --with-uuid=ossp to use the OSSP UUID library. More than one of these
-     libraries might be available on a particular machine, so configure does
-     not automatically choose one.
-  
-  F.49.3. Author
-  
-     Peter Eisentraut <peter_e@gmx.net>
-       __________________________________________________________________
-  
-     Prev         Up     Next
-     F.48. unaccent  Home  F.50. xml2
-  
-  ```
+- uuid-dev
