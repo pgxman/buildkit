@@ -1,165 +1,614 @@
+---
 apiVersion: v1
 name: sslinfo
-version: "15.5.0"
-homepage: https://www.postgresql.org/docs/15/sslinfo.html
 repository: https://github.com/postgres/postgres
-source: https://ftp.postgresql.org/pub/source/v15.5/postgresql-15.5.tar.gz
 description: information about SSL certificates
 license: PostgreSQL
 arch:
-  - amd64
-  - arm64
+- amd64
+- arm64
 maintainers:
-  - name: Jonathan Dance
-    email: jd@hydra.so
+- name: Jonathan Dance
+  email: jd@hydra.so
+- name: Owen Ou
+  email: o@hydra.so
 build:
   main:
-    - name: Build sslinfo
-      run: |
-        cd contrib/sslinfo
-        make
-        DESTDIR=${DESTDIR} make install
+  - name: Build sslinfo
+    run: |
+      cd contrib/sslinfo
+      make
+      DESTDIR=${DESTDIR} make install
+overrides:
+  pgVersions:
+    '16':
+      source: https://ftp.postgresql.org/pub/source/v16.1/postgresql-16.1.tar.gz
+      version: 16.1.0
+      homepage: https://www.postgresql.org/docs/16/sslinfo.html
+      readme: |
+        For formatted documentation, please see https://www.postgresql.org/docs/16/sslinfo.html.
+
+        ```
+           #[1]F.41. spi -- Server Programming Interface features/examples
+           [2]F.43. tablefunc -- functions that return tables (crosstab and
+           others)
+
+           F.42. sslinfo -- obtain client SSL information
+           [3]Prev  [4]Up Appendix F. Additional Supplied Modules and Extensions
+           [5]Home  [6]Next
+             __________________________________________________________________
+
+        F.42. sslinfo -- obtain client SSL information [7]#
+
+           [8]F.42.1. Functions Provided
+           [9]F.42.2. Author
+
+           The sslinfo module provides information about the SSL certificate that
+           the current client provided when connecting to PostgreSQL. The module
+           is useless (most functions will return NULL) if the current connection
+           does not use SSL.
+
+           Some of the information available through this module can also be
+           obtained using the built-in system view [10]pg_stat_ssl.
+
+           This extension won't build at all unless the installation was
+           configured with --with-ssl=openssl.
+
+        F.42.1. Functions Provided [11]#
+
+           ssl_is_used() returns boolean
+                  Returns true if current connection to server uses SSL, and false
+                  otherwise.
+
+           ssl_version() returns text
+                  Returns the name of the protocol used for the SSL connection
+                  (e.g., TLSv1.0, TLSv1.1, TLSv1.2 or TLSv1.3).
+
+           ssl_cipher() returns text
+                  Returns the name of the cipher used for the SSL connection
+                  (e.g., DHE-RSA-AES256-SHA).
+
+           ssl_client_cert_present() returns boolean
+                  Returns true if current client has presented a valid SSL client
+                  certificate to the server, and false otherwise. (The server
+                  might or might not be configured to require a client
+                  certificate.)
+
+           ssl_client_serial() returns numeric
+                  Returns serial number of current client certificate. The
+                  combination of certificate serial number and certificate issuer
+                  is guaranteed to uniquely identify a certificate (but not its
+                  owner -- the owner ought to regularly change their keys, and get
+                  new certificates from the issuer).
+
+                  So, if you run your own CA and allow only certificates from this
+                  CA to be accepted by the server, the serial number is the most
+                  reliable (albeit not very mnemonic) means to identify a user.
+
+           ssl_client_dn() returns text
+                  Returns the full subject of the current client certificate,
+                  converting character data into the current database encoding. It
+                  is assumed that if you use non-ASCII characters in the
+                  certificate names, your database is able to represent these
+                  characters, too. If your database uses the SQL_ASCII encoding,
+                  non-ASCII characters in the name will be represented as UTF-8
+                  sequences.
+
+                  The result looks like /CN=Somebody /C=Some country/O=Some
+                  organization.
+
+           ssl_issuer_dn() returns text
+                  Returns the full issuer name of the current client certificate,
+                  converting character data into the current database encoding.
+                  Encoding conversions are handled the same as for ssl_client_dn.
+
+                  The combination of the return value of this function with the
+                  certificate serial number uniquely identifies the certificate.
+
+                  This function is really useful only if you have more than one
+                  trusted CA certificate in your server's certificate authority
+                  file, or if this CA has issued some intermediate certificate
+                  authority certificates.
+
+           ssl_client_dn_field(fieldname text) returns text
+                  This function returns the value of the specified field in the
+                  certificate subject, or NULL if the field is not present. Field
+                  names are string constants that are converted into ASN1 object
+                  identifiers using the OpenSSL object database. The following
+                  values are acceptable:
+
+        commonName (alias CN)
+        surname (alias SN)
+        name
+        givenName (alias GN)
+        countryName (alias C)
+        localityName (alias L)
+        stateOrProvinceName (alias ST)
+        organizationName (alias O)
+        organizationalUnitName (alias OU)
+        title
+        description
+        initials
+        postalCode
+        streetAddress
+        generationQualifier
+        description
+        dnQualifier
+        x500UniqueIdentifier
+        pseudonym
+        role
+        emailAddress
+
+                  All of these fields are optional, except commonName. It depends
+                  entirely on your CA's policy which of them would be included and
+                  which wouldn't. The meaning of these fields, however, is
+                  strictly defined by the X.500 and X.509 standards, so you cannot
+                  just assign arbitrary meaning to them.
+
+           ssl_issuer_field(fieldname text) returns text
+                  Same as ssl_client_dn_field, but for the certificate issuer
+                  rather than the certificate subject.
+
+           ssl_extension_info() returns setof record
+                  Provide information about extensions of client certificate:
+                  extension name, extension value, and if it is a critical
+                  extension.
+
+        F.42.2. Author [12]#
+
+           Victor Wagner <[13]vitus@cryptocom.ru>, Cryptocom LTD
+
+           Dmitry Voronin <[14]carriingfate92@yandex.ru>
+
+           E-Mail of Cryptocom OpenSSL development group:
+           <[15]openssl@cryptocom.ru>
+             __________________________________________________________________
+
+         [16]Prev                                                      [17]Up   [18]Next
+         F.41. spi -- Server Programming Interface features/examples  [19]Home
+           F.43. tablefunc -- functions that return tables (crosstab and others)
+
+
+        ```
+    '15':
+      source: https://ftp.postgresql.org/pub/source/v15.5/postgresql-15.5.tar.gz
+      version: 15.5.0
+      homepage: https://www.postgresql.org/docs/15/sslinfo.html
+      readme: |
+        For formatted documentation, please see https://www.postgresql.org/docs/15/sslinfo.html.
+
+        ```
+           #[1]F.41. spi [2]F.43. tablefunc
+
+                                       F.42. sslinfo
+           [3]Prev  [4]Up Appendix F. Additional Supplied Modules [5]Home  [6]Next
+             __________________________________________________________________
+
+        F.42. sslinfo
+
+           [7]F.42.1. Functions Provided
+           [8]F.42.2. Author
+
+           The sslinfo module provides information about the SSL certificate that
+           the current client provided when connecting to PostgreSQL. The module
+           is useless (most functions will return NULL) if the current connection
+           does not use SSL.
+
+           Some of the information available through this module can also be
+           obtained using the built-in system view [9]pg_stat_ssl.
+
+           This extension won't build at all unless the installation was
+           configured with --with-ssl=openssl.
+
+        F.42.1. Functions Provided
+
+           ssl_is_used() returns boolean
+                  Returns true if current connection to server uses SSL, and false
+                  otherwise.
+
+           ssl_version() returns text
+                  Returns the name of the protocol used for the SSL connection
+                  (e.g., TLSv1.0, TLSv1.1, TLSv1.2 or TLSv1.3).
+
+           ssl_cipher() returns text
+                  Returns the name of the cipher used for the SSL connection
+                  (e.g., DHE-RSA-AES256-SHA).
+
+           ssl_client_cert_present() returns boolean
+                  Returns true if current client has presented a valid SSL client
+                  certificate to the server, and false otherwise. (The server
+                  might or might not be configured to require a client
+                  certificate.)
+
+           ssl_client_serial() returns numeric
+                  Returns serial number of current client certificate. The
+                  combination of certificate serial number and certificate issuer
+                  is guaranteed to uniquely identify a certificate (but not its
+                  owner -- the owner ought to regularly change their keys, and get
+                  new certificates from the issuer).
+
+                  So, if you run your own CA and allow only certificates from this
+                  CA to be accepted by the server, the serial number is the most
+                  reliable (albeit not very mnemonic) means to identify a user.
+
+           ssl_client_dn() returns text
+                  Returns the full subject of the current client certificate,
+                  converting character data into the current database encoding. It
+                  is assumed that if you use non-ASCII characters in the
+                  certificate names, your database is able to represent these
+                  characters, too. If your database uses the SQL_ASCII encoding,
+                  non-ASCII characters in the name will be represented as UTF-8
+                  sequences.
+
+                  The result looks like /CN=Somebody /C=Some country/O=Some
+                  organization.
+
+           ssl_issuer_dn() returns text
+                  Returns the full issuer name of the current client certificate,
+                  converting character data into the current database encoding.
+                  Encoding conversions are handled the same as for ssl_client_dn.
+
+                  The combination of the return value of this function with the
+                  certificate serial number uniquely identifies the certificate.
+
+                  This function is really useful only if you have more than one
+                  trusted CA certificate in your server's certificate authority
+                  file, or if this CA has issued some intermediate certificate
+                  authority certificates.
+
+           ssl_client_dn_field(fieldname text) returns text
+                  This function returns the value of the specified field in the
+                  certificate subject, or NULL if the field is not present. Field
+                  names are string constants that are converted into ASN1 object
+                  identifiers using the OpenSSL object database. The following
+                  values are acceptable:
+
+        commonName (alias CN)
+        surname (alias SN)
+        name
+        givenName (alias GN)
+        countryName (alias C)
+        localityName (alias L)
+        stateOrProvinceName (alias ST)
+        organizationName (alias O)
+        organizationalUnitName (alias OU)
+        title
+        description
+        initials
+        postalCode
+        streetAddress
+        generationQualifier
+        description
+        dnQualifier
+        x500UniqueIdentifier
+        pseudonym
+        role
+        emailAddress
+
+                  All of these fields are optional, except commonName. It depends
+                  entirely on your CA's policy which of them would be included and
+                  which wouldn't. The meaning of these fields, however, is
+                  strictly defined by the X.500 and X.509 standards, so you cannot
+                  just assign arbitrary meaning to them.
+
+           ssl_issuer_field(fieldname text) returns text
+                  Same as ssl_client_dn_field, but for the certificate issuer
+                  rather than the certificate subject.
+
+           ssl_extension_info() returns setof record
+                  Provide information about extensions of client certificate:
+                  extension name, extension value, and if it is a critical
+                  extension.
+
+        F.42.2. Author
+
+           Victor Wagner <[10]vitus@cryptocom.ru>, Cryptocom LTD
+
+           Dmitry Voronin <[11]carriingfate92@yandex.ru>
+
+           E-Mail of Cryptocom OpenSSL development group:
+           <[12]openssl@cryptocom.ru>
+             __________________________________________________________________
+
+           [13]Prev    [14]Up          [15]Next
+           F.41. spi  [16]Home  F.43. tablefunc
+
+
+        ```
+    '14':
+      source: https://ftp.postgresql.org/pub/source/v14.9/postgresql-14.9.tar.gz
+      version: 14.9.0
+      homepage: https://www.postgresql.org/docs/14/sslinfo.html
+      readme: |
+        For formatted documentation, please see https://www.postgresql.org/docs/14/sslinfo.html.
+
+        ```
+           #[1]F.38. spi [2]F.40. tablefunc
+
+                                       F.39. sslinfo
+           [3]Prev  [4]Up Appendix F. Additional Supplied Modules [5]Home  [6]Next
+             __________________________________________________________________
+
+        F.39. sslinfo
+
+           [7]F.39.1. Functions Provided
+           [8]F.39.2. Author
+
+           The sslinfo module provides information about the SSL certificate that
+           the current client provided when connecting to PostgreSQL. The module
+           is useless (most functions will return NULL) if the current connection
+           does not use SSL.
+
+           Some of the information available through this module can also be
+           obtained using the built-in system view [9]pg_stat_ssl.
+
+           This extension won't build at all unless the installation was
+           configured with --with-ssl=openssl.
+
+        F.39.1. Functions Provided
+
+           ssl_is_used() returns boolean
+                  Returns true if current connection to server uses SSL, and false
+                  otherwise.
+
+           ssl_version() returns text
+                  Returns the name of the protocol used for the SSL connection
+                  (e.g., TLSv1.0, TLSv1.1, TLSv1.2 or TLSv1.3).
+
+           ssl_cipher() returns text
+                  Returns the name of the cipher used for the SSL connection
+                  (e.g., DHE-RSA-AES256-SHA).
+
+           ssl_client_cert_present() returns boolean
+                  Returns true if current client has presented a valid SSL client
+                  certificate to the server, and false otherwise. (The server
+                  might or might not be configured to require a client
+                  certificate.)
+
+           ssl_client_serial() returns numeric
+                  Returns serial number of current client certificate. The
+                  combination of certificate serial number and certificate issuer
+                  is guaranteed to uniquely identify a certificate (but not its
+                  owner -- the owner ought to regularly change their keys, and get
+                  new certificates from the issuer).
+
+                  So, if you run your own CA and allow only certificates from this
+                  CA to be accepted by the server, the serial number is the most
+                  reliable (albeit not very mnemonic) means to identify a user.
+
+           ssl_client_dn() returns text
+                  Returns the full subject of the current client certificate,
+                  converting character data into the current database encoding. It
+                  is assumed that if you use non-ASCII characters in the
+                  certificate names, your database is able to represent these
+                  characters, too. If your database uses the SQL_ASCII encoding,
+                  non-ASCII characters in the name will be represented as UTF-8
+                  sequences.
+
+                  The result looks like /CN=Somebody /C=Some country/O=Some
+                  organization.
+
+           ssl_issuer_dn() returns text
+                  Returns the full issuer name of the current client certificate,
+                  converting character data into the current database encoding.
+                  Encoding conversions are handled the same as for ssl_client_dn.
+
+                  The combination of the return value of this function with the
+                  certificate serial number uniquely identifies the certificate.
+
+                  This function is really useful only if you have more than one
+                  trusted CA certificate in your server's certificate authority
+                  file, or if this CA has issued some intermediate certificate
+                  authority certificates.
+
+           ssl_client_dn_field(fieldname text) returns text
+                  This function returns the value of the specified field in the
+                  certificate subject, or NULL if the field is not present. Field
+                  names are string constants that are converted into ASN1 object
+                  identifiers using the OpenSSL object database. The following
+                  values are acceptable:
+
+        commonName (alias CN)
+        surname (alias SN)
+        name
+        givenName (alias GN)
+        countryName (alias C)
+        localityName (alias L)
+        stateOrProvinceName (alias ST)
+        organizationName (alias O)
+        organizationalUnitName (alias OU)
+        title
+        description
+        initials
+        postalCode
+        streetAddress
+        generationQualifier
+        description
+        dnQualifier
+        x500UniqueIdentifier
+        pseudonym
+        role
+        emailAddress
+
+                  All of these fields are optional, except commonName. It depends
+                  entirely on your CA's policy which of them would be included and
+                  which wouldn't. The meaning of these fields, however, is
+                  strictly defined by the X.500 and X.509 standards, so you cannot
+                  just assign arbitrary meaning to them.
+
+           ssl_issuer_field(fieldname text) returns text
+                  Same as ssl_client_dn_field, but for the certificate issuer
+                  rather than the certificate subject.
+
+           ssl_extension_info() returns setof record
+                  Provide information about extensions of client certificate:
+                  extension name, extension value, and if it is a critical
+                  extension.
+
+        F.39.2. Author
+
+           Victor Wagner <[10]vitus@cryptocom.ru>, Cryptocom LTD
+
+           Dmitry Voronin <[11]carriingfate92@yandex.ru>
+
+           E-Mail of Cryptocom OpenSSL development group:
+           <[12]openssl@cryptocom.ru>
+             __________________________________________________________________
+
+           [13]Prev    [14]Up          [15]Next
+           F.38. spi  [16]Home  F.40. tablefunc
+
+
+        ```
+    '13':
+      source: https://ftp.postgresql.org/pub/source/v13.9/postgresql-13.9.tar.gz
+      version: 13.9.0
+      homepage: https://www.postgresql.org/docs/13/sslinfo.html
+      readme: |
+        For formatted documentation, please see https://www.postgresql.org/docs/13/sslinfo.html.
+
+        ```
+           #[1]F.36. spi [2]F.38. tablefunc
+
+                                       F.37. sslinfo
+           [3]Prev  [4]Up Appendix F. Additional Supplied Modules [5]Home  [6]Next
+             __________________________________________________________________
+
+        F.37. sslinfo
+
+           [7]F.37.1. Functions Provided
+           [8]F.37.2. Author
+
+           The sslinfo module provides information about the SSL certificate that
+           the current client provided when connecting to PostgreSQL. The module
+           is useless (most functions will return NULL) if the current connection
+           does not use SSL.
+
+           Some of the information available through this module can also be
+           obtained using the built-in system view [9]pg_stat_ssl.
+
+           This extension won't build at all unless the installation was
+           configured with --with-openssl.
+
+        F.37.1. Functions Provided
+
+           ssl_is_used() returns boolean
+                  Returns true if current connection to server uses SSL, and false
+                  otherwise.
+
+           ssl_version() returns text
+                  Returns the name of the protocol used for the SSL connection
+                  (e.g., TLSv1.0, TLSv1.1, or TLSv1.2).
+
+           ssl_cipher() returns text
+                  Returns the name of the cipher used for the SSL connection
+                  (e.g., DHE-RSA-AES256-SHA).
+
+           ssl_client_cert_present() returns boolean
+                  Returns true if current client has presented a valid SSL client
+                  certificate to the server, and false otherwise. (The server
+                  might or might not be configured to require a client
+                  certificate.)
+
+           ssl_client_serial() returns numeric
+                  Returns serial number of current client certificate. The
+                  combination of certificate serial number and certificate issuer
+                  is guaranteed to uniquely identify a certificate (but not its
+                  owner -- the owner ought to regularly change their keys, and get
+                  new certificates from the issuer).
+
+                  So, if you run your own CA and allow only certificates from this
+                  CA to be accepted by the server, the serial number is the most
+                  reliable (albeit not very mnemonic) means to identify a user.
+
+           ssl_client_dn() returns text
+                  Returns the full subject of the current client certificate,
+                  converting character data into the current database encoding. It
+                  is assumed that if you use non-ASCII characters in the
+                  certificate names, your database is able to represent these
+                  characters, too. If your database uses the SQL_ASCII encoding,
+                  non-ASCII characters in the name will be represented as UTF-8
+                  sequences.
+
+                  The result looks like /CN=Somebody /C=Some country/O=Some
+                  organization.
+
+           ssl_issuer_dn() returns text
+                  Returns the full issuer name of the current client certificate,
+                  converting character data into the current database encoding.
+                  Encoding conversions are handled the same as for ssl_client_dn.
+
+                  The combination of the return value of this function with the
+                  certificate serial number uniquely identifies the certificate.
+
+                  This function is really useful only if you have more than one
+                  trusted CA certificate in your server's certificate authority
+                  file, or if this CA has issued some intermediate certificate
+                  authority certificates.
+
+           ssl_client_dn_field(fieldname text) returns text
+                  This function returns the value of the specified field in the
+                  certificate subject, or NULL if the field is not present. Field
+                  names are string constants that are converted into ASN1 object
+                  identifiers using the OpenSSL object database. The following
+                  values are acceptable:
+
+        commonName (alias CN)
+        surname (alias SN)
+        name
+        givenName (alias GN)
+        countryName (alias C)
+        localityName (alias L)
+        stateOrProvinceName (alias ST)
+        organizationName (alias O)
+        organizationalUnitName (alias OU)
+        title
+        description
+        initials
+        postalCode
+        streetAddress
+        generationQualifier
+        description
+        dnQualifier
+        x500UniqueIdentifier
+        pseudonym
+        role
+        emailAddress
+
+                  All of these fields are optional, except commonName. It depends
+                  entirely on your CA's policy which of them would be included and
+                  which wouldn't. The meaning of these fields, however, is
+                  strictly defined by the X.500 and X.509 standards, so you cannot
+                  just assign arbitrary meaning to them.
+
+           ssl_issuer_field(fieldname text) returns text
+                  Same as ssl_client_dn_field, but for the certificate issuer
+                  rather than the certificate subject.
+
+           ssl_extension_info() returns setof record
+                  Provide information about extensions of client certificate:
+                  extension name, extension value, and if it is a critical
+                  extension.
+
+        F.37.2. Author
+
+           Victor Wagner <[10]vitus@cryptocom.ru>, Cryptocom LTD
+
+           Dmitry Voronin <[11]carriingfate92@yandex.ru>
+
+           E-Mail of Cryptocom OpenSSL development group:
+           <[12]openssl@cryptocom.ru>
+             __________________________________________________________________
+
+           [13]Prev    [14]Up          [15]Next
+           F.36. spi  [16]Home  F.38. tablefunc
+
+
+        ```
 pgVersions:
-  - "15"
+- '16'
+- '15'
+- '14'
+- '13'
 buildDependencies:
-  - libkrb5-dev
-readme: |
-  For formatted documentation, please see https://www.postgresql.org/docs/15/sslinfo.html.
-  
-  ```
-     #F.41. spi F.43. tablefunc
-  
-                                 F.42. sslinfo
-     Prev  Up Appendix F. Additional Supplied Modules Home  Next
-       __________________________________________________________________
-  
-  F.42. sslinfo
-  
-     F.42.1. Functions Provided
-     F.42.2. Author
-  
-     The sslinfo module provides information about the SSL certificate that
-     the current client provided when connecting to PostgreSQL. The module
-     is useless (most functions will return NULL) if the current connection
-     does not use SSL.
-  
-     Some of the information available through this module can also be
-     obtained using the built-in system view pg_stat_ssl.
-  
-     This extension won't build at all unless the installation was
-     configured with --with-ssl=openssl.
-  
-  F.42.1. Functions Provided
-  
-     ssl_is_used() returns boolean
-            Returns true if current connection to server uses SSL, and false
-            otherwise.
-  
-     ssl_version() returns text
-            Returns the name of the protocol used for the SSL connection
-            (e.g., TLSv1.0, TLSv1.1, TLSv1.2 or TLSv1.3).
-  
-     ssl_cipher() returns text
-            Returns the name of the cipher used for the SSL connection
-            (e.g., DHE-RSA-AES256-SHA).
-  
-     ssl_client_cert_present() returns boolean
-            Returns true if current client has presented a valid SSL client
-            certificate to the server, and false otherwise. (The server
-            might or might not be configured to require a client
-            certificate.)
-  
-     ssl_client_serial() returns numeric
-            Returns serial number of current client certificate. The
-            combination of certificate serial number and certificate issuer
-            is guaranteed to uniquely identify a certificate (but not its
-            owner -- the owner ought to regularly change their keys, and get
-            new certificates from the issuer).
-  
-            So, if you run your own CA and allow only certificates from this
-            CA to be accepted by the server, the serial number is the most
-            reliable (albeit not very mnemonic) means to identify a user.
-  
-     ssl_client_dn() returns text
-            Returns the full subject of the current client certificate,
-            converting character data into the current database encoding. It
-            is assumed that if you use non-ASCII characters in the
-            certificate names, your database is able to represent these
-            characters, too. If your database uses the SQL_ASCII encoding,
-            non-ASCII characters in the name will be represented as UTF-8
-            sequences.
-  
-            The result looks like /CN=Somebody /C=Some country/O=Some
-            organization.
-  
-     ssl_issuer_dn() returns text
-            Returns the full issuer name of the current client certificate,
-            converting character data into the current database encoding.
-            Encoding conversions are handled the same as for ssl_client_dn.
-  
-            The combination of the return value of this function with the
-            certificate serial number uniquely identifies the certificate.
-  
-            This function is really useful only if you have more than one
-            trusted CA certificate in your server's certificate authority
-            file, or if this CA has issued some intermediate certificate
-            authority certificates.
-  
-     ssl_client_dn_field(fieldname text) returns text
-            This function returns the value of the specified field in the
-            certificate subject, or NULL if the field is not present. Field
-            names are string constants that are converted into ASN1 object
-            identifiers using the OpenSSL object database. The following
-            values are acceptable:
-  
-  commonName (alias CN)
-  surname (alias SN)
-  name
-  givenName (alias GN)
-  countryName (alias C)
-  localityName (alias L)
-  stateOrProvinceName (alias ST)
-  organizationName (alias O)
-  organizationalUnitName (alias OU)
-  title
-  description
-  initials
-  postalCode
-  streetAddress
-  generationQualifier
-  description
-  dnQualifier
-  x500UniqueIdentifier
-  pseudonym
-  role
-  emailAddress
-  
-            All of these fields are optional, except commonName. It depends
-            entirely on your CA's policy which of them would be included and
-            which wouldn't. The meaning of these fields, however, is
-            strictly defined by the X.500 and X.509 standards, so you cannot
-            just assign arbitrary meaning to them.
-  
-     ssl_issuer_field(fieldname text) returns text
-            Same as ssl_client_dn_field, but for the certificate issuer
-            rather than the certificate subject.
-  
-     ssl_extension_info() returns setof record
-            Provide information about extensions of client certificate:
-            extension name, extension value, and if it is a critical
-            extension.
-  
-  F.42.2. Author
-  
-     Victor Wagner <vitus@cryptocom.ru>, Cryptocom LTD
-  
-     Dmitry Voronin <carriingfate92@yandex.ru>
-  
-     E-Mail of Cryptocom OpenSSL development group:
-     <openssl@cryptocom.ru>
-       __________________________________________________________________
-  
-     Prev    Up          Next
-     F.41. spi  Home  F.43. tablefunc
-  
-  ```
+- libkrb5-dev

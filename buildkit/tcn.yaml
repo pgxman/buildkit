@@ -1,96 +1,347 @@
+---
 apiVersion: v1
 name: tcn
-version: "15.5.0"
-homepage: https://www.postgresql.org/docs/15/tcn.html
 repository: https://github.com/postgres/postgres
-source: https://ftp.postgresql.org/pub/source/v15.5/postgresql-15.5.tar.gz
 description: Triggered change notifications
 license: PostgreSQL
 arch:
-  - amd64
-  - arm64
+- amd64
+- arm64
 maintainers:
-  - name: Jonathan Dance
-    email: jd@hydra.so
+- name: Jonathan Dance
+  email: jd@hydra.so
+- name: Owen Ou
+  email: o@hydra.so
 build:
   main:
-    - name: Build tcn
-      run: |
-        cd contrib/tcn
-        make
-        DESTDIR=${DESTDIR} make install
+  - name: Build tcn
+    run: |
+      cd contrib/tcn
+      make
+      DESTDIR=${DESTDIR} make install
+overrides:
+  pgVersions:
+    '16':
+      source: https://ftp.postgresql.org/pub/source/v16.1/postgresql-16.1.tar.gz
+      version: 16.1.0
+      homepage: https://www.postgresql.org/docs/16/tcn.html
+      readme: |
+        For formatted documentation, please see https://www.postgresql.org/docs/16/tcn.html.
+
+        ```
+           #[1]F.43. tablefunc -- functions that return tables (crosstab and
+           others) [2]F.45. test_decoding -- SQL-based test/example module for WAL
+           logical decoding
+
+           F.44. tcn -- a trigger function to notify listeners of changes to table
+           content
+           [3]Prev  [4]Up Appendix F. Additional Supplied Modules and Extensions
+           [5]Home  [6]Next
+             __________________________________________________________________
+
+        F.44. tcn -- a trigger function to notify listeners of changes to table
+        content [7]#
+
+           The tcn module provides a trigger function that notifies listeners of
+           changes to any table on which it is attached. It must be used as an
+           AFTER trigger FOR EACH ROW.
+
+           This module is considered "trusted", that is, it can be installed by
+           non-superusers who have CREATE privilege on the current database.
+
+           Only one parameter may be supplied to the function in a CREATE TRIGGER
+           statement, and that is optional. If supplied it will be used for the
+           channel name for the notifications. If omitted tcn will be used for the
+           channel name.
+
+           The payload of the notifications consists of the table name, a letter
+           to indicate which type of operation was performed, and column
+           name/value pairs for primary key columns. Each part is separated from
+           the next by a comma. For ease of parsing using regular expressions,
+           table and column names are always wrapped in double quotes, and data
+           values are always wrapped in single quotes. Embedded quotes are
+           doubled.
+
+           A brief example of using the extension follows.
+        test=# create table tcndata
+        test-#   (
+        test(#     a int not null,
+        test(#     b date not null,
+        test(#     c text,
+        test(#     primary key (a, b)
+        test(#   );
+        CREATE TABLE
+        test=# create trigger tcndata_tcn_trigger
+        test-#   after insert or update or delete on tcndata
+        test-#   for each row execute function triggered_change_notification();
+        CREATE TRIGGER
+        test=# listen tcn;
+        LISTEN
+        test=# insert into tcndata values (1, date '2012-12-22', 'one'),
+        test-#                            (1, date '2012-12-23', 'another'),
+        test-#                            (2, date '2012-12-23', 'two');
+        INSERT 0 3
+        Asynchronous notification "tcn" with payload ""tcndata",I,"a"='1',"b"='2012-12-2
+        2'" received from server process with PID 22770.
+        Asynchronous notification "tcn" with payload ""tcndata",I,"a"='1',"b"='2012-12-2
+        3'" received from server process with PID 22770.
+        Asynchronous notification "tcn" with payload ""tcndata",I,"a"='2',"b"='2012-12-2
+        3'" received from server process with PID 22770.
+        test=# update tcndata set c = 'uno' where a = 1;
+        UPDATE 2
+        Asynchronous notification "tcn" with payload ""tcndata",U,"a"='1',"b"='2012-12-2
+        2'" received from server process with PID 22770.
+        Asynchronous notification "tcn" with payload ""tcndata",U,"a"='1',"b"='2012-12-2
+        3'" received from server process with PID 22770.
+        test=# delete from tcndata where a = 1 and b = date '2012-12-22';
+        DELETE 1
+        Asynchronous notification "tcn" with payload ""tcndata",D,"a"='1',"b"='2012-12-2
+        2'" received from server process with PID 22770.
+             __________________________________________________________________
+
+           [8]Prev  [9]Up  [10]Next
+           F.43. tablefunc -- functions that return tables (crosstab and others)
+           [11]Home  F.45. test_decoding -- SQL-based test/example module for WAL
+           logical decoding
+
+
+        ```
+    '15':
+      source: https://ftp.postgresql.org/pub/source/v15.5/postgresql-15.5.tar.gz
+      version: 15.5.0
+      homepage: https://www.postgresql.org/docs/15/tcn.html
+      readme: |
+        For formatted documentation, please see https://www.postgresql.org/docs/15/tcn.html.
+
+        ```
+           #[1]F.43. tablefunc [2]F.45. test_decoding
+
+                                         F.44. tcn
+           [3]Prev  [4]Up Appendix F. Additional Supplied Modules [5]Home  [6]Next
+             __________________________________________________________________
+
+        F.44. tcn
+
+           The tcn module provides a trigger function that notifies listeners of
+           changes to any table on which it is attached. It must be used as an
+           AFTER trigger FOR EACH ROW.
+
+           This module is considered "trusted", that is, it can be installed by
+           non-superusers who have CREATE privilege on the current database.
+
+           Only one parameter may be supplied to the function in a CREATE TRIGGER
+           statement, and that is optional. If supplied it will be used for the
+           channel name for the notifications. If omitted tcn will be used for the
+           channel name.
+
+           The payload of the notifications consists of the table name, a letter
+           to indicate which type of operation was performed, and column
+           name/value pairs for primary key columns. Each part is separated from
+           the next by a comma. For ease of parsing using regular expressions,
+           table and column names are always wrapped in double quotes, and data
+           values are always wrapped in single quotes. Embedded quotes are
+           doubled.
+
+           A brief example of using the extension follows.
+        test=# create table tcndata
+        test-#   (
+        test(#     a int not null,
+        test(#     b date not null,
+        test(#     c text,
+        test(#     primary key (a, b)
+        test(#   );
+        CREATE TABLE
+        test=# create trigger tcndata_tcn_trigger
+        test-#   after insert or update or delete on tcndata
+        test-#   for each row execute function triggered_change_notification();
+        CREATE TRIGGER
+        test=# listen tcn;
+        LISTEN
+        test=# insert into tcndata values (1, date '2012-12-22', 'one'),
+        test-#                            (1, date '2012-12-23', 'another'),
+        test-#                            (2, date '2012-12-23', 'two');
+        INSERT 0 3
+        Asynchronous notification "tcn" with payload ""tcndata",I,"a"='1',"b"='2012-12-2
+        2'" received from server process with PID 22770.
+        Asynchronous notification "tcn" with payload ""tcndata",I,"a"='1',"b"='2012-12-2
+        3'" received from server process with PID 22770.
+        Asynchronous notification "tcn" with payload ""tcndata",I,"a"='2',"b"='2012-12-2
+        3'" received from server process with PID 22770.
+        test=# update tcndata set c = 'uno' where a = 1;
+        UPDATE 2
+        Asynchronous notification "tcn" with payload ""tcndata",U,"a"='1',"b"='2012-12-2
+        2'" received from server process with PID 22770.
+        Asynchronous notification "tcn" with payload ""tcndata",U,"a"='1',"b"='2012-12-2
+        3'" received from server process with PID 22770.
+        test=# delete from tcndata where a = 1 and b = date '2012-12-22';
+        DELETE 1
+        Asynchronous notification "tcn" with payload ""tcndata",D,"a"='1',"b"='2012-12-2
+        2'" received from server process with PID 22770.
+             __________________________________________________________________
+
+           [7]Prev           [8]Up                [9]Next
+           F.43. tablefunc  [10]Home  F.45. test_decoding
+
+
+        ```
+    '14':
+      source: https://ftp.postgresql.org/pub/source/v14.9/postgresql-14.9.tar.gz
+      version: 14.9.0
+      homepage: https://www.postgresql.org/docs/14/tcn.html
+      readme: |
+        For formatted documentation, please see https://www.postgresql.org/docs/14/tcn.html.
+
+        ```
+           #[1]F.40. tablefunc [2]F.42. test_decoding
+
+                                         F.41. tcn
+           [3]Prev  [4]Up Appendix F. Additional Supplied Modules [5]Home  [6]Next
+             __________________________________________________________________
+
+        F.41. tcn
+
+           The tcn module provides a trigger function that notifies listeners of
+           changes to any table on which it is attached. It must be used as an
+           AFTER trigger FOR EACH ROW.
+
+           This module is considered "trusted", that is, it can be installed by
+           non-superusers who have CREATE privilege on the current database.
+
+           Only one parameter may be supplied to the function in a CREATE TRIGGER
+           statement, and that is optional. If supplied it will be used for the
+           channel name for the notifications. If omitted tcn will be used for the
+           channel name.
+
+           The payload of the notifications consists of the table name, a letter
+           to indicate which type of operation was performed, and column
+           name/value pairs for primary key columns. Each part is separated from
+           the next by a comma. For ease of parsing using regular expressions,
+           table and column names are always wrapped in double quotes, and data
+           values are always wrapped in single quotes. Embedded quotes are
+           doubled.
+
+           A brief example of using the extension follows.
+        test=# create table tcndata
+        test-#   (
+        test(#     a int not null,
+        test(#     b date not null,
+        test(#     c text,
+        test(#     primary key (a, b)
+        test(#   );
+        CREATE TABLE
+        test=# create trigger tcndata_tcn_trigger
+        test-#   after insert or update or delete on tcndata
+        test-#   for each row execute function triggered_change_notification();
+        CREATE TRIGGER
+        test=# listen tcn;
+        LISTEN
+        test=# insert into tcndata values (1, date '2012-12-22', 'one'),
+        test-#                            (1, date '2012-12-23', 'another'),
+        test-#                            (2, date '2012-12-23', 'two');
+        INSERT 0 3
+        Asynchronous notification "tcn" with payload ""tcndata",I,"a"='1',"b"='2012-12-2
+        2'" received from server process with PID 22770.
+        Asynchronous notification "tcn" with payload ""tcndata",I,"a"='1',"b"='2012-12-2
+        3'" received from server process with PID 22770.
+        Asynchronous notification "tcn" with payload ""tcndata",I,"a"='2',"b"='2012-12-2
+        3'" received from server process with PID 22770.
+        test=# update tcndata set c = 'uno' where a = 1;
+        UPDATE 2
+        Asynchronous notification "tcn" with payload ""tcndata",U,"a"='1',"b"='2012-12-2
+        2'" received from server process with PID 22770.
+        Asynchronous notification "tcn" with payload ""tcndata",U,"a"='1',"b"='2012-12-2
+        3'" received from server process with PID 22770.
+        test=# delete from tcndata where a = 1 and b = date '2012-12-22';
+        DELETE 1
+        Asynchronous notification "tcn" with payload ""tcndata",D,"a"='1',"b"='2012-12-2
+        2'" received from server process with PID 22770.
+             __________________________________________________________________
+
+           [7]Prev           [8]Up                [9]Next
+           F.40. tablefunc  [10]Home  F.42. test_decoding
+
+
+        ```
+    '13':
+      source: https://ftp.postgresql.org/pub/source/v13.9/postgresql-13.9.tar.gz
+      version: 13.9.0
+      homepage: https://www.postgresql.org/docs/13/tcn.html
+      readme: |
+        For formatted documentation, please see https://www.postgresql.org/docs/13/tcn.html.
+
+        ```
+           #[1]F.38. tablefunc [2]F.40. test_decoding
+
+                                         F.39. tcn
+           [3]Prev  [4]Up Appendix F. Additional Supplied Modules [5]Home  [6]Next
+             __________________________________________________________________
+
+        F.39. tcn
+
+           The tcn module provides a trigger function that notifies listeners of
+           changes to any table on which it is attached. It must be used as an
+           AFTER trigger FOR EACH ROW.
+
+           This module is considered "trusted", that is, it can be installed by
+           non-superusers who have CREATE privilege on the current database.
+
+           Only one parameter may be supplied to the function in a CREATE TRIGGER
+           statement, and that is optional. If supplied it will be used for the
+           channel name for the notifications. If omitted tcn will be used for the
+           channel name.
+
+           The payload of the notifications consists of the table name, a letter
+           to indicate which type of operation was performed, and column
+           name/value pairs for primary key columns. Each part is separated from
+           the next by a comma. For ease of parsing using regular expressions,
+           table and column names are always wrapped in double quotes, and data
+           values are always wrapped in single quotes. Embedded quotes are
+           doubled.
+
+           A brief example of using the extension follows.
+        test=# create table tcndata
+        test-#   (
+        test(#     a int not null,
+        test(#     b date not null,
+        test(#     c text,
+        test(#     primary key (a, b)
+        test(#   );
+        CREATE TABLE
+        test=# create trigger tcndata_tcn_trigger
+        test-#   after insert or update or delete on tcndata
+        test-#   for each row execute function triggered_change_notification();
+        CREATE TRIGGER
+        test=# listen tcn;
+        LISTEN
+        test=# insert into tcndata values (1, date '2012-12-22', 'one'),
+        test-#                            (1, date '2012-12-23', 'another'),
+        test-#                            (2, date '2012-12-23', 'two');
+        INSERT 0 3
+        Asynchronous notification "tcn" with payload ""tcndata",I,"a"='1',"b"='2012-12-2
+        2'" received from server process with PID 22770.
+        Asynchronous notification "tcn" with payload ""tcndata",I,"a"='1',"b"='2012-12-2
+        3'" received from server process with PID 22770.
+        Asynchronous notification "tcn" with payload ""tcndata",I,"a"='2',"b"='2012-12-2
+        3'" received from server process with PID 22770.
+        test=# update tcndata set c = 'uno' where a = 1;
+        UPDATE 2
+        Asynchronous notification "tcn" with payload ""tcndata",U,"a"='1',"b"='2012-12-2
+        2'" received from server process with PID 22770.
+        Asynchronous notification "tcn" with payload ""tcndata",U,"a"='1',"b"='2012-12-2
+        3'" received from server process with PID 22770.
+        test=# delete from tcndata where a = 1 and b = date '2012-12-22';
+        DELETE 1
+        Asynchronous notification "tcn" with payload ""tcndata",D,"a"='1',"b"='2012-12-2
+        2'" received from server process with PID 22770.
+             __________________________________________________________________
+
+           [7]Prev           [8]Up                [9]Next
+           F.38. tablefunc  [10]Home  F.40. test_decoding
+
+
+        ```
 pgVersions:
-  - "15"
-readme: |
-  For formatted documentation, please see https://www.postgresql.org/docs/15/tcn.html.
-  
-  ```
-     #F.43. tablefunc F.45. test_decoding
-  
-                                   F.44. tcn
-     Prev  Up Appendix F. Additional Supplied Modules Home  Next
-       __________________________________________________________________
-  
-  F.44. tcn
-  
-     The tcn module provides a trigger function that notifies listeners of
-     changes to any table on which it is attached. It must be used as an
-     AFTER trigger FOR EACH ROW.
-  
-     This module is considered "trusted", that is, it can be installed by
-     non-superusers who have CREATE privilege on the current database.
-  
-     Only one parameter may be supplied to the function in a CREATE TRIGGER
-     statement, and that is optional. If supplied it will be used for the
-     channel name for the notifications. If omitted tcn will be used for the
-     channel name.
-  
-     The payload of the notifications consists of the table name, a letter
-     to indicate which type of operation was performed, and column
-     name/value pairs for primary key columns. Each part is separated from
-     the next by a comma. For ease of parsing using regular expressions,
-     table and column names are always wrapped in double quotes, and data
-     values are always wrapped in single quotes. Embedded quotes are
-     doubled.
-  
-     A brief example of using the extension follows.
-  test=# create table tcndata
-  test-#   (
-  test(#     a int not null,
-  test(#     b date not null,
-  test(#     c text,
-  test(#     primary key (a, b)
-  test(#   );
-  CREATE TABLE
-  test=# create trigger tcndata_tcn_trigger
-  test-#   after insert or update or delete on tcndata
-  test-#   for each row execute function triggered_change_notification();
-  CREATE TRIGGER
-  test=# listen tcn;
-  LISTEN
-  test=# insert into tcndata values (1, date '2012-12-22', 'one'),
-  test-#                            (1, date '2012-12-23', 'another'),
-  test-#                            (2, date '2012-12-23', 'two');
-  INSERT 0 3
-  Asynchronous notification "tcn" with payload ""tcndata",I,"a"='1',"b"='2012-12-2
-  2'" received from server process with PID 22770.
-  Asynchronous notification "tcn" with payload ""tcndata",I,"a"='1',"b"='2012-12-2
-  3'" received from server process with PID 22770.
-  Asynchronous notification "tcn" with payload ""tcndata",I,"a"='2',"b"='2012-12-2
-  3'" received from server process with PID 22770.
-  test=# update tcndata set c = 'uno' where a = 1;
-  UPDATE 2
-  Asynchronous notification "tcn" with payload ""tcndata",U,"a"='1',"b"='2012-12-2
-  2'" received from server process with PID 22770.
-  Asynchronous notification "tcn" with payload ""tcndata",U,"a"='1',"b"='2012-12-2
-  3'" received from server process with PID 22770.
-  test=# delete from tcndata where a = 1 and b = date '2012-12-22';
-  DELETE 1
-  Asynchronous notification "tcn" with payload ""tcndata",D,"a"='1',"b"='2012-12-2
-  2'" received from server process with PID 22770.
-       __________________________________________________________________
-  
-     Prev           Up                Next
-     F.43. tablefunc  Home  F.45. test_decoding
-  
-  ```
+- '16'
+- '15'
+- '14'
+- '13'
