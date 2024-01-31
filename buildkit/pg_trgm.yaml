@@ -47,8 +47,8 @@ overrides:
         and Operators\n   [9]F.35.3. GUC Parameters\n   [10]F.35.4. Index Support\n
         \  [11]F.35.5. Text Search Integration\n   [12]F.35.6. \n```\n"
     '14':
-      source: https://ftp.postgresql.org/pub/source/v14.9/postgresql-14.9.tar.gz
-      version: 14.9.0
+      source: https://ftp.postgresql.org/pub/source/v14.10/postgresql-14.10.tar.gz
+      version: 14.10.0
       homepage: https://www.postgresql.org/docs/14/pgtrgm.html
       readme: "For formatted documentation, please see https://www.postgresql.org/docs/14/pgtrgm.html.\n\n```\n
         \  #[1]F.32. pg_surgery [2]F.34. pg_visibility\n\n                               F.33.
@@ -58,8 +58,8 @@ overrides:
         and Operators\n   [9]F.33.3. GUC Parameters\n   [10]F.33.4. Index Support\n
         \  [11]F.33.5. Text Search Integration\n   [12]F.33.6. \n```\n"
     '13':
-      source: https://ftp.postgresql.org/pub/source/v13.9/postgresql-13.9.tar.gz
-      version: 13.9.0
+      source: https://ftp.postgresql.org/pub/source/v13.13/postgresql-13.13.tar.gz
+      version: 13.13.0
       homepage: https://www.postgresql.org/docs/13/pgtrgm.html
       readme: "For formatted documentation, please see https://www.postgresql.org/docs/13/pgtrgm.html.\n\n```\n
         \  #[1]F.30. pgstattuple [2]F.32. pg_visibility\n\n                               F.31.

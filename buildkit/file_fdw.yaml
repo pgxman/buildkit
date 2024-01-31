@@ -347,8 +347,8 @@ overrides:
 
         ```
     '14':
-      source: https://ftp.postgresql.org/pub/source/v14.9/postgresql-14.9.tar.gz
-      version: 14.9.0
+      source: https://ftp.postgresql.org/pub/source/v14.10/postgresql-14.10.tar.gz
+      version: 14.10.0
       homepage: https://www.postgresql.org/docs/14/file-fdw.html
       readme: |
         For formatted documentation, please see https://www.postgresql.org/docs/14/file-fdw.html.
@@ -508,8 +508,8 @@ overrides:
 
         ```
     '13':
-      source: https://ftp.postgresql.org/pub/source/v13.9/postgresql-13.9.tar.gz
-      version: 13.9.0
+      source: https://ftp.postgresql.org/pub/source/v13.13/postgresql-13.13.tar.gz
+      version: 13.13.0
       homepage: https://www.postgresql.org/docs/13/file-fdw.html
       readme: |
         For formatted documentation, please see https://www.postgresql.org/docs/13/file-fdw.html.

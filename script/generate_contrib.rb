@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Usage: ruby script/generate_contrib.rb 16.1 15.5 14.9 13.9
+# Usage: ruby script/generate_contrib.rb 16.1 15.5 14.10 13.13
 
 require 'yaml'
 require 'fileutils'

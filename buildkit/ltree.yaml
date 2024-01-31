@@ -962,8 +962,8 @@ overrides:
 
         ```
     '14':
-      source: https://ftp.postgresql.org/pub/source/v14.9/postgresql-14.9.tar.gz
-      version: 14.9.0
+      source: https://ftp.postgresql.org/pub/source/v14.10/postgresql-14.10.tar.gz
+      version: 14.10.0
       homepage: https://www.postgresql.org/docs/14/ltree.html
       readme: |
         For formatted documentation, please see https://www.postgresql.org/docs/14/ltree.html.
@@ -1432,8 +1432,8 @@ overrides:
 
         ```
     '13':
-      source: https://ftp.postgresql.org/pub/source/v13.9/postgresql-13.9.tar.gz
-      version: 13.9.0
+      source: https://ftp.postgresql.org/pub/source/v13.13/postgresql-13.13.tar.gz
+      version: 13.13.0
       homepage: https://www.postgresql.org/docs/13/ltree.html
       readme: |
         For formatted documentation, please see https://www.postgresql.org/docs/13/ltree.html.
@@ -1736,10 +1736,10 @@ overrides:
                gist_ltree_ops GiST opclass approximates a set of path labels as a
                bitmap signature. Its optional integer parameter siglen determines
                the signature length in bytes. The default signature length is 8
-               bytes. Valid values of signature length are between 1 and 2024
-               bytes. Longer signatures lead to a more precise search (scanning a
-               smaller fraction of the index and fewer heap pages), at the cost of
-               a larger index.
+               bytes. The length must be a positive multiple of int alignment (4
+               bytes on most machines)) up to 2024. Longer signatures lead to a
+               more precise search (scanning a smaller fraction of the index and
+               fewer heap pages), at the cost of a larger index.
                Example of creating such an index with the default signature length
                of 8 bytes:
         CREATE INDEX path_gist_idx ON test USING GIST (path);
