@@ -24,3 +24,5 @@ version: 0.0.1
 arch:
   - amd64
   - arm64
+buildDependencies:
+  - unzip
