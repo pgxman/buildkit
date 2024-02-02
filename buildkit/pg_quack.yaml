@@ -15,7 +15,6 @@ maintainers:
   name: Jonathan Dance
 name: pg_quack
 pgVersions:
-- "13"
 - "14"
 - "15"
 - "16"
