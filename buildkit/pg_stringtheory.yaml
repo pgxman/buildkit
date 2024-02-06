@@ -1,9 +1,9 @@
 apiVersion: v1
 name: pg_stringtheory
-version: "1.0.0+1f52833"
+version: "1.0.1"
 homepage: https://github.com/hydradatabase/pg_stringtheory
 repository: https://github.com/hydradatabase/pg_stringtheory
-source: https://github.com/hydradatabase/pg_stringtheory/archive/1f52833.tar.gz
+source: https://github.com/hydradatabase/pg_stringtheory/archive/refs/tags/v1.0.1.tar.gz
 description: CPU-specific optimizations for substring and string equality
 license: PostgreSQL
 keywords:
