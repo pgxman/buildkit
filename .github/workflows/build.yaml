@@ -40,7 +40,7 @@ jobs:
         extension: ${{ fromJSON(needs.set_matrix.outputs.matrix) }}
         include:
           - arch: amd64
-            runs-on: ubuntu-latest
+            runs-on: buildjet-8vcpu-ubuntu-2204
           - arch: arm64
             runs-on: buildjet-16vcpu-ubuntu-2204-arm
     steps:
