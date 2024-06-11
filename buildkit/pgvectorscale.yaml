@@ -1,0 +1,34 @@
+apiVersion: v1
+name: pgvectorscale
+version: "0.2.0"
+homepage: https://github.com/timescale/pgvectorscale
+repository: https://github.com/timescale/pgvectorscale
+source: https://github.com/timescale/pgvectorscale/archive/refs/tags/0.2.0.tar.gz
+description: A complement to pgvector for high performance, cost efficient vector search on large workloads.
+license: PostgreSQL
+keywords:
+  - nearest neighbor search
+  - approximate nearest neighbor search
+arch:
+  - amd64
+  - arm64
+maintainers:
+  - name: Owen Ou
+    email: o@hydra.so
+build:
+  pre:
+    - name: Install pgrx
+      run: |
+        apt-get update && apt-get install -y libclang-dev libopenblas-dev
+        cargo install cargo-pgrx --version 0.11.4 --locked
+  main:
+    - name: Build pg_graphsql
+      run: |
+        cd pgvectorscale
+        cargo pgrx init --pg${PG_VERSION} ${PG_CONFIG}
+        RUSTFLAGS="-C target-feature=+avx2,+fma" cargo pgrx package --pg-config ${PG_CONFIG} --out-dir ${DESTDIR}
+runDependencies:
+  - pgxman/pgvector
+pgVersions:
+  - "15"
+  - "16"
