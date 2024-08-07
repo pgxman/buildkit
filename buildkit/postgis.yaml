@@ -52,3 +52,18 @@ builders:
         signedKey:
           url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
           format: asc
+  ubuntu:noble:
+    runDependencies:: *debRunDeps
+    aptRepositories:
+      - id: pgdg-noble
+        types:
+          - deb
+        uris:
+          - https://apt.postgresql.org/pub/repos/apt
+        suites:
+          - noble-pgdg
+        components:
+          - main
+        signedKey:
+          url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+          format: asc
