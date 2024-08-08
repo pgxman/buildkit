@@ -5,11 +5,13 @@ on:
       extensions:
         required: true
         type: string
+        description: 'A list of extensions to build in regex format'
   workflow_dispatch:
     inputs:
       extensions:
         required: true
         type: string
+        description: 'A list of extensions to build in regex format'
 jobs:
   set_matrix:
     name: Set Matrix

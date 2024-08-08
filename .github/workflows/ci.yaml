@@ -6,14 +6,14 @@ on:
   pull_request:
   workflow_call:
     inputs:
-      force_rebuild:
-        type: boolean
-        default: false
+      extensions:
+        type: string
+        description: 'A list of extensions to build in regex format, e.g. `.+` for all'
   workflow_dispatch:
     inputs:
-      force_rebuild:
-        type: boolean
-        default: false
+      extensions:
+        type: string
+        description: 'A list of extensions to build in regex format,  e.g. `.+` for all'
 jobs:
   detect_changed_extensions:
     name: Detect changed extensions
@@ -31,10 +31,11 @@ jobs:
       - id: detect-changed-files
         run: |
           changed_extensions=$(script/changed-extensions ${{ steps.changed-files.outputs.all_changed_files }})
-          if [ "${{ inputs.force_rebuild }}" = true ]; then
-            changed_extensions=".+"
+          input_extensions="${{ inputs.extensions }}"
+          if [ -n "$input_extensions" ]; then
+            changed_extensions="$input_extensions"
           fi
-          echo "$changed_extensions"
+          echo "Changed extensions: $changed_extensions"
           echo "changed_extensions=$changed_extensions" >> "$GITHUB_OUTPUT"
   build:
     name: Build Extensions

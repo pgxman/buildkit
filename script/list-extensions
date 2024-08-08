@@ -11,5 +11,5 @@ result=$(jq -nc '[ $ARGS.positional[] ]' --args ${arr[@]})
 if [ $# -eq 0 ]; then
     echo "$result"
 else
-    echo "$result" | jq -rcM "[.[] | select(.|test(\"^$1\$\"))]"
+    echo "$result" | jq -rcM "[.[] | select(.|test(\"^($1)\$\"))]"
 fi
