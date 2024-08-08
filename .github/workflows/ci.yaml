@@ -56,17 +56,10 @@ jobs:
       - uses: actions/checkout@v4
         with:
           path: buildkit
-      - uses: actions/checkout@v4
-        with:
-          repository: deb-s3/deb-s3
-          path: deb-s3
-          ref: ee4fb051073a8387c9d3d5275a41194b62942c83
       - name: Install deb-s3
         run: |
           gem install deb-s3
       - name: Install pgxman
-        env:
-          REPO: pgxman/pgxman
         run: |
           curl -sfL https://install.pgx.sh | sh -
       - name: Import GPG Key
