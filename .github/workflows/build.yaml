@@ -32,7 +32,6 @@ jobs:
     permissions:
       packages: write
     strategy:
-      fail-fast: true
       matrix:
         # NOTE: hard-coded supported arch for now
         # We may have `pgxman --supported-arches` in the future
@@ -42,9 +41,9 @@ jobs:
         extension: ${{ fromJSON(needs.set_matrix.outputs.matrix) }}
         include:
           - arch: amd64
-            runs-on: buildjet-8vcpu-ubuntu-2204
+            runs-on: buildjet-32vcpu-ubuntu-2204
           - arch: arm64
-            runs-on: buildjet-16vcpu-ubuntu-2204-arm
+            runs-on: buildjet-32vcpu-ubuntu-2204-arm
     steps:
       - uses: actions/checkout@v4
       - name: Set up Docker Buildx
@@ -59,8 +58,7 @@ jobs:
             --set "arch=[${{ matrix.arch }}]" \
             --cache-from "type=gha" \
             --cache-to "type=gha,mode=max" \
-            --parallel 1 \
-            --debug
+            --parallel 1
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:

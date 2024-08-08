@@ -20,15 +20,12 @@ maintainers:
 runDependencies:
   - pgxman/pg_partman
 build:
-  pre:
-    - name: Install pgrx
-      run: |
-        cargo install --locked cargo-pgrx --version 0.11.4
   main:
     - name: Build pgmq
       run: |
-        cargo pgrx init --pg${PG_VERSION} ${PG_CONFIG}
-        cargo pgrx package --pg-config ${PG_CONFIG} --out-dir ${DESTDIR}
+        cd pgmq-extension
+        make
+        DESTDIR=${DESTDIR} make install
 pgVersions:
   - "14"
   - "15"

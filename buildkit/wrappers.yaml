@@ -3,7 +3,7 @@ name: wrappers
 version: "0.2.0"
 homepage: https://supabase.github.io/wrappers
 repository: https://github.com/supabase/wrappers
-source: https://github.com/supabase/wrappers/archive/refs/tags/v0.2.0.tar.gz
+source: https://github.com/supabase/wrappers/archive/refs/tags/v0.4.1.tar.gz
 description: Postgres Foreign Data Wrappers
 license: Apache-2.0
 keywords:
@@ -31,7 +31,7 @@ build:
   pre:
     - name: Install pgrx
       run: |
-        cargo install --locked cargo-pgrx --version 0.11.0
+        cargo install --locked cargo-pgrx --version 0.11.3
   main:
     - name: Build s3_fdw
       run: |
