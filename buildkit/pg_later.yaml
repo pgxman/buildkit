@@ -1,9 +1,9 @@
 apiVersion: v1
 name: pg_later
-version: "0.0.12+87ad305"
+version: "0.1.1"
 homepage: https://github.com/tembo-io/pg_later
 repository: https://github.com/tembo-io/pg_later
-source: https://github.com/tembo-io/pg_later/archive/87ad305387a1fcdf84a4b05b1ff2ec90d64c0e88.tar.gz
+source: https://github.com/tembo-io/pg_later/archive/v0.1.1.tar.gz
 description: Execute SQL now and get the results later.
 license: PostgreSQL
 keywords:
@@ -18,20 +18,24 @@ maintainers:
     email: james@lovern.io
   - name: Owen Ou
     email: o@hydra.so
-buildDependencies:
-  - pgxman/pgmq
 runDependencies:
   - pgxman/pgmq
 build:
   pre:
     - name: Install pgrx
       run: |
-        cargo install --locked cargo-pgrx --version 0.11.2
+        cargo install --locked cargo-pgrx --version 0.11.4
   main:
     - name: Build pg_later
       run: |
         cargo pgrx init --pg${PG_VERSION} ${PG_CONFIG}
         cargo pgrx package --pg-config ${PG_CONFIG} --out-dir ${DESTDIR}
+builders:
+  debian:bookworm:
+    buildDependencies: &buildDeps
+      - pgxman/pgmq
+  ubuntu:jammy:
+    buildDependencies: *buildDeps
 pgVersions:
   - "14"
   - "15"
