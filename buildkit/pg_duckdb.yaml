@@ -3,37 +3,38 @@ name: pg_duckdb
 description: DuckDB-powered Postgres for high performance apps & analytics
 license: MIT
 keywords:
-- duckdb
-- analytics
-- embedded
+  - duckdb
+  - analytics
+  - embedded
 pgVersions:
-- "16"
+  - "16"
 repository: https://github.com/duckdb/pg_duckdb
-source: https://github.com/duckdb/pg_duckdb/archive/dd698a696340ab610e31c782ed0bf19e70fd7254.tar.gz
+source: https://github.com/duckdb/pg_duckdb/archive/dd698a696340ab610e31c782ed0bf19e70fd7254.tar.gz # The source is not used. TODO: support git:// protocol
 version: 0.1.0-pre+dd698a69
 arch:
   - amd64
   - arm64
 maintainers:
-- email: jd@hydra.so
-  name: Jonathan Dance
+  - email: jd@hydra.so
+    name: Jonathan Dance
 buildDependencies:
-- libreadline-dev
-- flex
-- bison
-- libxml2-dev
-- libxslt-dev
-- libxml2-utils
-- xsltproc
-- libc++-dev
-- libc++abi-dev
-- libglib2.0-dev
-- libtinfo6
-- libstdc++-12-dev
-- liblz4-dev
+  - libreadline-dev
+  - flex
+  - bison
+  - libxml2-dev
+  - libxml2-utils
+  - xsltproc
+  - libc++-dev
+  - libc++abi-dev
+  - libglib2.0-dev
+  - libtinfo6
+  - libstdc++-12-dev
+  - liblz4-dev
 build:
   main:
-  - name: build pg_duckdb
-    run: |
-      git clone --branch v1.1.0 --single-branch --depth 1 https://github.com/duckdb/duckdb third_party/duckdb
-      DESTDIR=${DESTDIR} make install
+    - name: build pg_duckdb
+      run: |
+        git clone --recurse-submodules -j8 https://github.com/duckdb/pg_duckdb
+        cd pg_duckdb
+        git checkout dd698a696340ab610e31c782ed0bf19e70fd7254
+        DESTDIR=${DESTDIR} make install
