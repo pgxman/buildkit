@@ -17,19 +17,37 @@ arch:
 maintainers:
   - email: jd@hydra.so
     name: Jonathan Dance
-buildDependencies:
-  - libreadline-dev
-  - flex
-  - bison
-  - libxml2-dev
-  - libxml2-utils
-  - xsltproc
-  - libc++-dev
-  - libc++abi-dev
-  - libglib2.0-dev
-  - libtinfo6
-  - libstdc++-12-dev
-  - liblz4-dev
+builders:
+  debian:bookworm:
+    buildDependencies: &buildDeps
+      - libreadline-dev
+      - flex
+      - bison
+      - libxml2-dev
+      - libxml2-utils
+      - xsltproc
+      - libc++-dev
+      - libc++abi-dev
+      - libglib2.0-dev
+      - libtinfo5
+      - libstdc++-12-dev
+      - liblz4-dev
+  ubuntu:jammy:
+    buildDependencies: *buildDeps
+  ubuntu:noble:
+    buildDependencies:
+      - libreadline-dev
+      - flex
+      - bison
+      - libxml2-dev
+      - libxml2-utils
+      - xsltproc
+      - libc++-dev
+      - libc++abi-dev
+      - libglib2.0-dev
+      - libtinfo6
+      - libstdc++-12-dev
+      - liblz4-dev
 build:
   main:
     - name: build pg_duckdb
