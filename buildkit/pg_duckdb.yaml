@@ -55,4 +55,5 @@ build:
         git clone --recurse-submodules -j8 https://github.com/duckdb/pg_duckdb
         cd pg_duckdb
         git checkout aa3c27c3fce05f9389219052313071b01bec1b62
+        make -j8
         DESTDIR=${DESTDIR} make install
