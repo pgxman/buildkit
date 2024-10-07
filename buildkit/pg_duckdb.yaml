@@ -58,5 +58,5 @@ build:
         cd pg_duckdb
         git checkout fb923c7
         git submodule update --recursive
-        make
+        duckdb_gen=make make -j8
         DESTDIR=${DESTDIR} make install
