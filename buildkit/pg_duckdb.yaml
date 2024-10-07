@@ -9,8 +9,8 @@ keywords:
 pgVersions:
   - "16"
 repository: https://github.com/duckdb/pg_duckdb
-source: https://github.com/duckdb/pg_duckdb/archive/34fe2dc105edcc7fe7703b05648f7edb76a98328.tar.gz # The source is not used. TODO: support git:// protocol
-version: 0.1.0-pre+34fe2dc
+source: https://github.com/duckdb/pg_duckdb/archive/cb26eecc886997bd6e5cec3183e758629c276e20.tar.gz # The source is not used. TODO: support git:// protocol
+version: 0.1.0-pre+cb26eec
 arch:
   - amd64
   - arm64
@@ -32,6 +32,7 @@ builders:
       - libtinfo5
       - libstdc++-12-dev
       - liblz4-dev
+      - ninja-build
   ubuntu:jammy:
     buildDependencies: *buildDeps
   ubuntu:noble:
@@ -48,13 +49,14 @@ builders:
       - libtinfo6
       - libstdc++-12-dev
       - liblz4-dev
+      - ninja-build
 build:
   main:
     - name: build pg_duckdb
       run: |
         git clone --recurse-submodules -j8 https://github.com/duckdb/pg_duckdb
         cd pg_duckdb
-        git checkout 34fe2dc
+        git checkout cb26eec
         git submodule update --recursive
         make -j8
         DESTDIR=${DESTDIR} make install
