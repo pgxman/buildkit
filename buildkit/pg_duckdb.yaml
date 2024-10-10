@@ -7,6 +7,7 @@ keywords:
   - analytics
   - embedded
 pgVersions:
+  - "15"
   - "16"
 repository: https://github.com/duckdb/pg_duckdb
 source: https://github.com/duckdb/pg_duckdb/archive/fdfbe29e5fd39dc0bb35eb31f6a17cda34b54a79.tar.gz # The source is not used. TODO: support git:// protocol
