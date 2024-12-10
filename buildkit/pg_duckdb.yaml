@@ -10,8 +10,8 @@ pgVersions:
   - "15"
   - "16"
 repository: https://github.com/duckdb/pg_duckdb
-source: https://github.com/duckdb/pg_duckdb/archive/refs/tags/v0.1.0.tar.gz # The source is not used. TODO: support git:// protocol
-version: 0.1.0
+source: https://github.com/duckdb/pg_duckdb/archive/refs/tags/v0.2.0.tar.gz # The source is not used. TODO: support git:// protocol
+version: 0.2.0
 arch:
   - amd64
   - arm64
@@ -57,7 +57,7 @@ build:
       run: |
         git clone --recurse-submodules -j8 https://github.com/duckdb/pg_duckdb
         cd pg_duckdb
-        git checkout v0.1.0
+        git checkout v0.2.0
         git submodule update --recursive
         unset LDFLAGS CXXFLAGS
         DUCKDB_GEN=make make -j8
