@@ -1,8 +1,6 @@
 name: CI
 on:
   push:
-    branches:
-      - main
   pull_request:
   workflow_call:
     inputs:
@@ -15,6 +13,20 @@ on:
         type: string
         description: 'A list of extensions to build in regex format,  e.g. `.+` for all'
 jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: owenthereal/action-upterm@v1
+        with:
+          limit-access-to-actor: true
+        env:
+          AWS_DEBIAN_S3_BUCKET: ${{ secrets.AWS_DEBIAN_S3_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          GPG_SIGNING_KEY_ID: C9ADBB93237BCD3B
+          PGXMAN_REGISTRY_URL: ${{ secrets.PGXMAN_REGISTRY_URL }}
+          GPG_PRIVATE: ${{ secrets.GPG_PRIVATE }}
+          GPG_PUBLIC: ${{ secrets.GPG_PUBLIC }}
   detect_changed_extensions:
     name: Detect changed extensions
     runs-on: ubuntu-latest
