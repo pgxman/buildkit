@@ -72,7 +72,7 @@ jobs:
           echo "allow-preset-passphrase" > ~/.gnupg/gpg-agent.conf
           gpg-connect-agent RELOADAGENT /bye
       - name: Download Artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           path: artifacts
           merge-multiple: true
