@@ -1,0 +1,36 @@
+# pgxman buildkit for pg_monetary
+# Submit this file to: https://github.com/pgxman/buildkit
+# as buildkit/pg_monetary.yaml
+
+apiVersion: v1
+name: pg_monetary
+version: "1.0.0"
+homepage: https://github.com/fyffee/monetary
+repository: https://github.com/fyffee/monetary
+source: https://github.com/fyffee/monetary/archive/refs/tags/v1.0.0.tar.gz
+description: Currency-aware monetary type with parsing, arithmetic, and aggregation safety
+license: MIT
+keywords:
+  - monetary
+  - currency
+  - money
+  - finance
+  - exchange-rates
+arch:
+  - amd64
+  - arm64
+maintainers:
+  - name: Onni Hakala
+    email: onni@flaky.build
+build:
+  main:
+    - name: Build pg_monetary
+      run: |
+        cd pg_monetary/cpp
+        make
+        DESTDIR=${DESTDIR} make install
+pgVersions:
+  - "14"
+  - "15"
+  - "16"
+  - "17"
