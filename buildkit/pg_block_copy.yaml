@@ -1,0 +1,48 @@
+apiVersion: v1
+name: block_copy_command
+version: "0.1.4"
+homepage: https://github.com/rustwizard/block_copy_command
+repository: https://github.com/rustwizard/block_copy_command
+source: https://github.com/rustwizard/block_copy_command/archive/refs/tags/v0.1.4.tar.gz
+description: PostgreSQL extension that blocks COPY commands via a configurable ProcessUtility hook
+license: BSD-3-Clause
+keywords:
+  - security
+  - copy
+  - hook
+arch:
+  - amd64
+  - arm64
+maintainers:
+  - name: RustWizard
+    email: rustwizard.0@gmail.com
+pgVersions:
+  - "13"
+  - "14"
+  - "15"
+  - "16"
+buildDependencies:
+  - curl
+  - build-essential
+  - clang
+  - libclang-dev
+  - pkg-config
+  - libssl-dev
+build:
+  pre:
+    - name: Install Rust toolchain
+      run: |
+        export RUSTUP_HOME=/opt/rustup
+        export CARGO_HOME=/opt/cargo
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path --default-toolchain 1.89.0
+        export PATH="/opt/cargo/bin:$PATH"
+        cargo install --locked cargo-pgrx --version 0.17.0
+  main:
+    - name: Build and package extension
+      run: |
+        export RUSTUP_HOME=/opt/rustup
+        export CARGO_HOME=/opt/cargo
+        export PATH="/opt/cargo/bin:$PATH"
+        export CARGO_INCREMENTAL=0
+        cargo pgrx init --pg${PG_VERSION} ${PG_CONFIG}
+        cargo pgrx package --pg-config ${PG_CONFIG} --out-dir ${DESTDIR}
