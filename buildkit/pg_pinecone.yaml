@@ -1,0 +1,36 @@
+apiVersion: v1
+name: pg_pinecone
+version: "0.11.0"
+homepage: https://github.com/pinecone-io/pg_pinecone
+repository: https://github.com/pinecone-io/pg_pinecone
+source: https://github.com/pinecone-io/pg_pinecone/archive/refs/tags/v0.11.0.tar.gz
+description: Pinecone vector search in Postgres — one pgvector column, three engines.
+license: Apache-2.0
+keywords:
+  - vector-search
+  - approximate-nearest-neighbor-search
+  - pgvector
+  - pinecone
+  - full-text-search
+arch:
+  - amd64
+  - arm64
+maintainers:
+  - name: Pinecone           # TODO: confirm maintainer name/email before submitting
+    email: oss@pinecone.io
+runDependencies:
+  - pgxman/pgvector
+build:
+  pre:
+    - name: Install cargo-pgrx
+      run: |
+        cargo install cargo-pgrx --version 0.19.2 --locked
+  main:
+    - name: Build pg_pinecone
+      run: |
+        cd pg_pinecone
+        cargo pgrx init --pg${PG_VERSION} ${PG_CONFIG}
+        cargo pgrx package --pg-config ${PG_CONFIG} --out-dir ${DESTDIR}
+pgVersions:
+  - "17"
+  - "18"
